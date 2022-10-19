@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from shapely.geometry import Point
 
+
 gdf = gpd.read_file('Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp')
 df = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True).sort_values(by='Data_1o_Esporos')
 
