@@ -2,8 +2,9 @@ import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
 from shapely.geometry import Point
-import matplotlib.patches as patches
 import os
+import datetime
+
 
 for filename in os.listdir('Results'):
     os.remove(f'Results/{filename}')
@@ -13,8 +14,16 @@ _collectors = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';'
 
 _collectors.index = range(0, len(_collectors)) # Reset index
 
-old_circles = []
+for i in range(0, len(_collectors)):
+    # print _collectors["Data"].iloc[i] only if the value is not nan
+    if not pd.isnull(_collectors["Data_1o_Esporos"].iloc[i]):
+        _collectors.loc[i, 'Data_1o_Esporos'] = _collectors["Data_1o_Esporos"].iloc[i].strftime('%Y-%m-%d')
+        print(_collectors["Data_1o_Esporos"].iloc[i])
 
+
+# print(_collectors["Data_1o_Esporos"].iloc[0] + datetime.timedelta(days=2))
+
+old_circles = []
 
 def coloring():
     
@@ -85,7 +94,6 @@ def plotting(day):
     plt.scatter(_collectors['Longitude'], _collectors['Latitude'], color=_collectors['color'], s=50, marker='*')
 
     plt.savefig(f'Results/Day_{day}.png', dpi=300, bbox_inches='tight')
-
 
 def plot_infection_circles():
 
