@@ -6,25 +6,6 @@ import os
 import datetime
 from infection_circle import Infection_Circle
 
-for filename in os.listdir('Results'):
-    os.remove(f'Results/{filename}')
-
-_map = gpd.read_file('Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') # Read map file
-_collectors = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True) \
-            .sort_values(by='Data_1o_Esporos') # Read collectors file
-
-_collectors.index = range(0, len(_collectors)) # Reset index
-
-for i in range(0, len(_collectors)):
-    if not pd.isnull(_collectors["Data_1o_Esporos"].iloc[i]):
-        _collectors.loc[i, 'Data_1o_Esporos'] = _collectors["Data_1o_Esporos"].iloc[i].strftime('%Y-%m-%d')
-        
-spores = _collectors[_collectors['Situacao'] == 'Com esporos']
-no_spores = _collectors[_collectors['Situacao'] == 'Encerrado sem esporos']
-
-
-old_circles = []
-
 def coloring():
     
     global first_apperances
@@ -43,7 +24,7 @@ def growth(number_of_days):
 
     for i in range(len(first_apperances)): # For each starting point
 
-        infection_circle = Point(first_apperances['Longitude'].iloc[i], first_apperances['Latitude'].iloc[i]).buffer(0.01 * 1) # Create a new infection circle
+        infection_circle = Point(first_apperances['Longitude'].iloc[i], first_apperances['Latitude'].iloc[i]).buffer(0.01) # Create a new infection circle
         infection_circles.append(Infection_Circle(i, infection_circle, 1))
 
     for day in range(number_of_days): # For each day
@@ -63,13 +44,13 @@ def growth(number_of_days):
                         _collectors.loc[collector_index, 'color'] = 'yellow'
 
                         if _collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day) < _collectors['Data_1o_Esporos'].iloc[collector_index]:
-                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index]} + {day} -> {_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} < {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
+                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} < {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
                             print(f"-{_collectors['Data_1o_Esporos'].iloc[collector_index] - (_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day))}")
                         elif _collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day) > _collectors['Data_1o_Esporos'].iloc[collector_index]:
-                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index]} + {day} -> {_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} > {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
+                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} > {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
                             print(f"+{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day) - _collectors['Data_1o_Esporos'].iloc[collector_index]}")
                         else:
-                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index]} + {day} -> {_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} = {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
+                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} = {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
 
                         new_buffer = 1
                         new_infection_circle = Point(_collectors['Longitude'].iloc[collector_index], _collectors['Latitude'].iloc[collector_index]).buffer(0.01 * new_buffer)
@@ -80,10 +61,7 @@ def growth(number_of_days):
             _infection_circle.buffer += 1
             _infection_circle.circle = Point(_infection_circle.circle.centroid.x, _infection_circle.circle.centroid.y).buffer(0.01 * _infection_circle.buffer)
 
-        # intersection_union()
-
         plotting(day)
-
 
 def plotting(day):
 
@@ -92,13 +70,15 @@ def plotting(day):
         _map.plot(color='lightgrey', edgecolor='whitesmoke')
 
         # Title and labels definitions
-        plt.title('Ferrugem asiática no Paraná', fontsize=20)
+        
         plt.xlabel('Longitude', fontsize=15)
         plt.ylabel('Latitude', fontsize=15)
         
         for i in range(len(_collectors)):
             if _collectors.loc[i, 'Situacao'] == 'Com esporos': # Show only cities with collectors with spores
                 plt.gca().annotate(_collectors['Municipio'][i], (_collectors['Longitude'][i], _collectors['Latitude'][i]), fontsize=2)
+
+    plt.title(f'Ferrugem asiática no Paraná - dia {day}', fontsize=20)
 
     for old_infection_circle in old_circles:
         old_infection_circle.pop(0).remove()
@@ -109,7 +89,7 @@ def plotting(day):
 
     plt.scatter(_collectors['Longitude'], _collectors['Latitude'], color=_collectors['color'], s=50, marker='*')
 
-    plt.pause(0.01)
+    plt.pause(0.1)
 
 def plot_infection_circles():
 
@@ -132,6 +112,22 @@ def intersection_union():
         i += 1
         j = i + 1
 
+for filename in os.listdir('Results'):
+    os.remove(f'Results/{filename}')
+
+_map = gpd.read_file('Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') # Read map file
+_collectors = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True) \
+            .sort_values(by='Data_1o_Esporos') # Read collectors file
+
+_collectors.index = range(0, len(_collectors)) # Reset index
+
+for i in range(0, len(_collectors)):
+    if not pd.isnull(_collectors["Data_1o_Esporos"].iloc[i]):
+        _collectors.loc[i, 'Data_1o_Esporos'] = _collectors["Data_1o_Esporos"].iloc[i].strftime('%Y-%m-%d')
+        
+old_circles = []
+
 coloring()
-growth(number_of_days=50)
+growth(number_of_days=100)
+intersection_union()
 plt.show()
