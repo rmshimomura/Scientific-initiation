@@ -4,29 +4,24 @@ import matplotlib.pyplot as plt
 from shapely.geometry import Point
 import os
 import datetime
-
-class Infection_Circle:
-    
-    def __init__(self, index, circle, buffer):
-        self.index = index
-        self.circle = circle
-        self.buffer = buffer
+from infection_circle import Infection_Circle
 
 for filename in os.listdir('Results'):
     os.remove(f'Results/{filename}')
 
 _map = gpd.read_file('Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') # Read map file
-_collectors = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True).sort_values(by='Data_1o_Esporos') # Read collectors file
+_collectors = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True) \
+            .sort_values(by='Data_1o_Esporos') # Read collectors file
 
 _collectors.index = range(0, len(_collectors)) # Reset index
 
 for i in range(0, len(_collectors)):
-    # print _collectors["Data"].iloc[i] only if the value is not nan
     if not pd.isnull(_collectors["Data_1o_Esporos"].iloc[i]):
         _collectors.loc[i, 'Data_1o_Esporos'] = _collectors["Data_1o_Esporos"].iloc[i].strftime('%Y-%m-%d')
+        
+spores = _collectors[_collectors['Situacao'] == 'Com esporos']
+no_spores = _collectors[_collectors['Situacao'] == 'Encerrado sem esporos']
 
-
-# print(_collectors["Data_1o_Esporos"].iloc[0] + datetime.timedelta(days=2))
 
 old_circles = []
 
@@ -39,42 +34,7 @@ def coloring():
 
     for i in first_apperances.index: # Color the first collectors to appear in yellow
         _collectors.loc[i, 'color'] = 'yellow'
-
-# def growth(number_of_days):
-
-#     global infection_circles
-
-#     infection_circles = []
-
-#     for i in range(len(first_apperances)): # For each starting point
-
-#         infection_circle = Point(first_apperances['Longitude'].iloc[i], first_apperances['Latitude'].iloc[i]).buffer(0.01 * 1) # Create a new infection circle
-#         # infection_circles.append([i, infection_circle, 1]) # Add the infection circle to the list
-#         infection_circles.append(Infection_Circle(i, infection_circle, 1))
         
-#     for day in range(number_of_days): # For each day
-
-#         for infection_circle_index in range(len(infection_circles)): # For each infection circle
-
-#             for collector_index in range(len(_collectors)): # For each collector
-
-#                 current_color = _collectors['color'].iloc[collector_index]
-
-#                 if current_color == 'yellow' or current_color == 'red': # Prevent re-infection and collectors that don't have spores
-#                     continue
-#                 else:
-#                     if infection_circles[infection_circle_index][1].contains(Point(_collectors['Longitude'].iloc[collector_index], _collectors['Latitude'].iloc[collector_index])):
-#                         _collectors.loc[collector_index, 'color'] = 'yellow'
-#                         new_buffer = 1
-#                         new_infection_circle = Point(_collectors['Longitude'].iloc[collector_index], _collectors['Latitude'].iloc[collector_index]).buffer(0.01 * new_buffer)
-#                         infection_circles.append([collector_index, new_infection_circle, new_buffer])
-
-#         for infection_circle_index in range(len(infection_circles)): # For each day passed, the infection circle grows
-#             infection_circles[infection_circle_index][2] += 1
-#             infection_circles[infection_circle_index][1] = Point(infection_circles[infection_circle_index][1].centroid.x, infection_circles[infection_circle_index][1].centroid.y).buffer(0.01 * infection_circles[infection_circle_index][2])
-
-#         plotting(day)
-
 def growth(number_of_days):
 
     global infection_circles
@@ -97,8 +57,20 @@ def growth(number_of_days):
                 if current_color == 'yellow' or current_color == 'red': # Prevent re-infection and collectors that don't have spores
                     continue
                 else:
+
                     if _infection_circle.circle.contains(Point(_collectors['Longitude'].iloc[collector_index], _collectors['Latitude'].iloc[collector_index])):
+
                         _collectors.loc[collector_index, 'color'] = 'yellow'
+
+                        if _collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day) < _collectors['Data_1o_Esporos'].iloc[collector_index]:
+                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index]} + {day} -> {_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} < {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
+                            print(f"-{_collectors['Data_1o_Esporos'].iloc[collector_index] - (_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day))}")
+                        elif _collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day) > _collectors['Data_1o_Esporos'].iloc[collector_index]:
+                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index]} + {day} -> {_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} > {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
+                            print(f"+{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day) - _collectors['Data_1o_Esporos'].iloc[collector_index]}")
+                        else:
+                            print(f"{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index]} + {day} -> {_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day)} = {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
+
                         new_buffer = 1
                         new_infection_circle = Point(_collectors['Longitude'].iloc[collector_index], _collectors['Latitude'].iloc[collector_index]).buffer(0.01 * new_buffer)
                         infection_circles.append(Infection_Circle(collector_index, new_infection_circle, new_buffer))
@@ -107,6 +79,8 @@ def growth(number_of_days):
 
             _infection_circle.buffer += 1
             _infection_circle.circle = Point(_infection_circle.circle.centroid.x, _infection_circle.circle.centroid.y).buffer(0.01 * _infection_circle.buffer)
+
+        # intersection_union()
 
         plotting(day)
 
@@ -135,11 +109,9 @@ def plotting(day):
 
     plt.scatter(_collectors['Longitude'], _collectors['Latitude'], color=_collectors['color'], s=50, marker='*')
 
-    plt.savefig(f'Results/Day_{day}.png', dpi=300, bbox_inches='tight')
+    plt.pause(0.01)
 
 def plot_infection_circles():
-
-    intersection_union()
 
     for i in range(len(infection_circles)):
 
@@ -161,4 +133,5 @@ def intersection_union():
         j = i + 1
 
 coloring()
-growth(number_of_days=20)
+growth(number_of_days=50)
+plt.show()
