@@ -2,7 +2,6 @@ import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
 from shapely.geometry import Point
-import os
 import datetime
 from infection_circle import Infection_Circle
 
@@ -10,41 +9,60 @@ def coloring():
     
     global first_apperances
 
-    _collectors['color'] = _collectors['Situacao'].apply(lambda x: 'lightgreen' if x == 'Com esporos' else 'red') # Color collectors with spores in green and collectors without spores in red
+    _collectors['color'] = _collectors['Situacao'].apply(lambda x: 'white' if x == 'Com esporos' else 'red') # Color collectors with spores in green and collectors without spores in red
     first_apperances = _collectors[_collectors['Data_1o_Esporos'] == _collectors['Data_1o_Esporos'].min()] # Get the first collectors to appear
 
     for i in first_apperances.index: # Color the first collectors to appear in yellow
         _collectors.loc[i, 'color'] = 'yellow'
+
         
-def check_day(day, _infection_circle, collector_index):
+def check_day(day, collector_index):
+    
+    global early_detection, late_detection, spot_on_detection
 
-    if start_day + datetime.timedelta(day) < _collectors['Data_1o_Esporos'].iloc[collector_index]:
-        print(f"{start_day + datetime.timedelta(day)} < {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
-        print(f"EARLY: -{_collectors['Data_1o_Esporos'].iloc[collector_index] - (_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day))} days\n\n")
-    elif start_day + datetime.timedelta(day) > _collectors['Data_1o_Esporos'].iloc[collector_index]:
-        print(f"{start_day + datetime.timedelta(day)} > {_collectors['Data_1o_Esporos'].iloc[collector_index]}")
-        print(f"LATE: +{_collectors['Data_1o_Esporos'].iloc[_infection_circle.index] + datetime.timedelta(day) - _collectors['Data_1o_Esporos'].iloc[collector_index]} days\n\n")
+    if collector_index < len(first_apperances): 
+        return
+
+    difference = (start_day + datetime.timedelta(day)) - _collectors['Data_1o_Esporos'].iloc[collector_index]
+
+    if difference.days < 0:
+        early_detection += 1
+        test_log.write(f"{start_day + datetime.timedelta(day)} < {_collectors['Data_1o_Esporos'].iloc[collector_index]}\n")
+        test_log.write(f"EARLY: -{_collectors['Data_1o_Esporos'].iloc[collector_index] - (start_day + datetime.timedelta(day))} days\n\n")
+    elif difference.days > 0:
+        late_detection += 1
+        test_log.write(f"{start_day + datetime.timedelta(day)} > {_collectors['Data_1o_Esporos'].iloc[collector_index]}\n")
+        test_log.write(f"LATE: +{start_day + datetime.timedelta(day) - _collectors['Data_1o_Esporos'].iloc[collector_index]} days\n\n")
     else:
-        print(f"OK {start_day + datetime.timedelta(day)} = {_collectors['Data_1o_Esporos'].iloc[collector_index]}\n\n")
-
-def check_miss(day):
+        spot_on_detection += 1
+        test_log.write(f"OK {start_day + datetime.timedelta(day)} = {_collectors['Data_1o_Esporos'].iloc[collector_index]}\n\n")
+        
+def check_miss(day, collectors_until_day):
     
     for collector_index in range(len(_collectors)):
+
         if collector_index in detected_collectors or collector_index in missed_collectors:
             continue
+
         if start_day + datetime.timedelta(day) == _collectors['Data_1o_Esporos'].iloc[collector_index]:
 
-            print(f"MISS: {start_day + datetime.timedelta(day)} didn't detected")
+            collectors_until_day += 1
+
+            _collectors.loc[collector_index, 'color'] = 'black'
+            miss_log.write(f"MISS: {start_day + datetime.timedelta(day)} didn't detected:\n")
+            # Change the color of the collector missed to black
             
             for column in _collectors.columns[:_collectors.columns.get_loc('Data') + 1]:
-                print(f"{column}: {_collectors[column].iloc[collector_index]}")
-            print("\n")
+                miss_log.write(f"{column}: {_collectors[column].iloc[collector_index]}\n")
+            miss_log.write("\n\n")
             missed_collectors.append(collector_index)
+    
+    return collectors_until_day
 
-def growth(number_of_days):
+def growth(number_of_days, collectors_until_day):
 
     global infection_circles
-
+    
     infection_circles = []
 
     for i in range(len(first_apperances)): # For each starting point
@@ -54,7 +72,7 @@ def growth(number_of_days):
 
     for day in range(number_of_days): # For each day
 
-        check_miss(day)
+        collectors_until_day = check_miss(day, collectors_until_day)
 
         for _infection_circle in infection_circles:
 
@@ -62,17 +80,22 @@ def growth(number_of_days):
 
                 current_color = _collectors['color'].iloc[collector_index]
 
-                if current_color == 'yellow' or current_color == 'red': # Prevent re-infection and collectors that don't have spores
+                if current_color == 'lightgreen' or current_color == 'red' or current_color == 'yellow': # Prevent re-infection and collectors that don't have spores
                     continue
-                else:
+                else: 
 
-                    if _infection_circle.circle.contains(Point(_collectors['Longitude'].iloc[collector_index], _collectors['Latitude'].iloc[collector_index])):
+                    if _infection_circle.circle.contains(
+                        Point(_collectors['Longitude'].iloc[collector_index], _collectors['Latitude'].iloc[collector_index])
+                        ):
 
-                        _collectors.loc[collector_index, 'color'] = 'yellow'
+                        _collectors.loc[collector_index, 'color'] = 'lightgreen'
 
-                        detected_collectors.append(collector_index)
+                        if collector_index not in first_apperances.index:
 
-                        check_day(day, _infection_circle, collector_index)
+                            detected_collectors.append(collector_index)
+
+                        check_day(day, collector_index)
+                        collectors_until_day += 1
 
                         new_buffer = 1
                         new_infection_circle = Point(_collectors['Longitude'].iloc[collector_index], _collectors['Latitude'].iloc[collector_index]).buffer(0.01 * new_buffer)
@@ -83,14 +106,19 @@ def growth(number_of_days):
             _infection_circle.buffer += 1
             _infection_circle.circle = Point(_infection_circle.circle.centroid.x, _infection_circle.circle.centroid.y).buffer(0.01 * _infection_circle.buffer)
 
-        plotting(day)
+        # intersection_union()
+
+        if day == number_of_days - 1: plotting(day)
+
+    return collectors_until_day
 
 def plotting(day):
 
-    if day == 0:
+    if day == 0 or day == NUMBER_OF_DAYS - 1:
         # Map plot
         _map.plot(color='lightgrey', edgecolor='whitesmoke')
-
+        mng = plt.get_current_fig_manager()
+        mng.full_screen_toggle()
         # Title and labels definitions
         
         plt.xlabel('Longitude', fontsize=15)
@@ -98,7 +126,7 @@ def plotting(day):
         
         for i in range(len(_collectors)):
             if _collectors.loc[i, 'Situacao'] == 'Com esporos': # Show only cities with collectors with spores
-                plt.gca().annotate(_collectors['Municipio'][i], (_collectors['Longitude'][i], _collectors['Latitude'][i]), fontsize=2)
+                plt.gca().annotate(_collectors['Municipio'][i], (_collectors['Longitude'][i], _collectors['Latitude'][i]), fontsize=7)
 
     plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
 
@@ -111,7 +139,7 @@ def plotting(day):
 
     plt.scatter(_collectors['Longitude'], _collectors['Latitude'], color=_collectors['color'], s=50, marker='*')
 
-    plt.pause(0.01)
+    plt.pause(0.1)
 
 def plot_infection_circles():
 
@@ -146,10 +174,30 @@ for i in range(0, len(_collectors)):
 
 start_day = _collectors['Data_1o_Esporos'].iloc[0]
 
+miss_log = open('miss_log.txt', 'w+')
+test_log = open('test_log.txt', 'w+')
+early_detection = 0
+late_detection = 0
+spot_on_detection = 0
 old_circles = []
 detected_collectors = []
 missed_collectors = []
+collectors_until_day = 0
+NUMBER_OF_DAYS = 100
 
-coloring()
-growth(number_of_days=50)
+
+coloring() 
+
+collectors_until_day = growth(NUMBER_OF_DAYS, collectors_until_day)
+
+test_log.write(f"Detected collectors: {len(detected_collectors)} ({len(detected_collectors) / collectors_until_day * 100}%)\n")
+test_log.write(f"--> Early detection: {early_detection} ({early_detection / len(detected_collectors) * 100}%)\n")
+test_log.write(f"--> Late detection: {late_detection} ({late_detection / len(detected_collectors) * 100}%)\n")
+test_log.write(f"--> Spot on detection: {spot_on_detection} ({spot_on_detection / len(detected_collectors) * 100}%)\n")
+test_log.write(f"Missed collectors: {len(missed_collectors)} ({len(missed_collectors) / collectors_until_day * 100}%)\n")
 plt.show()
+
+print(detected_collectors)
+
+miss_log.close()
+test_log.close()
