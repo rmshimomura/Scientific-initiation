@@ -5,6 +5,18 @@ from shapely.geometry import Point
 import datetime
 from infection_circle import Infection_Circle
 
+def read_basic_info():
+    _map = gpd.read_file('Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') # Read map file
+    _collectors = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True) \
+            .sort_values(by='Data_1o_Esporos') # Read collectors file
+    _collectors.index = range(0, len(_collectors)) # Reset index
+    for i in range(0, len(_collectors)):
+        if not pd.isnull(_collectors["Data_1o_Esporos"].iloc[i]):
+            _collectors.loc[i, 'Data_1o_Esporos'] = _collectors["Data_1o_Esporos"].iloc[i].strftime('%Y-%m-%d')
+        
+    return _map, _collectors
+
+
 def coloring():
     
     global first_apperances
@@ -164,15 +176,16 @@ def intersection_union():
         i += 1
         j = i + 1
 
-_map = gpd.read_file('Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') # Read map file
-_collectors = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True) \
-            .sort_values(by='Data_1o_Esporos') # Read collectors file
+def count_collectors_until_day():
+    collectors_until_day = 0
+    for i in range(len(_collectors)):
+        if start_day + datetime.timedelta(NUMBER_OF_DAYS) >= _collectors['Data_1o_Esporos'].iloc[i]:
+            if i not in first_apperances.index:
+                collectors_until_day += 1
+    
+    return collectors_until_day
 
-_collectors.index = range(0, len(_collectors)) # Reset index
-
-for i in range(0, len(_collectors)):
-    if not pd.isnull(_collectors["Data_1o_Esporos"].iloc[i]):
-        _collectors.loc[i, 'Data_1o_Esporos'] = _collectors["Data_1o_Esporos"].iloc[i].strftime('%Y-%m-%d')
+_map, _collectors = read_basic_info()
 
 start_day = _collectors['Data_1o_Esporos'].iloc[0]
 
@@ -191,12 +204,7 @@ coloring()
 
 growth(NUMBER_OF_DAYS)
 
-collectors_until_day = 0
-
-for i in range(len(_collectors)):
-    if start_day + datetime.timedelta(NUMBER_OF_DAYS) >= _collectors['Data_1o_Esporos'].iloc[i]:
-        if i not in first_apperances.index:
-            collectors_until_day += 1
+collectors_until_day = count_collectors_until_day()
 
 check_miss()
 
