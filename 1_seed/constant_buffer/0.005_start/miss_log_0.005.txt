@@ -1,34 +1,5 @@
-MISS: 2021-10-26 00:00:00 didn't detected:
-Mesorregiao: Oeste
-Regiao: Toledo
-Municipio: Santa Helena
-Produtor: Roberto Lira
-Cultivar: Na 5909 Rg
-Latitude: -24.810441
-Longitude: -54.241335
-Data_1o_Esporos: 2021-10-26 00:00:00
-Estadio: VN
-Situacao: Com esporos
-Dias_apos_deteccao: 0
-Data: 2021-10-26
-
-
-MISS: 2021-10-26 00:00:00 didn't detected:
-Mesorregiao: Oeste
-Regiao: Toledo
-Municipio: Santa Helena
-Produtor: Utfpr_campus Sta Helena
-Cultivar: Bs 2606 Ipro
-Latitude: -24.848101
-Longitude: -54.345861
-Data_1o_Esporos: 2021-10-26 00:00:00
-Estadio: VE
-Situacao: Com esporos
-Dias_apos_deteccao: 0
-Data: 2021-10-26
-
-
-MISS: 2021-11-05 00:00:00 didn't detected:
+MISS:
+Distance: 245.3021997390806 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Rolândia
@@ -43,7 +14,8 @@ Dias_apos_deteccao: 10
 Data: 2021-11-05
 
 
-MISS: 2021-11-05 00:00:00 didn't detected:
+MISS:
+Distance: 294.0700641353964 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Ibiporã
@@ -58,7 +30,8 @@ Dias_apos_deteccao: 10
 Data: 2021-11-05
 
 
-MISS: 2021-11-05 00:00:00 didn't detected:
+MISS:
+Distance: 290.99973196315307 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Ibiporã
@@ -73,7 +46,8 @@ Dias_apos_deteccao: 10
 Data: 2021-11-05
 
 
-MISS: 2021-11-05 00:00:00 didn't detected:
+MISS:
+Distance: 33.64220830027579 km
 Mesorregiao: Oeste
 Regiao: Campo Mourão
 Municipio: Ubiratã
@@ -88,7 +62,8 @@ Dias_apos_deteccao: 10
 Data: 2021-11-05
 
 
-MISS: 2021-11-12 00:00:00 didn't detected:
+MISS:
+Distance: 27.08559814291911 km
 Mesorregiao: Oeste
 Regiao: Campo Mourão
 Municipio: Ubiratã
@@ -103,7 +78,8 @@ Dias_apos_deteccao: 17
 Data: 2021-11-12
 
 
-MISS: 2021-11-12 00:00:00 didn't detected:
+MISS:
+Distance: 282.77457042579994 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Ibiporã
@@ -118,7 +94,8 @@ Dias_apos_deteccao: 17
 Data: 2021-11-12
 
 
-MISS: 2021-11-12 00:00:00 didn't detected:
+MISS:
+Distance: 306.07250668321365 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Primeiro de Maio
@@ -133,7 +110,8 @@ Dias_apos_deteccao: 17
 Data: 2021-11-12
 
 
-MISS: 2021-11-12 00:00:00 didn't detected:
+MISS:
+Distance: 294.6373075743554 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Sertanópolis
@@ -148,7 +126,8 @@ Dias_apos_deteccao: 17
 Data: 2021-11-12
 
 
-MISS: 2021-11-12 00:00:00 didn't detected:
+MISS:
+Distance: 97.38395802492114 km
 Mesorregiao: Oeste
 Regiao: Campo Mourão
 Municipio: Campo Mourão
@@ -163,7 +142,8 @@ Dias_apos_deteccao: 17
 Data: 2021-11-12
 
 
-MISS: 2021-11-16 00:00:00 didn't detected:
+MISS:
+Distance: 354.1302088804231 km
 Mesorregiao: Centro Sul
 Regiao: Ponta Grossa
 Municipio: Ponta Grossa
@@ -178,7 +158,8 @@ Dias_apos_deteccao: 21
 Data: 2021-11-16
 
 
-MISS: 2021-11-19 00:00:00 didn't detected:
+MISS:
+Distance: 240.11071319462516 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Jaguapitã
@@ -193,7 +174,8 @@ Dias_apos_deteccao: 24
 Data: 2021-11-19
 
 
-MISS: 2021-11-19 00:00:00 didn't detected:
+MISS:
+Distance: 290.66562987300034 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Sertanópolis
@@ -208,7 +190,8 @@ Dias_apos_deteccao: 24
 Data: 2021-11-19
 
 
-MISS: 2021-11-24 00:00:00 didn't detected:
+MISS:
+Distance: 70.1182811275519 km
 Mesorregiao: Oeste
 Regiao: Campo Mourão
 Municipio: Nova Cantu
@@ -223,7 +206,8 @@ Dias_apos_deteccao: 29
 Data: 2021-11-24
 
 
-MISS: 2021-11-26 00:00:00 didn't detected:
+MISS:
+Distance: 265.65165286558863 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Londrina
@@ -238,7 +222,8 @@ Dias_apos_deteccao: 31
 Data: 2021-11-26
 
 
-MISS: 2021-11-26 00:00:00 didn't detected:
+MISS:
+Distance: 289.74160688171577 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Alvorada do Sul
@@ -253,7 +238,8 @@ Dias_apos_deteccao: 31
 Data: 2021-11-26
 
 
-MISS: 2021-12-08 00:00:00 didn't detected:
+MISS:
+Distance: 52.46987592339533 km
 Mesorregiao: Oeste
 Regiao: Campo Mourão
 Municipio: Campina da Lagoa
@@ -268,7 +254,8 @@ Dias_apos_deteccao: 43
 Data: 2021-12-08
 
 
-MISS: 2021-12-09 00:00:00 didn't detected:
+MISS:
+Distance: 304.3414529200903 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Primeiro de Maio
@@ -283,7 +270,8 @@ Dias_apos_deteccao: 44
 Data: 2021-12-09
 
 
-MISS: 2021-12-10 00:00:00 didn't detected:
+MISS:
+Distance: 270.18224629062325 km
 Mesorregiao: Centro Sul
 Regiao: Irati
 Municipio: Guamiranga
@@ -298,7 +286,8 @@ Dias_apos_deteccao: 45
 Data: 2021-12-10
 
 
-MISS: 2021-12-15 00:00:00 didn't detected:
+MISS:
+Distance: 132.80070487924476 km
 Mesorregiao: Sudoeste
 Regiao: Pato Branco
 Municipio: Pato Branco
@@ -313,7 +302,8 @@ Dias_apos_deteccao: 50
 Data: 2021-12-15
 
 
-MISS: 2021-12-22 00:00:00 didn't detected:
+MISS:
+Distance: 288.03585540173026 km
 Mesorregiao: Centro Sul
 Regiao: Irati
 Municipio: Rio Azul
@@ -328,7 +318,8 @@ Dias_apos_deteccao: 57
 Data: 2021-12-22
 
 
-MISS: 2021-12-22 00:00:00 didn't detected:
+MISS:
+Distance: 121.65435582166289 km
 Mesorregiao: Oeste
 Regiao: Campo Mourão
 Municipio: Campo Mourão
@@ -343,7 +334,8 @@ Dias_apos_deteccao: 57
 Data: 2021-12-22
 
 
-MISS: 2021-12-22 00:00:00 didn't detected:
+MISS:
+Distance: 230.14687260923256 km
 Mesorregiao: Centro Sul
 Regiao: União da Vitória
 Municipio: Bituruna
@@ -358,7 +350,8 @@ Dias_apos_deteccao: 57
 Data: 2021-12-22
 
 
-MISS: 2021-12-29 00:00:00 didn't detected:
+MISS:
+Distance: 277.06972925042385 km
 Mesorregiao: Centro Sul
 Regiao: Irati
 Municipio: Ipiranga
@@ -373,7 +366,8 @@ Dias_apos_deteccao: 64
 Data: 2021-12-29
 
 
-MISS: 2022-01-03 00:00:00 didn't detected:
+MISS:
+Distance: 33.663120975068175 km
 Mesorregiao: Sudoeste
 Regiao: Dois Vizinhos
 Municipio: Salto do Lontra
@@ -388,7 +382,8 @@ Dias_apos_deteccao: 69
 Data: 2022-01-03
 
 
-MISS: 2022-01-03 00:00:00 didn't detected:
+MISS:
+Distance: 69.9036296711176 km
 Mesorregiao: Sudoeste
 Regiao: Dois Vizinhos
 Municipio: São Jorge DOeste
@@ -403,7 +398,8 @@ Dias_apos_deteccao: 69
 Data: 2022-01-03
 
 
-MISS: 2022-01-06 00:00:00 didn't detected:
+MISS:
+Distance: 125.06102267027161 km
 Mesorregiao: Sudoeste
 Regiao: Pato Branco
 Municipio: Chopinzinho
@@ -418,7 +414,8 @@ Dias_apos_deteccao: 72
 Data: 2022-01-06
 
 
-MISS: 2022-01-06 00:00:00 didn't detected:
+MISS:
+Distance: 38.33376791804133 km
 Mesorregiao: Sudoeste
 Regiao: Francisco Beltrão
 Municipio: Santa Izabel do Oeste
@@ -433,7 +430,8 @@ Dias_apos_deteccao: 72
 Data: 2022-01-06
 
 
-MISS: 2022-01-06 00:00:00 didn't detected:
+MISS:
+Distance: 266.9053054705047 km
 Mesorregiao: Centro Sul
 Regiao: Irati
 Municipio: Guamiranga
@@ -448,7 +446,8 @@ Dias_apos_deteccao: 72
 Data: 2022-01-06
 
 
-MISS: 2022-01-07 00:00:00 didn't detected:
+MISS:
+Distance: 17.68871982138409 km
 Mesorregiao: Oeste
 Regiao: Cascavel
 Municipio: Catanduvas
@@ -463,7 +462,8 @@ Dias_apos_deteccao: 73
 Data: 2022-01-07
 
 
-MISS: 2022-01-07 00:00:00 didn't detected:
+MISS:
+Distance: 352.4699314622879 km
 Mesorregiao: Centro Sul
 Regiao: Ponta Grossa
 Municipio: Arapoti
@@ -478,7 +478,8 @@ Dias_apos_deteccao: 73
 Data: 2022-01-07
 
 
-MISS: 2022-01-07 00:00:00 didn't detected:
+MISS:
+Distance: 17.370202789360466 km
 Mesorregiao: Sudoeste
 Regiao: Francisco Beltrão
 Municipio: Realeza
@@ -493,7 +494,8 @@ Dias_apos_deteccao: 73
 Data: 2022-01-07
 
 
-MISS: 2022-01-11 00:00:00 didn't detected:
+MISS:
+Distance: 325.9375914532837 km
 Mesorregiao: Centro Sul
 Regiao: Ponta Grossa
 Municipio: Ponta Grossa
@@ -508,7 +510,8 @@ Dias_apos_deteccao: 77
 Data: 2022-01-11
 
 
-MISS: 2022-01-11 00:00:00 didn't detected:
+MISS:
+Distance: 49.28710016834211 km
 Mesorregiao: Centro
 Regiao: Laranjeiras Do Sul
 Municipio: Quedas do Iguaçu
@@ -523,7 +526,8 @@ Dias_apos_deteccao: 77
 Data: 2022-01-11
 
 
-MISS: 2022-01-11 00:00:00 didn't detected:
+MISS:
+Distance: 419.2074154702774 km
 Mesorregiao: Metropolitana E Litoral
 Regiao: Curitiba
 Municipio: Araucária
@@ -538,7 +542,8 @@ Dias_apos_deteccao: 77
 Data: 2022-01-11
 
 
-MISS: 2022-01-11 00:00:00 didn't detected:
+MISS:
+Distance: 104.1665449215467 km
 Mesorregiao: Centro
 Regiao: Laranjeiras Do Sul
 Municipio: Porto Barreiro
@@ -553,7 +558,8 @@ Dias_apos_deteccao: 77
 Data: 2022-01-11
 
 
-MISS: 2022-01-12 00:00:00 didn't detected:
+MISS:
+Distance: 80.17624191021208 km
 Mesorregiao: Oeste
 Regiao: Campo Mourão
 Municipio: Nova Cantu
@@ -568,7 +574,8 @@ Dias_apos_deteccao: 78
 Data: 2022-01-12
 
 
-MISS: 2022-01-13 00:00:00 didn't detected:
+MISS:
+Distance: 60.95948050737569 km
 Mesorregiao: Sudoeste
 Regiao: Dois Vizinhos
 Municipio: Dois Vizinhos
@@ -583,7 +590,8 @@ Dias_apos_deteccao: 79
 Data: 2022-01-13
 
 
-MISS: 2022-01-13 00:00:00 didn't detected:
+MISS:
+Distance: 273.9569779830042 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Florestópolis
@@ -598,7 +606,8 @@ Dias_apos_deteccao: 79
 Data: 2022-01-13
 
 
-MISS: 2022-01-13 00:00:00 didn't detected:
+MISS:
+Distance: 298.7690977461378 km
 Mesorregiao: Centro Sul
 Regiao: União da Vitória
 Municipio: Paulo Frontin
@@ -613,7 +622,8 @@ Dias_apos_deteccao: 79
 Data: 2022-01-13
 
 
-MISS: 2022-01-14 00:00:00 didn't detected:
+MISS:
+Distance: 73.08384989892885 km
 Mesorregiao: Sudoeste
 Regiao: Dois Vizinhos
 Municipio: São Jorge DOeste
@@ -628,7 +638,8 @@ Dias_apos_deteccao: 80
 Data: 2022-01-14
 
 
-MISS: 2022-01-14 00:00:00 didn't detected:
+MISS:
+Distance: 116.79075147489411 km
 Mesorregiao: Sudoeste
 Regiao: Pato Branco
 Municipio: Pato Branco
@@ -643,7 +654,8 @@ Dias_apos_deteccao: 80
 Data: 2022-01-14
 
 
-MISS: 2022-01-18 00:00:00 didn't detected:
+MISS:
+Distance: 281.26806139310037 km
 Mesorregiao: Norte
 Regiao: Londrina
 Municipio: Bela Vista do Paraíso
@@ -658,7 +670,8 @@ Dias_apos_deteccao: 84
 Data: 2022-01-18
 
 
-MISS: 2022-01-19 00:00:00 didn't detected:
+MISS:
+Distance: 97.77234228782747 km
 Mesorregiao: Sudoeste
 Regiao: Francisco Beltrão
 Municipio: Marmeleiro
@@ -673,7 +686,8 @@ Dias_apos_deteccao: 85
 Data: 2022-01-19
 
 
-MISS: 2022-01-19 00:00:00 didn't detected:
+MISS:
+Distance: 8.149788384093164 km
 Mesorregiao: Oeste
 Regiao: Cascavel
 Municipio: Anahy
@@ -688,7 +702,8 @@ Dias_apos_deteccao: 85
 Data: 2022-01-19
 
 
-MISS: 2022-01-19 00:00:00 didn't detected:
+MISS:
+Distance: 87.82882827446925 km
 Mesorregiao: Sudoeste
 Regiao: Francisco Beltrão
 Municipio: Marmeleiro
@@ -703,7 +718,8 @@ Dias_apos_deteccao: 85
 Data: 2022-01-19
 
 
-MISS: 2022-01-19 00:00:00 didn't detected:
+MISS:
+Distance: 84.15574066972194 km
 Mesorregiao: Sudoeste
 Regiao: Francisco Beltrão
 Municipio: Flor da Serra do Sul
@@ -718,7 +734,8 @@ Dias_apos_deteccao: 85
 Data: 2022-01-19
 
 
-MISS: 2022-01-20 00:00:00 didn't detected:
+MISS:
+Distance: 307.684094497054 km
 Mesorregiao: Norte
 Regiao: Cornélio Procópio
 Municipio: Assaí
@@ -733,7 +750,8 @@ Dias_apos_deteccao: 86
 Data: 2022-01-20
 
 
-MISS: 2022-01-20 00:00:00 didn't detected:
+MISS:
+Distance: 205.05072223505653 km
 Mesorregiao: Norte
 Regiao: Ivaiporã
 Municipio: Borrazópolis
@@ -748,7 +766,8 @@ Dias_apos_deteccao: 86
 Data: 2022-01-20
 
 
-MISS: 2022-01-21 00:00:00 didn't detected:
+MISS:
+Distance: 20.021021929018655 km
 Mesorregiao: Oeste
 Regiao: Cascavel
 Municipio: Três Barras do Paraná
@@ -763,7 +782,8 @@ Dias_apos_deteccao: 87
 Data: 2022-01-21
 
 
-MISS: 2022-01-21 00:00:00 didn't detected:
+MISS:
+Distance: 37.105802642893885 km
 Mesorregiao: Sudoeste
 Regiao: Dois Vizinhos
 Municipio: Boa Esperança do Iguaçu
@@ -778,7 +798,8 @@ Dias_apos_deteccao: 87
 Data: 2022-01-21
 
 
-MISS: 2022-01-25 00:00:00 didn't detected:
+MISS:
+Distance: 7.236251367646616 km
 Mesorregiao: Oeste
 Regiao: Cascavel
 Municipio: Cascavel
@@ -793,7 +814,8 @@ Dias_apos_deteccao: 91
 Data: 2022-01-25
 
 
-MISS: 2022-01-26 00:00:00 didn't detected:
+MISS:
+Distance: 267.2547650450589 km
 Mesorregiao: Centro Sul
 Regiao: Ponta Grossa
 Municipio: Reserva
@@ -808,7 +830,8 @@ Dias_apos_deteccao: 92
 Data: 2022-01-26
 
 
-MISS: 2022-01-27 00:00:00 didn't detected:
+MISS:
+Distance: 95.89213894825762 km
 Mesorregiao: Sudoeste
 Regiao: Francisco Beltrão
 Municipio: Renascença
@@ -823,7 +846,8 @@ Dias_apos_deteccao: 93
 Data: 2022-01-27
 
 
-MISS: 2022-01-27 00:00:00 didn't detected:
+MISS:
+Distance: 415.21925286391075 km
 Mesorregiao: Metropolitana E Litoral
 Regiao: Curitiba
 Municipio: Araucária
@@ -838,7 +862,8 @@ Dias_apos_deteccao: 93
 Data: 2022-01-27
 
 
-MISS: 2022-01-28 00:00:00 didn't detected:
+MISS:
+Distance: 111.82401333867989 km
 Mesorregiao: Sudoeste
 Regiao: Pato Branco
 Municipio: Coronel Vivida
@@ -853,7 +878,8 @@ Dias_apos_deteccao: 94
 Data: 2022-01-28
 
 
-MISS: 2022-01-28 00:00:00 didn't detected:
+MISS:
+Distance: 43.26441208298989 km
 Mesorregiao: Sudoeste
 Regiao: Dois Vizinhos
 Municipio: Cruzeiro do Iguaçu
@@ -868,7 +894,8 @@ Dias_apos_deteccao: 94
 Data: 2022-01-28
 
 
-MISS: 2022-02-02 00:00:00 didn't detected:
+MISS:
+Distance: 297.34851683087714 km
 Mesorregiao: Norte
 Regiao: Cornélio Procópio
 Municipio: Jataizinho
@@ -883,7 +910,8 @@ Dias_apos_deteccao: 99
 Data: 2022-02-02
 
 
-MISS: 2022-02-02 00:00:00 didn't detected:
+MISS:
+Distance: 310.58470888065733 km
 Mesorregiao: Norte
 Regiao: Cornélio Procópio
 Municipio: Santo Antonio do Paraíso
@@ -898,7 +926,8 @@ Dias_apos_deteccao: 99
 Data: 2022-02-02
 
 
-MISS: 2022-02-02 00:00:00 didn't detected:
+MISS:
+Distance: 292.09219616855745 km
 Mesorregiao: Norte
 Regiao: Cornélio Procópio
 Municipio: Assaí
@@ -911,5 +940,229 @@ Estadio: R6
 Situacao: Com esporos
 Dias_apos_deteccao: 99
 Data: 2022-02-02
+
+
+MISS:
+Distance: 375.9364266463878 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Andirá
+Produtor: Mid Patrimônio Andirá
+Cultivar: 66i68 Rsf Ipro
+Latitude: -22.963389
+Longitude: -50.262051
+Data_1o_Esporos: 2022-02-08 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 105
+Data: 2022-02-08
+
+
+MISS:
+Distance: 306.07511998491435 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Rancho Alegre
+Produtor: Midcoletor - Cocamar 
+Cultivar: M6410 IPRO
+Latitude: -23.06356
+Longitude: -50.912429
+Data_1o_Esporos: 2022-02-08 00:00:00
+Estadio: R5.4
+Situacao: Com esporos
+Dias_apos_deteccao: 105
+Data: 2022-02-08
+
+
+MISS:
+Distance: 376.1520341240572 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Barra do Jacaré
+Produtor: Gilberto De Freitas Aguiar
+Cultivar: 64i61 Rsf Ipro
+Latitude: -23.102106
+Longitude: -50.197294
+Data_1o_Esporos: 2022-02-08 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 105
+Data: 2022-02-08
+
+
+MISS:
+Distance: 370.1262428455902 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Andirá
+Produtor: Luis Gustavo Dalossi Guiciardi
+Cultivar: 64ho114 Ipro
+Latitude: -22.991748
+Longitude: -50.306479
+Data_1o_Esporos: 2022-02-08 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 105
+Data: 2022-02-08
+
+
+MISS:
+Distance: 14.129150212004722 km
+Mesorregiao: Sudoeste
+Regiao: Francisco Beltrão
+Municipio: Pérola DOeste
+Produtor: Marcelo De Conti   
+Cultivar: M5917 Ipro
+Latitude: -25.817012
+Longitude: -53.724414
+Data_1o_Esporos: 2022-02-09 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 106
+Data: 2022-02-09
+
+
+MISS:
+Distance: 91.97319325532303 km
+Mesorregiao: Sudoeste
+Regiao: Francisco Beltrão
+Municipio: Flor da Serra do Sul
+Produtor: Ademir Langaro Guarda
+Cultivar: 55I57 RSF IPRO
+Latitude: -26.308815
+Longitude: -53.187151
+Data_1o_Esporos: 2022-02-16 00:00:00
+Estadio: R7
+Situacao: Com esporos
+Dias_apos_deteccao: 113
+Data: 2022-02-16
+
+
+MISS:
+Distance: 317.83553746599216 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Sertaneja
+Produtor: Kendy Yoshiy
+Cultivar: M6410 IPRO
+Latitude: -23.03637
+Longitude: -50.80737
+Data_1o_Esporos: 2022-02-16 00:00:00
+Estadio: R7
+Situacao: Com esporos
+Dias_apos_deteccao: 113
+Data: 2022-02-16
+
+
+MISS:
+Distance: 418.3992906633139 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Contenda
+Produtor: Wilson Moreira
+Cultivar: 55i57 Rsf Ipro
+Latitude: -25.668794
+Longitude: -49.541823
+Data_1o_Esporos: 2022-02-18 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 115
+Data: 2022-02-18
+
+
+MISS:
+Distance: 385.3416877958361 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Lapa
+Produtor: Emerson Klein
+Cultivar: TMG 7058 IPRO
+Latitude: -25.64878
+Longitude: -49.840708
+Data_1o_Esporos: 2022-02-18 00:00:00
+Estadio: R5.2
+Situacao: Com esporos
+Dias_apos_deteccao: 115
+Data: 2022-02-18
+
+
+MISS:
+Distance: 420.788100273314 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Contenda
+Produtor: Marcio Rogério Precybilovicz
+Cultivar: 55i57 Rsf Ipro
+Latitude: -25.798052
+Longitude: -49.545616
+Data_1o_Esporos: 2022-02-18 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 115
+Data: 2022-02-18
+
+
+MISS:
+Distance: 289.469963541929 km
+Mesorregiao: Centro Sul
+Regiao: União da Vitória
+Municipio: Paula Freitas
+Produtor: Diogenes Diego David
+Cultivar: 55i57 Rsf Ipro
+Latitude: -26.183941
+Longitude: -50.902814
+Data_1o_Esporos: 2022-02-23 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 120
+Data: 2022-02-23
+
+
+MISS:
+Distance: 425.0265951852211 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Contenda
+Produtor: Roque Olech
+Cultivar: Tmg 7062 Ipro
+Latitude: -25.676036
+Longitude: -49.482524
+Data_1o_Esporos: 2022-02-23 00:00:00
+Estadio: R5.5
+Situacao: Com esporos
+Dias_apos_deteccao: 120
+Data: 2022-02-23
+
+
+MISS:
+Distance: 117.1936904640766 km
+Mesorregiao: Sudoeste
+Regiao: Pato Branco
+Municipio: Pato Branco
+Produtor: Idr-paraná - Polo Pesquisa E Inovação Pato Branco
+Cultivar: Don Mario 5.9i - Bmx Alvo
+Latitude: -26.123278
+Longitude: -52.652152
+Data_1o_Esporos: 2022-03-03 00:00:00
+Estadio: R7
+Situacao: Com esporos
+Dias_apos_deteccao: 128
+Data: 2022-03-03
+
+
+MISS:
+Distance: 378.0649256061621 km
+Mesorregiao: Centro Sul
+Regiao: Ponta Grossa
+Municipio: Arapoti
+Produtor: Evandro Pontes De Oliveira
+Cultivar: Na 5909 Rg
+Latitude: -24.091493
+Longitude: -49.892312
+Data_1o_Esporos: 2022-03-04 00:00:00
+Estadio: R5.4
+Situacao: Com esporos
+Dias_apos_deteccao: 129
+Data: 2022-03-04
 
 

@@ -1,0 +1,640 @@
+MISS:
+Distance: 22.220036041061118 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Rolândia
+Produtor: Renato Augusto Becker Magalhães
+Cultivar: M6410 Ipro
+Latitude: -23.183915
+Longitude: -51.472241
+Data_1o_Esporos: 2021-11-05 00:00:00
+Estadio: V7
+Situacao: Com esporos
+Dias_apos_deteccao: 10
+Data: 2021-11-05
+
+
+MISS:
+Distance: 70.63386467391632 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Ibiporã
+Produtor: Lafaeti Fernandes Pedro
+Cultivar: Tmg 7063 Ipro
+Latitude: -23.181991
+Longitude: -50.973784
+Data_1o_Esporos: 2021-11-05 00:00:00
+Estadio: V7
+Situacao: Com esporos
+Dias_apos_deteccao: 10
+Data: 2021-11-05
+
+
+MISS:
+Distance: 67.0156701619015 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Ibiporã
+Produtor: Adriano Maximiliano
+Cultivar: Bmx Potência Rr
+Latitude: -23.241598
+Longitude: -50.976019
+Data_1o_Esporos: 2021-11-05 00:00:00
+Estadio: V8
+Situacao: Com esporos
+Dias_apos_deteccao: 10
+Data: 2021-11-05
+
+
+MISS:
+Distance: 59.62174722287413 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Ibiporã
+Produtor: Igor Cesar Gallao Casagrande
+Cultivar: St 644 Ipro
+Latitude: -23.197507
+Longitude: -51.079458
+Data_1o_Esporos: 2021-11-12 00:00:00
+Estadio: V3
+Situacao: Com esporos
+Dias_apos_deteccao: 17
+Data: 2021-11-12
+
+
+MISS:
+Distance: 82.95745158028723 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Primeiro de Maio
+Produtor: Osvaldecir Aparecido Balestri
+Cultivar: 63i64 Rsf Ipro
+Latitude: -22.801549
+Longitude: -51.064166
+Data_1o_Esporos: 2021-11-12 00:00:00
+Estadio: V6
+Situacao: Com esporos
+Dias_apos_deteccao: 17
+Data: 2021-11-12
+
+
+MISS:
+Distance: 71.46529507088644 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Sertanópolis
+Produtor: Agnaldo Rossato
+Cultivar: Bmx Potência Rr
+Latitude: -23.030109
+Longitude: -51.047748
+Data_1o_Esporos: 2021-11-12 00:00:00
+Estadio: V3
+Situacao: Com esporos
+Dias_apos_deteccao: 17
+Data: 2021-11-12
+
+
+MISS:
+Distance: 129.28818959841064 km
+Mesorregiao: Centro Sul
+Regiao: Ponta Grossa
+Municipio: Ponta Grossa
+Produtor: Orcial Ceolin Bortolotto
+Cultivar: NA 5909 RG
+Latitude: -25.093497
+Longitude: -50.05539
+Data_1o_Esporos: 2021-11-16 00:00:00
+Estadio: Pré-emergência
+Situacao: Com esporos
+Dias_apos_deteccao: 21
+Data: 2021-11-16
+
+
+MISS:
+Distance: 16.952546918838188 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Jaguapitã
+Produtor: FABIO CARRARA
+Cultivar: Ns 6906 Ipro
+Latitude: -23.09493
+Longitude: -51.580843
+Data_1o_Esporos: 2021-11-19 00:00:00
+Estadio: V4
+Situacao: Com esporos
+Dias_apos_deteccao: 24
+Data: 2021-11-19
+
+
+MISS:
+Distance: 67.5172943560597 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Sertanópolis
+Produtor: Waldir Osti
+Cultivar: Bmx Potência Rr
+Latitude: -23.040085
+Longitude: -51.083191
+Data_1o_Esporos: 2021-11-19 00:00:00
+Estadio: V6
+Situacao: Com esporos
+Dias_apos_deteccao: 24
+Data: 2021-11-19
+
+
+MISS:
+Distance: 41.44951539218666 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Londrina
+Produtor: U. R. Polo De Pesquisa Londrina
+Cultivar: 63I64 RSF IPRO
+Latitude: -23.36736
+Longitude: -51.16888
+Data_1o_Esporos: 2021-11-26 00:00:00
+Estadio: V7
+Situacao: Com esporos
+Dias_apos_deteccao: 31
+Data: 2021-11-26
+
+
+MISS:
+Distance: 66.39963312108144 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Alvorada do Sul
+Produtor: José Maria Romero
+Cultivar: 6968 Rsf
+Latitude: -22.794043
+Longitude: -51.244003
+Data_1o_Esporos: 2021-11-26 00:00:00
+Estadio: R5.1
+Situacao: Com esporos
+Dias_apos_deteccao: 31
+Data: 2021-11-26
+
+
+MISS:
+Distance: 81.25928922207108 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Primeiro de Maio
+Produtor: Gabriel Massao Amauki
+Cultivar: ICS 7019 RR
+Latitude: -22.863657
+Longitude: -51.044757
+Data_1o_Esporos: 2021-12-09 00:00:00
+Estadio: R3
+Situacao: Com esporos
+Dias_apos_deteccao: 44
+Data: 2021-12-09
+
+
+MISS:
+Distance: 44.80662010502887 km
+Mesorregiao: Centro Sul
+Regiao: Irati
+Municipio: Guamiranga
+Produtor: Adriano Mariani
+Cultivar: 55i57 Rsf Ipro
+Latitude: -25.259024
+Longitude: -50.829047
+Data_1o_Esporos: 2021-12-10 00:00:00
+Estadio: V3
+Situacao: Com esporos
+Dias_apos_deteccao: 45
+Data: 2021-12-10
+
+
+MISS:
+Distance: 62.45205677025928 km
+Mesorregiao: Centro Sul
+Regiao: Irati
+Municipio: Rio Azul
+Produtor: Mateus Chaves
+Cultivar: M5917 Ipro
+Latitude: -25.728837
+Longitude: -50.75969
+Data_1o_Esporos: 2021-12-22 00:00:00
+Estadio: VN
+Situacao: Com esporos
+Dias_apos_deteccao: 57
+Data: 2021-12-22
+
+
+MISS:
+Distance: 4.395979226267654 km
+Mesorregiao: Centro Sul
+Regiao: União da Vitória
+Municipio: Bituruna
+Produtor: Sergio Roque Rubbo
+Cultivar: As 3570 Ipro
+Latitude: -26.188068
+Longitude: -51.49049
+Data_1o_Esporos: 2021-12-22 00:00:00
+Estadio: V7
+Situacao: Com esporos
+Dias_apos_deteccao: 57
+Data: 2021-12-22
+
+
+MISS:
+Distance: 51.952035222534526 km
+Mesorregiao: Centro Sul
+Regiao: Irati
+Municipio: Ipiranga
+Produtor: Ricardo Marcelo Bobato Neto
+Cultivar: 55I57 RSF IPRO
+Latitude: -24.949069
+Longitude: -50.742044
+Data_1o_Esporos: 2021-12-29 00:00:00
+Estadio: R3
+Situacao: Com esporos
+Dias_apos_deteccao: 64
+Data: 2021-12-29
+
+
+MISS:
+Distance: 41.71999331476891 km
+Mesorregiao: Centro Sul
+Regiao: Irati
+Municipio: Guamiranga
+Produtor: Murilo João Chiaradia/mauricio Chiaradia
+Cultivar: 55i57 Rsf Ipro
+Latitude: -25.135997
+Longitude: -50.846479
+Data_1o_Esporos: 2022-01-06 00:00:00
+Estadio: R5.3
+Situacao: Com esporos
+Dias_apos_deteccao: 72
+Data: 2022-01-06
+
+
+MISS:
+Distance: 125.09056231235945 km
+Mesorregiao: Centro Sul
+Regiao: Ponta Grossa
+Municipio: Arapoti
+Produtor: Ronaldo Sampaio
+Cultivar: NA 5909 RG
+Latitude: -23.983592
+Longitude: -50.147022
+Data_1o_Esporos: 2022-01-07 00:00:00
+Estadio: R1
+Situacao: Com esporos
+Dias_apos_deteccao: 73
+Data: 2022-01-07
+
+
+MISS:
+Distance: 101.04743846099322 km
+Mesorregiao: Centro Sul
+Regiao: Ponta Grossa
+Municipio: Ponta Grossa
+Produtor: Ozires Dobzuiski
+Cultivar: Zeus Ipro
+Latitude: -25.097366
+Longitude: -50.310033
+Data_1o_Esporos: 2022-01-11 00:00:00
+Estadio: R5.2
+Situacao: Com esporos
+Dias_apos_deteccao: 77
+Data: 2022-01-11
+
+
+MISS:
+Distance: 194.00053848598324 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Araucária
+Produtor: Roque Deda E Silvestre Deda
+Cultivar: NS 6209
+Latitude: -25.537243
+Longitude: -49.512988
+Data_1o_Esporos: 2022-01-11 00:00:00
+Estadio: V7
+Situacao: Com esporos
+Dias_apos_deteccao: 77
+Data: 2022-01-11
+
+
+MISS:
+Distance: 50.683927641911254 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Florestópolis
+Produtor: João Luiz Munhoz
+Cultivar: Ns 6700 Ipro
+Latitude: -22.85838
+Longitude: -51.372032
+Data_1o_Esporos: 2022-01-13 00:00:00
+Estadio: R5.1
+Situacao: Com esporos
+Dias_apos_deteccao: 79
+Data: 2022-01-13
+
+
+MISS:
+Distance: 73.27142929242724 km
+Mesorregiao: Centro Sul
+Regiao: União da Vitória
+Municipio: Paulo Frontin
+Produtor: Adriano  Duma
+Cultivar: 55i57 Rsf Ipro
+Latitude: -26.018345
+Longitude: -50.751675
+Data_1o_Esporos: 2022-01-13 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 79
+Data: 2022-01-13
+
+
+MISS:
+Distance: 58.18589769508112 km
+Mesorregiao: Norte
+Regiao: Londrina
+Municipio: Bela Vista do Paraíso
+Produtor: Genésio Bachega
+Cultivar: CZ26B42 IPRO
+Latitude: -22.976976
+Longitude: -51.218922
+Data_1o_Esporos: 2022-01-18 00:00:00
+Estadio: R5.2
+Situacao: Com esporos
+Dias_apos_deteccao: 84
+Data: 2022-01-18
+
+
+MISS:
+Distance: 82.90966165900144 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Assaí
+Produtor: Marcio Noboru Nakahara
+Cultivar: 96y90
+Latitude: -23.31199
+Longitude: -50.777815
+Data_1o_Esporos: 2022-01-20 00:00:00
+Estadio: R5.4
+Situacao: Com esporos
+Dias_apos_deteccao: 86
+Data: 2022-01-20
+
+
+MISS:
+Distance: 39.11462702970936 km
+Mesorregiao: Centro Sul
+Regiao: Ponta Grossa
+Municipio: Reserva
+Produtor: Ronaldo Sydulovicz
+Cultivar: 55i57 Rsf Ipro
+Latitude: -24.630767
+Longitude: -50.832213
+Data_1o_Esporos: 2022-01-26 00:00:00
+Estadio: R5.5
+Situacao: Com esporos
+Dias_apos_deteccao: 92
+Data: 2022-01-26
+
+
+MISS:
+Distance: 189.9996326931715 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Araucária
+Produtor: Roque Lech
+Cultivar: NS 6209
+Latitude: -25.574225
+Longitude: -49.554873
+Data_1o_Esporos: 2022-01-27 00:00:00
+Estadio: R5.1
+Situacao: Com esporos
+Dias_apos_deteccao: 93
+Data: 2022-01-27
+
+
+MISS:
+Distance: 72.65493313312196 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Jataizinho
+Produtor: Rosemary Ikeda Nakahara
+Cultivar: 96y90
+Latitude: -23.32055
+Longitude: -50.875853
+Data_1o_Esporos: 2022-02-02 00:00:00
+Estadio: R5.5
+Situacao: Com esporos
+Dias_apos_deteccao: 99
+Data: 2022-02-02
+
+
+MISS:
+Distance: 84.30759421707991 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Santo Antonio do Paraíso
+Produtor: Jovair Gonçalves Ribeiro
+Cultivar: Na5909
+Latitude: -23.574988
+Longitude: -50.648708
+Data_1o_Esporos: 2022-02-02 00:00:00
+Estadio: R5.4
+Situacao: Com esporos
+Dias_apos_deteccao: 99
+Data: 2022-02-02
+
+
+MISS:
+Distance: 67.27910643764318 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Assaí
+Produtor: Sérgio Roberto da Silva
+Cultivar: Bmx Potência Rr
+Latitude: -23.380592
+Longitude: -50.900972
+Data_1o_Esporos: 2022-02-02 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 99
+Data: 2022-02-02
+
+
+MISS:
+Distance: 151.33736630843646 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Andirá
+Produtor: Mid Patrimônio Andirá
+Cultivar: 66i68 Rsf Ipro
+Latitude: -22.963389
+Longitude: -50.262051
+Data_1o_Esporos: 2022-02-08 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 105
+Data: 2022-02-08
+
+
+MISS:
+Distance: 82.76853043949899 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Rancho Alegre
+Produtor: Midcoletor - Cocamar 
+Cultivar: M6410 IPRO
+Latitude: -23.06356
+Longitude: -50.912429
+Data_1o_Esporos: 2022-02-08 00:00:00
+Estadio: R5.4
+Situacao: Com esporos
+Dias_apos_deteccao: 105
+Data: 2022-02-08
+
+
+MISS:
+Distance: 151.22001716794009 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Barra do Jacaré
+Produtor: Gilberto De Freitas Aguiar
+Cultivar: 64i61 Rsf Ipro
+Latitude: -23.102106
+Longitude: -50.197294
+Data_1o_Esporos: 2022-02-08 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 105
+Data: 2022-02-08
+
+
+MISS:
+Distance: 145.51033528406052 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Andirá
+Produtor: Luis Gustavo Dalossi Guiciardi
+Cultivar: 64ho114 Ipro
+Latitude: -22.991748
+Longitude: -50.306479
+Data_1o_Esporos: 2022-02-08 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 105
+Data: 2022-02-08
+
+
+MISS:
+Distance: 94.60894418333639 km
+Mesorregiao: Norte
+Regiao: Cornélio Procópio
+Municipio: Sertaneja
+Produtor: Kendy Yoshiy
+Cultivar: M6410 IPRO
+Latitude: -23.03637
+Longitude: -50.80737
+Data_1o_Esporos: 2022-02-16 00:00:00
+Estadio: R7
+Situacao: Com esporos
+Dias_apos_deteccao: 113
+Data: 2022-02-16
+
+
+MISS:
+Distance: 193.04963257803632 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Contenda
+Produtor: Wilson Moreira
+Cultivar: 55i57 Rsf Ipro
+Latitude: -25.668794
+Longitude: -49.541823
+Data_1o_Esporos: 2022-02-18 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 115
+Data: 2022-02-18
+
+
+MISS:
+Distance: 159.99743761812837 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Lapa
+Produtor: Emerson Klein
+Cultivar: TMG 7058 IPRO
+Latitude: -25.64878
+Longitude: -49.840708
+Data_1o_Esporos: 2022-02-18 00:00:00
+Estadio: R5.2
+Situacao: Com esporos
+Dias_apos_deteccao: 115
+Data: 2022-02-18
+
+
+MISS:
+Distance: 195.47053811444698 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Contenda
+Produtor: Marcio Rogério Precybilovicz
+Cultivar: 55i57 Rsf Ipro
+Latitude: -25.798052
+Longitude: -49.545616
+Data_1o_Esporos: 2022-02-18 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 115
+Data: 2022-02-18
+
+
+MISS:
+Distance: 64.39689177909047 km
+Mesorregiao: Centro Sul
+Regiao: União da Vitória
+Municipio: Paula Freitas
+Produtor: Diogenes Diego David
+Cultivar: 55i57 Rsf Ipro
+Latitude: -26.183941
+Longitude: -50.902814
+Data_1o_Esporos: 2022-02-23 00:00:00
+Estadio: R6
+Situacao: Com esporos
+Dias_apos_deteccao: 120
+Data: 2022-02-23
+
+
+MISS:
+Distance: 199.6787598599579 km
+Mesorregiao: Metropolitana E Litoral
+Regiao: Curitiba
+Municipio: Contenda
+Produtor: Roque Olech
+Cultivar: Tmg 7062 Ipro
+Latitude: -25.676036
+Longitude: -49.482524
+Data_1o_Esporos: 2022-02-23 00:00:00
+Estadio: R5.5
+Situacao: Com esporos
+Dias_apos_deteccao: 120
+Data: 2022-02-23
+
+
+MISS:
+Distance: 149.84067807543377 km
+Mesorregiao: Centro Sul
+Regiao: Ponta Grossa
+Municipio: Arapoti
+Produtor: Evandro Pontes De Oliveira
+Cultivar: Na 5909 Rg
+Latitude: -24.091493
+Longitude: -49.892312
+Data_1o_Esporos: 2022-03-04 00:00:00
+Estadio: R5.4
+Situacao: Com esporos
+Dias_apos_deteccao: 129
+Data: 2022-03-04
+
+

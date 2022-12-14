@@ -1,0 +1,5 @@
+Detected collectors: 74 (86.04651162790698%)
+--> Early detection: 28 (37.83783783783784%)
+--> Late detection: 46 (62.16216216216216%)
+--> Spot on detection: 0 (0.0%)
+Missed collectors: 12 (13.953488372093023%)
