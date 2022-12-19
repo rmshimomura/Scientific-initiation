@@ -6,8 +6,8 @@ import datetime
 from infection_circle import Infection_Circle
 
 def read_basic_info():
-    _map = gpd.read_file('Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') # Read map file
-    _collectors = pd.read_csv('Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True) \
+    _map = gpd.read_file('G:/My Drive/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') # Read map file
+    _collectors = pd.read_csv('G:/My Drive/IC/Codes/Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True) \
             .sort_values(by='Data_1o_Esporos') # Read collectors file
     _collectors.index = range(0, len(_collectors)) # Reset index
     for i in range(0, len(_collectors)):
