@@ -1,24 +1,35 @@
 import pandas as pd
 import geopandas as gpd
-import datetime
+import datetime, plots, math
 from shapely.geometry import Point
 from infection_circle import Infection_Circle
-import plots
 
-def check_day(current_day: int, collector: pd.DataFrame) -> None:
+difference_values = []
+total_error = 0
 
-    global total_error
-    total_error = 0
+def check_day(current_day: int, collector: pd.DataFrame, TEST_PARAMS: dict) -> None:
 
-    # Check if the collector.Data_1o_Esporos is not null
+    global total_error, difference_values
+
     if pd.isnull(collector.Data_1o_Esporos):
-        # print(f"Collector penality!")
-        total_error += 0.01
+        total_error += TEST_PARAMS['collector_penalty']**2
         return
 
     differece = (current_day - collector.Data_1o_Esporos).days
 
+    difference_values.append(differece)
+
     total_error += differece**2
+
+    if current_day == TEST_PARAMS['end_day']:
+        difference_log = open(f'G:/My Drive/IC/Codes/Logs/difference_log_{TEST_PARAMS["number_of_days"]}_{TEST_PARAMS["buffer_factor"]}.txt', 'w')
+
+        for value in difference_values:
+            difference_log.write(f'Difference: {value} days\n')
+
+        difference_log.write(f'\nMean: {sum(difference_values)/len(difference_values)}, Standard deviation: {math.sqrt(sum(difference_values)/len(difference_values))}')
+
+        difference_log.close()
 
 
 def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, old_circles: list, TEST_PARAMS: dict) -> int:
@@ -34,35 +45,34 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
     for day in range(TEST_PARAMS['number_of_days']):
 
-        for infection_circle in infection_circles:
+        if len(infection_circles) < len(_collectors):
+            
+            for infection_circle in infection_circles:
 
-            for collector in _collectors.itertuples():
+                for collector in _collectors.itertuples():
 
-                if collector.Detected == 0:
+                    if collector.Detected == 0:
 
-                    if infection_circle.circle.contains(Point(collector.Longitude, collector.Latitude)):
+                        if infection_circle.circle.contains(Point(collector.Longitude, collector.Latitude)):
 
-                        _collectors.loc[collector.Index, 'Detected'] = 1
+                            _collectors.loc[collector.Index, 'Detected'] = 1
 
-                        if collector.Situacao == 'Com esporos':
+                            if collector.Situacao == 'Com esporos':
 
-                            _collectors.loc[collector.Index, 'color'] = 'green'
+                                _collectors.loc[collector.Index, 'color'] = 'green'
 
-                        else:
+                            else:
 
-                            _collectors.loc[collector.Index, 'color'] = 'red'
+                                _collectors.loc[collector.Index, 'color'] = 'red'
 
-                        check_day(start_day + datetime.timedelta(day), collector)
+                            check_day(start_day + datetime.timedelta(day), collector, TEST_PARAMS)
 
-                        new_infection_circle = Point(collector.Longitude, collector.Latitude)
-                        new_infection_circle.buffer(TEST_PARAMS['buffer_factor'])
-                        infection_circles.append(Infection_Circle(new_infection_circle, 1))
+                            new_infection_circle = Point(collector.Longitude, collector.Latitude)
+                            new_infection_circle.buffer(TEST_PARAMS['buffer_factor'])
+                            infection_circles.append(Infection_Circle(new_infection_circle, 1))
         
         for infection_circle in infection_circles:
             infection_circle.grow(TEST_PARAMS['buffer_factor'])
-        
-        if len(infection_circles) == len(_collectors):
-            break
 
         if day == TEST_PARAMS['number_of_days'] - 1:
             plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)
