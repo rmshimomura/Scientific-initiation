@@ -7,5 +7,9 @@ class Infection_Circle:
         self.buffer = buffer
     
     def grow(self, buffer_factor):
-        self.buffer += 1
+
+        if self.buffer > 28:
+            self.buffer += 0.5
+        else:
+            self.buffer += 1
         self.circle = Point(self.circle.centroid.x, self.circle.centroid.y).buffer(self.buffer * buffer_factor)
