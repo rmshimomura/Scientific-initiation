@@ -1,6 +1,6 @@
 import geopandas as gpd
 import pandas as pd
-import utils, time, math
+import utils, time, math, datetime
 import growth_types as gt
 
 def read_basic_info():
@@ -18,8 +18,6 @@ def read_basic_info():
 def coloring_collectors(_collectors):
 
     global first_apperances
-    
-    # Add the column 'color' to the collectors dataframe and set all values to 'red'
 
     _collectors['color'] = 'white'
 
@@ -29,17 +27,15 @@ def coloring_collectors(_collectors):
         _collectors.loc[apperance.Index, 'color'] = 'yellow'
         _collectors.loc[apperance.Index, 'Detected'] = 1
     
-    # Set the colors of the first apperances to 'yellow'
-    
     for i in first_apperances.itertuples():
         _collectors.loc[i.Index, 'color'] = 'yellow'
         _collectors.loc[i.Index, 'Detected'] = 1
-
 
 TEST_PARAMS = {
     'number_of_days' : 200,
     'buffer_factor' : 0.01,
     'new_seed_threshold' : 50,
+    'collector_penalty' : 50,
 }
 
 start_time = time.time()
@@ -51,6 +47,8 @@ read_time = time.time()
 start_day = _collectors['Data_1o_Esporos'].iloc[0]
 old_circles = []
 
+TEST_PARAMS['end_day'] = start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1)
+
 coloring_collectors(_collectors)
 
 coloring_time = time.time()
@@ -61,9 +59,7 @@ growth_time = time.time()
 
 print(f"TEST PARAMS: {TEST_PARAMS}")
 print(f"Total error: {math.sqrt(error_value/len(_collectors))}")
-print(f"Read time: {read_time - start_time}")
-print(f"Coloring time: {coloring_time - read_time}")
-print(f"Growth time: {growth_time - coloring_time}")
-print(f"Total time: {growth_time - start_time}")
-
-# plotting(0)
+print(f"Read time: {round(read_time - start_time, 2)}s")
+print(f"Coloring time: {round(coloring_time - read_time, 2)}s")
+print(f"Growth time: {round(growth_time - coloring_time, 2)}s")
+print(f"Total time: {round(growth_time - start_time, 2)}s")
