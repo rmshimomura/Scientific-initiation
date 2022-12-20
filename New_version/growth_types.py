@@ -13,6 +13,7 @@ def check_day(current_day: int, collector: pd.DataFrame) -> None:
     # Check if the collector.Data_1o_Esporos is not null
     if pd.isnull(collector.Data_1o_Esporos):
         # print(f"Collector penality!")
+        total_error += 0.01
         return
 
     differece = (current_day - collector.Data_1o_Esporos).days
@@ -63,6 +64,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
         if len(infection_circles) == len(_collectors):
             break
 
-        plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)
+        if day == TEST_PARAMS['number_of_days'] - 1:
+            plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)
         
     return total_error, infection_circles

@@ -1,8 +1,7 @@
 import geopandas as gpd
 import pandas as pd
-import utils
+import utils, time, math
 import growth_types as gt
-import math
 
 def read_basic_info():
     # Read map file
@@ -43,15 +42,28 @@ TEST_PARAMS = {
     'new_seed_threshold' : 50,
 }
 
+start_time = time.time()
+
 _map, _collectors = read_basic_info()
+
+read_time = time.time()
+
 start_day = _collectors['Data_1o_Esporos'].iloc[0]
 old_circles = []
 
 coloring_collectors(_collectors)
 
+coloring_time = time.time()
+
 error_value, infection_circles = gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
+
+growth_time = time.time()
 
 print(f"TEST PARAMS: {TEST_PARAMS}")
 print(f"Total error: {math.sqrt(error_value/len(_collectors))}")
+print(f"Read time: {read_time - start_time}")
+print(f"Coloring time: {coloring_time - read_time}")
+print(f"Growth time: {growth_time - coloring_time}")
+print(f"Total time: {growth_time - start_time}")
 
 # plotting(0)
