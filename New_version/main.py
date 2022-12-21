@@ -36,7 +36,7 @@ TEST_PARAMS = {
     'buffer_factor' : 0.01,
     'new_seed_threshold' : 50,
     'collector_penalty' : 50,
-    'expansion_threshold' : 28,
+    'expansion_threshold' : 105,
 }
 
 start_time = time.time()
