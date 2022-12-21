@@ -72,7 +72,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
                             infection_circles.append(Infection_Circle(new_infection_circle, 1))
         
         for infection_circle in infection_circles:
-            infection_circle.grow(TEST_PARAMS['buffer_factor'])
+            infection_circle.grow(TEST_PARAMS['buffer_factor'], TEST_PARAMS['expansion_threshold'])
 
         if day == TEST_PARAMS['number_of_days'] - 1:
             plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)

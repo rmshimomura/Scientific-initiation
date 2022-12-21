@@ -6,9 +6,9 @@ class Infection_Circle:
         self.circle = circle
         self.buffer = buffer
     
-    def grow(self, buffer_factor):
+    def grow(self, buffer_factor, threshold):
 
-        if self.buffer > 28:
+        if self.buffer > threshold:
             self.buffer += 0.5
         else:
             self.buffer += 1
