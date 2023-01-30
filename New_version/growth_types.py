@@ -6,13 +6,15 @@ from infection_circle import Infection_Circle
 
 difference_values = []
 total_error = 0
+invalid_collectors = 0
 
 def check_day(current_day: int, collector: pd.DataFrame, TEST_PARAMS: dict) -> None:
 
-    global total_error, difference_values
+    global total_error, difference_values, invalid_collectors
 
     if pd.isnull(collector.Data_1o_Esporos):
-        total_error += TEST_PARAMS['collector_penalty']**2
+        # total_error += TEST_PARAMS['collector_penalty']**2
+        invalid_collectors += 1
         return
 
     differece = (current_day - collector.Data_1o_Esporos).days
@@ -77,4 +79,4 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
         if day == TEST_PARAMS['number_of_days'] - 1:
             plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)
         
-    return total_error, infection_circles
+    return total_error, infection_circles, invalid_collectors

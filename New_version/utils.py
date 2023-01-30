@@ -22,3 +22,12 @@ def show_detected_collectors_city_names(_collectors: pd.DataFrame, plt: plt)-> N
         # Show only cities with collectors with spores
         if _collectors.loc[i, 'Situacao'] == 'Com esporos': 
             plt.gca().annotate(_collectors['Municipio'][i], (_collectors['Longitude'][i], _collectors['Latitude'][i]), fontsize=7)
+
+def count_valid_collectors(_collectors: pd.DataFrame)-> int:
+    number_of_valid_collectors = 0
+
+    for i in range(0, len(_collectors)):
+        if pd.notnull(_collectors['Data_1o_Esporos'].iloc[i]):
+            number_of_valid_collectors += 1
+
+    return number_of_valid_collectors
