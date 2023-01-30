@@ -39,28 +39,32 @@ TEST_PARAMS = {
     'expansion_threshold' : 105,
 }
 
-start_time = time.time()
+# start_time = time.time()
 
 _map, _collectors = read_basic_info()
 
-read_time = time.time()
+# read_time = time.time()
 
 start_day = _collectors['Data_1o_Esporos'].iloc[0]
 old_circles = []
+number_of_valid_collectors = utils.count_valid_collectors(_collectors)
 
 TEST_PARAMS['end_day'] = start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1)
 
 coloring_collectors(_collectors)
 
-coloring_time = time.time()
+# coloring_time = time.time()
 
-error_value, infection_circles = gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
+error_value, infection_circles, invalid_collectors = gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
 
-growth_time = time.time()
+# growth_time = time.time()
 
 print(f"TEST PARAMS: {TEST_PARAMS}")
-print(f"Total error: {math.sqrt(error_value/len(_collectors))}")
-print(f"Read time: {round(read_time - start_time, 2)}s")
-print(f"Coloring time: {round(coloring_time - read_time, 2)}s")
-print(f"Growth time: {round(growth_time - coloring_time, 2)}s")
-print(f"Total time: {round(growth_time - start_time, 2)}s")
+print(f"Total error (considering only valid collectors): {math.sqrt(error_value/number_of_valid_collectors)}")
+print(f"False positives percentage: {invalid_collectors/len(_collectors)*100}%")
+print(f"Discovered collectors percentage: {len(infection_circles)/len(_collectors)*100}%")
+# print(f"Total error: {math.sqrt(error_value/len(_collectors))}")
+# print(f"Read time: {round(read_time - start_time, 2)}s")
+# print(f"Coloring time: {round(coloring_time - read_time, 2)}s")
+# print(f"Growth time: {round(growth_time - coloring_time, 2)}s")
+# print(f"Total time: {round(growth_time - start_time, 2)}s")
