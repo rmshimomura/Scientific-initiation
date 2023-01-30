@@ -8,6 +8,10 @@ class Infection_Circle:
     
     def grow(self, buffer_factor, threshold):
 
+        # Fazer uma funcao decrescente aqui
+        # De duas em duas semanas diminuir um valor calculado previamente?
+        # Inversamente proporcial a distancia
+
         if self.buffer > threshold:
             self.buffer += 0.5
         else:
