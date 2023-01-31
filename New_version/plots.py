@@ -6,7 +6,6 @@ import pandas as pd
 from IPython.display import set_matplotlib_formats
 set_matplotlib_formats('svg')
 
-
 def plot_infection_circles(infection_circles: list, old_circles: list) -> None:
 
     for infection_circle in infection_circles:

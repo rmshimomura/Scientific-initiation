@@ -6,14 +6,13 @@ class Infection_Circle:
         self.circle = circle
         self.buffer = buffer
     
-    def grow(self, buffer_factor, threshold):
+    def grow(self, buffer_factor, day):
 
-        # Fazer uma funcao decrescente aqui
-        # De duas em duas semanas diminuir um valor calculado previamente?
-        # Inversamente proporcial a distancia
+        # if self.buffer > day:
+        #     self.buffer += 0.5
+        # else:
+        #     self.buffer += 1
 
-        if self.buffer > threshold:
-            self.buffer += 0.5
-        else:
-            self.buffer += 1
+        self.buffer += 1 - (day // 10.5)/10 # After 105 days or 15 weeks, the growth stops
+
         self.circle = Point(self.circle.centroid.x, self.circle.centroid.y).buffer(self.buffer * buffer_factor)
