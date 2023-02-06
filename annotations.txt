@@ -21,7 +21,7 @@ Crescimento constrante de raio e depois de um tempo, ele começa a diminuir
 
 Porque se considerarmos um crescimento constante, isso significa que temos que ter uma multiplicacao dos esporos exponencial
 
-Verdadeiro positivo: O modelo diz que tem e realmente tem (com um possível erro de dias)
+Verdadeiro positivo: O modelo diz que tem e realmente tem (com um possível erro de dias) OK
     |Data descoberta - data real|^2 = delta
 
 Verdadeiro negativo: não faz sentido contabilizar no erro, pois não altera o erro porque é um "acerto 100%"
