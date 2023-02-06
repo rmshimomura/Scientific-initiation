@@ -2,27 +2,17 @@ from shapely.geometry import Point
 
 class Infection_Circle:
     
-    def __init__(self, circle, buffer):
+    def __init__(self, circle, buffer, discovery_day):
         self.circle = circle
         self.buffer = buffer
+        self.life_span = 0
+        self.discovery_day = discovery_day
     
-    def grow(self, buffer_factor, day):
+    def grow(self, growth_function):
 
-        # if self.buffer > day:
-        #     self.buffer += 0.5
-        # else:
-        #     self.buffer += 1
-
-        '''
-
-        - Colocar a função do annotations.txt aqui, ao invés dessa conta
-        - Colocar um if checando se o lifespan do círculo já passou dos 105 dias de vida útil
-
-        '''
-
-        if (day // 10.5)/10 >= 1:
+        if self.life_span < 105:
+            self.life_span += 1
+            self.buffer += growth_function(self.life_span)
+            self.circle = Point(self.circle.centroid.x, self.circle.centroid.y).buffer(self.buffer)
+        else:
             return
-
-        self.buffer += 1 - (day // 10.5)/10 # After 105 days or 15 weeks, the growth stops
-
-        self.circle = Point(self.circle.centroid.x, self.circle.centroid.y).buffer(self.buffer * buffer_factor)
