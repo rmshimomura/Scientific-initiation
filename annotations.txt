@@ -1,0 +1,52 @@
+Penalizar no RMSE os coletores que não tem esporos no dataset mas estão dentro do circulo de detecção
+    Separar em 2 metricas?
+        - quantidade de falsos positivos
+        - Retirando os falsos positivos, qual a diferenca de dias entre o estimado e o verdadeiro?
+
+Colocar os que nao detectaram aqui também
+    - Feito
+
+Usar esse método para achar um número razoavel de seeds e em que instantes que elas aparecem
+A partir dai, deixar estático e testar com os outros modelos
+
+Outra coisa é que esse THRESHOLD deve ter uma lógica agronomica para ser justificável esse escolha (ex 75km e 8 seeds)
+Crescimento constrante de raio e depois de um tempo, ele começa a diminuir
+
+    Estima-se que a primeira geração de pústulas pode manter a esporulação por até quinze semanas,
+    mesmo sob condições de baixa umidade. Para que o fungo (Phakopsora pachyrhizi) infecte a planta
+    são necessárias condições favoráveis, tais como disponibilidade de água na folha, mínimo de 6
+    horas de molhamento foliar e temperatura entre 15 e 25º C. Sendo assim, o clima, em especial,
+    as chuvas podem favorecer a infestação da doença. Em condições favoráveis, o fungo completa o seu
+    ciclo de vida de 6 a 9 dias.
+
+Porque se considerarmos um crescimento constante, isso significa que temos que ter uma multiplicacao dos esporos exponencial
+
+Verdadeiro positivo: O modelo diz que tem e realmente tem (com um possível erro de dias)
+    |Data descoberta - data real|^2 = delta
+
+Verdadeiro negativo: não faz sentido contabilizar no erro, pois não altera o erro porque é um "acerto 100%"
+
+Falso positivo: O modelo diz que tem, mas não tem esporos ali
+    Data final - data descoberta = delta
+
+Falso negativo: O modelo diz que não tem, mas existem esporos ali
+    Colocar a função que calcula a quantidade de dias que seriam
+    necessários para chegar até o determinado coletor partindo do coletor
+    verdadeiro positivo mais próximo
+
+Função que retorna o tamanho do raio após uma quantidade de dias
+
+Argumentos:
+    - Função de decaimento (recebe número de dias, P.G?)
+        - d: dias
+            f(d)=log(7,d)
+    - Número de dias
+Retorno: 
+    - Raio em determinado dia
+
+Função que retorna o número de dias necessários para conseguir a distância:
+
+Argumentos:
+    - Função:
+        - dist: distancia
+            f(dist) = 7^dist
