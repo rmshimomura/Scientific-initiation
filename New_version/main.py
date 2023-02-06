@@ -33,7 +33,6 @@ def coloring_collectors(_collectors):
 
 TEST_PARAMS = {
     'number_of_days' : 200,
-    'buffer_factor' : 0.01,
     'new_seed_threshold' : 50,
     'collector_penalty' : 50,
 }
@@ -43,8 +42,6 @@ _map, _collectors = read_basic_info()
 start_day = _collectors['Data_1o_Esporos'].iloc[0]
 old_circles = []
 number_of_valid_collectors = utils.count_valid_collectors(_collectors)
-
-TEST_PARAMS['end_day'] = start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1)
 
 coloring_collectors(_collectors)
 
