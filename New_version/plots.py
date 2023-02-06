@@ -32,4 +32,4 @@ def plotting(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circle
     
     plt.tight_layout()
     plt.gcf().set_size_inches(40, 30)
-    plt.savefig(f'G:/My Drive/IC/Codes/Plots/plot_{day}.svg')
+    plt.savefig(f'G:/Meu Drive/IC/Codes/Plots/plot_{day}.svg')

@@ -27,19 +27,28 @@ def check_day(_collectors: pd.DataFrame, current_day: int, collector: pd.DataFra
 
         print(f"Closest: {Point(closest_collectors.Longitude, closest_collectors.Latitude).distance(Point(collector.Longitude, collector.Latitude)) * 111.045}km")
         print(f"Days difference: {(current_day - closest_collectors.Data_1o_Esporos).days} days\n")
-        print(f"Penalty applied: {math.abs((current_day - closest_collectors.Data_1o_Esporos).days)}")
-        # If the days are positive, put the number of days needed to reach the specific collector?
+        print(f"Penalty applied: {abs((current_day - closest_collectors.Data_1o_Esporos).days)}")
+        '''
+
+            Dias positivos = Demorou para chegar?
+            Dias negativos = Chegou muito cedo?
+
+            Penalizar distância e tempo?
+
+            Máximo de dias - dia da descoberta para falsos positivos?
+
+        '''
         invalid_collectors += 1
         return
 
-    differece = (current_day - collector.Data_1o_Esporos).days
+    difference = (current_day - collector.Data_1o_Esporos).days
 
-    difference_values.append(differece)
+    difference_values.append(difference)
 
-    total_error += differece**2
+    total_error += difference**2
 
     if current_day == TEST_PARAMS['end_day']:
-        difference_log = open(f'G:/My Drive/IC/Codes/Logs/difference_log_{TEST_PARAMS["number_of_days"]}_{TEST_PARAMS["buffer_factor"]}.txt', 'w')
+        difference_log = open(f'G:/Meu Drive/IC/Codes/Logs/difference_log_{TEST_PARAMS["number_of_days"]}_{TEST_PARAMS["buffer_factor"]}.txt', 'w')
 
         for value in difference_values:
             difference_log.write(f'Difference: {value} days\n')
