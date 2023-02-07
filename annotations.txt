@@ -24,17 +24,17 @@ Porque se considerarmos um crescimento constante, isso significa que temos que t
 Verdadeiro positivo: O modelo diz que tem e realmente tem (com um possível erro de dias) OK
     |Data descoberta - data real|^2 = delta
 
-Verdadeiro negativo: não faz sentido contabilizar no erro, pois não altera o erro porque é um "acerto 100%"
+Verdadeiro negativo: não faz sentido contabilizar no erro, pois não altera o erro porque é um "acerto 100%" OK
 
-Falso positivo: O modelo diz que tem, mas não tem esporos ali
+Falso positivo: O modelo diz que tem, mas não tem esporos ali OK
     Data final - data descoberta = delta
 
-Falso negativo: O modelo diz que não tem, mas existem esporos ali
+Falso negativo: O modelo diz que não tem, mas existem esporos ali OK
     Colocar a função que calcula a quantidade de dias que seriam
     necessários para chegar até o determinado coletor partindo do coletor
     verdadeiro positivo mais próximo
 
-Função que retorna o tamanho do raio após uma quantidade de dias
+Função que retorna o tamanho do raio após uma quantidade de dias OK
 
 Argumentos:
     - Função de decaimento (recebe número de dias, P.G?)
@@ -44,7 +44,7 @@ Argumentos:
 Retorno: 
     - Raio em determinado dia
 
-Função que retorna o número de dias necessários para conseguir a distância:
+Função que retorna o número de dias necessários para conseguir a distância: OK
 
 Argumentos:
     - Função:

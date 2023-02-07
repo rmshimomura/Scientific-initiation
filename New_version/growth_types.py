@@ -6,16 +6,17 @@ from infection_circle import Infection_Circle
 import growth_functions as gf
 
 difference_values = []
-total_error = 0
-invalid_collectors = 0
+true_positive_total_error = 0
 
-def check_day(collector: pd.DataFrame, current_day: int) -> None:
+def check_day(_collectors: pd.DataFrame, collector: pd.DataFrame, current_day: int) -> None:
 
-    global total_error, difference_values, invalid_collectors
+    global true_positive_total_error, difference_values
 
     if pd.isnull(collector.Data_1o_Esporos): # False positive
 
-        collector.discovery_day = current_day
+        if pd.isnull(collector.discovery_day):
+
+            _collectors.loc[collector.Index, 'discovery_day'] = current_day
         
         return
 
@@ -24,10 +25,10 @@ def check_day(collector: pd.DataFrame, current_day: int) -> None:
 
         difference_values.append(difference)
 
-        total_error += difference**2
+        true_positive_total_error += difference**2
 
 
-def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, old_circles: list, TEST_PARAMS: dict) -> int:
+def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, old_circles: list, TEST_PARAMS: dict, growth_function) -> int:
 
     infection_circles = []
 
@@ -65,7 +66,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
                                 _collectors.loc[collector.Index, 'color'] = 'red'
 
-                            check_day(collector, start_day + datetime.timedelta(day))
+                            check_day(_collectors, collector, start_day + datetime.timedelta(day))
 
                             new_infection_circle = Infection_Circle(
                                 Point(collector.Longitude, collector.Latitude),
@@ -76,9 +77,9 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
                             infection_circles.append(new_infection_circle)
         
         for infection_circle in infection_circles:
-            infection_circle.grow(gf.logarithmic_growth_distance)
+            infection_circle.grow(growth_function)
 
         if day == TEST_PARAMS['number_of_days'] - 1:
             plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)
         
-    return total_error, infection_circles, invalid_collectors
+    return true_positive_total_error, infection_circles
