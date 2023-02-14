@@ -50,3 +50,7 @@ Argumentos:
     - Função:
         - dist: distancia
             f(dist) = 7^dist
+
+-Arrumar os erros (RMSE) em cada um deles
+-Fazer animação dos círculos crescendo 
+--Toy example

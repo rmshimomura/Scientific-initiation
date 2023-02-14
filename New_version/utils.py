@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import datetime
 from shapely.geometry import Point
 import growth_functions as gf
+import math
 
 def clean_up(_collectors: pd.DataFrame)-> pd.DataFrame: 
     # Reset index
@@ -38,16 +39,22 @@ def count_valid_collectors(_collectors: pd.DataFrame)-> int:
 def calculate_false_positives_penalty(_collectors: pd.DataFrame, final_day: datetime.timedelta)-> int:
     
     penalty = 0
+    false_positives = 0
 
     for i in range(0, len(_collectors)):
         if pd.isnull(_collectors['Data_1o_Esporos'].iloc[i]) and _collectors['Detected'].iloc[i] == 1:
             penalty += (abs(final_day.day - _collectors['discovery_day'].iloc[i].day) ** 2)
+            false_positives += 1
+
+    penalty = math.sqrt(penalty/false_positives)
 
     return penalty
 
-def calculate_false_negatives_penalty(_collectors: pd.DataFrame, growth_function)-> int:
+def calculate_false_negatives_penalty(_collectors: pd.DataFrame, growth_function, base)-> int:
 
     penalty = 0
+
+    false_negatives = 0
 
     not_detected_collectors = _collectors[_collectors['Detected'] == 0]
 
@@ -55,9 +62,14 @@ def calculate_false_negatives_penalty(_collectors: pd.DataFrame, growth_function
 
         distance_to_reach = find_closest_positive_collector(_collectors, not_detected_collectors.iloc[i])
 
-        days_to_reach = growth_function(distance_to_reach)
+        days_to_reach = growth_function(distance_to_reach, base)
 
         penalty += abs(days_to_reach ** 2)
+
+        false_negatives += 1
+
+    if penalty > 0:
+        penalty = math.sqrt(penalty/false_negatives)
 
     return penalty
 

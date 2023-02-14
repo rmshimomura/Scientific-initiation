@@ -7,10 +7,11 @@ import growth_functions as gf
 
 difference_values = []
 true_positive_total_error = 0
+true_positives = 0
 
 def check_day(_collectors: pd.DataFrame, collector: pd.DataFrame, current_day: int) -> None:
 
-    global true_positive_total_error, difference_values
+    global true_positive_total_error, difference_values, true_positives
 
     if pd.isnull(collector.Data_1o_Esporos): # False positive
 
@@ -27,8 +28,10 @@ def check_day(_collectors: pd.DataFrame, collector: pd.DataFrame, current_day: i
 
         true_positive_total_error += difference**2
 
+        true_positives += 1
 
-def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, old_circles: list, TEST_PARAMS: dict, growth_function) -> int:
+
+def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, old_circles: list, TEST_PARAMS: dict) -> int:
 
     infection_circles = []
 
@@ -77,9 +80,13 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
                             infection_circles.append(new_infection_circle)
         
         for infection_circle in infection_circles:
-            infection_circle.grow(growth_function)
+            infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
         if day == TEST_PARAMS['number_of_days'] - 1:
             plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)
-        
+    
+    global true_positive_total_error
+
+    true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
+
     return true_positive_total_error, infection_circles
