@@ -43,7 +43,7 @@ def calculate_false_positives_penalty(_collectors: pd.DataFrame, final_day: date
 
     for i in range(0, len(_collectors)):
         if pd.isnull(_collectors['Data_1o_Esporos'].iloc[i]) and _collectors['Detected'].iloc[i] == 1:
-            penalty += (abs(final_day.day - _collectors['discovery_day'].iloc[i].day) ** 2)
+            penalty += (abs(final_day - _collectors['discovery_day'].iloc[i]).days ** 2)
             false_positives += 1
 
     penalty = math.sqrt(penalty/false_positives)
