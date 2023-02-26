@@ -51,6 +51,11 @@ Argumentos:
         - dist: distancia
             f(dist) = 7^dist
 
--Arrumar os erros (RMSE) em cada um deles
--Fazer animação dos círculos crescendo 
---Toy example
+- Arrumar os erros (RMSE) em cada um deles OK
+- Fazer animação dos círculos crescendo OK
+
+
+- Método dummy usando (2 e 6 seeds) -> Crescimento em progressao e outro linear
+- Método de geração dos infection circle iniciais (1 deles sendo todos iniciando no mesmo dia e o outro começando com os dias corretos)
+- Pensar em como fazer a integração com os "carrapichos" do Evandro
+- Gerar CSVs para registrar os valores
