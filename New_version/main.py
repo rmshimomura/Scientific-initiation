@@ -3,6 +3,7 @@ import pandas as pd
 import utils, datetime
 import growth_types as gt
 import growth_functions as gf
+import matplotlib.pyplot as plt
 
 def read_basic_info():
     # Read map file
@@ -24,7 +25,12 @@ def coloring_collectors(_collectors):
 
     _collectors['color'] = 'white'
 
-    first_apperances = _collectors[_collectors['Data_1o_Esporos'] == _collectors['Data_1o_Esporos'].min()]
+    # first_apperances = _collectors[_collectors['Data_1o_Esporos'] == _collectors['Data_1o_Esporos'].min()]
+    first_apperances = _collectors[0:2]
+    # first_apperances = _collectors[0:6]
+
+
+    print(len(first_apperances))
 
     for apperance in first_apperances.itertuples():
         _collectors.loc[apperance.Index, 'color'] = 'yellow'
@@ -34,11 +40,14 @@ def coloring_collectors(_collectors):
         _collectors.loc[i.Index, 'color'] = 'yellow'
         _collectors.loc[i.Index, 'Detected'] = 1
 
+    
+
 TEST_PARAMS = {
-    'number_of_days' : 200,
+    'number_of_days' : 100,
     'growth_function_distance' : gf.logaritmic_growth_distance,
     'growth_function_days' : gf.logaritmic_growth_days,
-    'base' : 100
+    'base' : 10000,
+    'animation' : False
 }
 
 _map, _collectors = read_basic_info()
@@ -49,7 +58,8 @@ number_of_valid_collectors = utils.count_valid_collectors(_collectors)
 
 coloring_collectors(_collectors)
 
-true_positive_penalty, infection_circles = gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
+true_positive_penalty, infection_circles = \
+    gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
 
 true_negative_penalty = 0
 
@@ -65,5 +75,7 @@ print(f"True negative penalty: {true_negative_penalty}")
 print(f"False positive penalty: {false_positive_penalty}")
 print(f"False negative penalty: {false_negative_penalty}")
 
-for i in range(len(infection_circles)):
-    print(f"Circle {i} has {infection_circles[i].buffer * 111.045} km of radius and {infection_circles[i].life_span} life span")
+# for i in range(len(infection_circles)):
+#     print(f"Circle {i} has {infection_circles[i].buffer * 111.045} km of radius and {infection_circles[i].life_span} life span")
+
+if TEST_PARAMS['animation']: plt.show()
