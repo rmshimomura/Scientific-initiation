@@ -1,6 +1,6 @@
 import pandas as pd
 import geopandas as gpd
-import datetime, plots, math
+import datetime, plots, math, time 
 from shapely.geometry import Point
 from infection_circle import Infection_Circle
 import growth_functions as gf
@@ -49,6 +49,33 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
     for day in range(TEST_PARAMS['number_of_days']):
 
+        # Make the rest of the first apperances, litteraly, appear on the correct day (if they are not already there)
+        for i in range(len(first_apperances)):
+
+            if start_day + datetime.timedelta(day) == first_apperances['Data_1o_Esporos'].iloc[i]:
+
+                # --> Colocar um teste que verifique se o coletor já criou um infection circle antes
+
+                check = False
+
+                for circle in infection_circles:
+
+                    centroid = (circle.circle.centroid.x, circle.circle.centroid.y)
+
+                    if centroid == (first_apperances['Longitude'].iloc[i], first_apperances['Latitude'].iloc[i]):
+                        check = True
+                        break
+
+                if check: continue
+
+                infection_circle = Infection_Circle(
+                    Point(first_apperances['Longitude'].iloc[i], first_apperances['Latitude'].iloc[i]),
+                    1,
+                    start_day
+                )
+
+                infection_circles.append(infection_circle)
+
         if len(infection_circles) < len(_collectors):
             
             for infection_circle in infection_circles:
@@ -82,11 +109,12 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
         for infection_circle in infection_circles:
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        if day == TEST_PARAMS['number_of_days'] - 1:
-            plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)
-    
+        if TEST_PARAMS['animation']: plots.plotting(_map, _collectors, infection_circles, old_circles, start_day, day)
+
     global true_positive_total_error
 
     true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
+
+    plots.save_fig_on_day(_map, _collectors, infection_circles, old_circles, start_day, TEST_PARAMS['number_of_days'])
 
     return true_positive_total_error, infection_circles
