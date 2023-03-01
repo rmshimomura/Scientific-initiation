@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 
 def read_basic_info():
     # Read map file
-    _map = gpd.read_file('G:/Meu Drive/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
+    _map = gpd.read_file('G:/My Drive/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
     # Read collectors file and sort them based on the date of the first spores
-    _collectors = pd.read_csv('G:/Meu Drive/IC/Codes/Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True)
+    _collectors = pd.read_csv('G:/My Drive/IC/Codes/Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True)
     _collectors = _collectors.sort_values(by=['Data_1o_Esporos'])
             
     _collectors = utils.clean_up(_collectors)
@@ -67,7 +67,14 @@ false_positive_penalty = utils.calculate_false_positives_penalty(_collectors, st
 
 false_negative_penalty = utils.calculate_false_negatives_penalty(_collectors, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
 
-total_error = true_positive_penalty + true_negative_penalty + false_positive_penalty + false_negative_penalty
+PENALTIES = {
+    'true_positive' : true_positive_penalty,
+    'true_negative' : true_negative_penalty,
+    'false_positive' : false_positive_penalty,
+    'false_negative' : false_negative_penalty
+}
+
+utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
 
 print(f"TEST PARAMS: {TEST_PARAMS}")
 print(f"True positive penalty: {true_positive_penalty}")
