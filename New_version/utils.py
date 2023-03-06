@@ -35,14 +35,18 @@ def clean_up(_collectors: pd.DataFrame)-> pd.DataFrame:
     # Reset index
     _collectors.index = range(0, len(_collectors)) 
 
+    _collectors = _collectors.rename(columns={'Longitude Decimal': 'Longitude_Decimal'})
+    _collectors = _collectors.rename(columns={'Latitude Decimal': 'Latitude_Decimal'})
+    _collectors = _collectors.rename(columns={'Primeiro Esporo': 'Primeiro_Esporo'})
+
     # Parse dates
     for i in range(0, len(_collectors)):
-        if not pd.isnull(_collectors["Data_1o_Esporos"].iloc[i]):
-            _collectors.loc[i, 'Data_1o_Esporos'] = _collectors["Data_1o_Esporos"].iloc[i].strftime('%Y-%m-%d')        
+        if not pd.isnull(_collectors["Primeiro_Esporo"].iloc[i]):
+            _collectors.loc[i, 'Primeiro_Esporo'] = _collectors["Primeiro_Esporo"].iloc[i].strftime('%Y-%m-%d')        
 
     # Remove unecessary columns
-    _collectors = _collectors.drop(columns=['Cultivar', 'Estadio'])
-    
+    _collectors = _collectors.drop(columns=['Cultivar', 'Estadio Fenologico'])
+
     _collectors['Detected'] = 0
 
     return _collectors
@@ -51,13 +55,13 @@ def show_detected_collectors_city_names(_collectors: pd.DataFrame, plt: plt)-> N
     for i in range(len(_collectors)):
         # Show only cities with collectors with spores
         if _collectors.loc[i, 'Situacao'] == 'Com esporos': 
-            plt.gca().annotate(_collectors['Municipio'][i], (_collectors['Longitude'][i], _collectors['Latitude'][i]), fontsize=7)
+            plt.gca().annotate(_collectors['Cidade'][i], (_collectors['Longitude_Decimal'][i], _collectors['Latitude_Decimal'][i]), fontsize=7)
 
 def count_valid_collectors(_collectors: pd.DataFrame)-> int:
     number_of_valid_collectors = 0
 
     for i in range(0, len(_collectors)):
-        if pd.notnull(_collectors['Data_1o_Esporos'].iloc[i]):
+        if pd.notnull(_collectors['Primeiro_Esporo'].iloc[i]):
             number_of_valid_collectors += 1
 
     return number_of_valid_collectors
@@ -68,7 +72,7 @@ def calculate_false_positives_penalty(_collectors: pd.DataFrame, final_day: date
     false_positives = 0
 
     for i in range(0, len(_collectors)):
-        if pd.isnull(_collectors['Data_1o_Esporos'].iloc[i]) and _collectors['Detected'].iloc[i] == 1:
+        if pd.isnull(_collectors['Primeiro_Esporo'].iloc[i]) and _collectors['Detected'].iloc[i] == 1:
             penalty += (abs(final_day - _collectors['discovery_day'].iloc[i]).days ** 2)
             false_positives += 1
 
@@ -104,12 +108,12 @@ def find_closest_positive_collector(_collectors: pd.DataFrame, collector: pd.Dat
     collectors_with_spores = _collectors[_collectors['Situacao'] == 'Com esporos']
 
     closest_collector = collectors_with_spores.iloc[0]
-    closest_point = Point(closest_collector['Longitude'], closest_collector['Latitude'])
-    collector_point = Point(collector['Longitude'], collector['Latitude'])
+    closest_point = Point(closest_collector['Longitude_Decimal'], closest_collector['Latitude_Decimal'])
+    collector_point = Point(collector['Longitude_Decimal'], collector['Latitude_Decimal'])
 
     for i in range(0, len(collectors_with_spores)):
 
-        iterator_point = Point(collectors_with_spores.iloc[i]['Longitude'], collectors_with_spores.iloc[i]['Latitude'])
+        iterator_point = Point(collectors_with_spores.iloc[i]['Longitude_Decimal'], collectors_with_spores.iloc[i]['Latitude_Decimal'])
 
         if iterator_point.distance(collector_point) < closest_point.distance(collector_point):
             closest_point = iterator_point

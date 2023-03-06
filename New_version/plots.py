@@ -17,8 +17,8 @@ def plotting(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circle
         _map.plot(color='lightgrey', edgecolor='grey', linewidth=0.5)
         mng = plt.get_current_fig_manager()
         mng.full_screen_toggle()
-        plt.xlabel('Longitude', fontsize=14)
-        plt.ylabel('Latitude', fontsize=14)
+        plt.xlabel('Longitude_Decimal', fontsize=14)
+        plt.ylabel('Latitude_Decimal', fontsize=14)
 
         # utils.show_detected_collectors_city_names(_collectors, plt)
 
@@ -30,7 +30,7 @@ def plotting(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circle
     plot_infection_circles(infection_circles, old_circles)
     
     plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
-    plt.scatter(_collectors['Longitude'], _collectors['Latitude'], color=_collectors['color'], s=100, marker='.')
+    plt.scatter(_collectors['Longitude_Decimal'], _collectors['Latitude_Decimal'], color=_collectors['color'], s=100, marker='.')
     
     # plt.tight_layout()
     # plt.gcf().set_size_inches(40, 30)
@@ -41,8 +41,8 @@ def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection
 
     # if day == 0:
     _map.plot(color='lightgrey', edgecolor='grey', linewidth=0.5)
-    plt.xlabel('Longitude', fontsize=14)
-    plt.ylabel('Latitude', fontsize=14)
+    plt.xlabel('Longitude_Decimal', fontsize=14)
+    plt.ylabel('Latitude_Decimal', fontsize=14)
 
     utils.show_detected_collectors_city_names(_collectors, plt)
 
@@ -54,7 +54,7 @@ def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection
     plot_infection_circles(infection_circles, old_circles)
     
     plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
-    plt.scatter(_collectors['Longitude'], _collectors['Latitude'], color=_collectors['color'], s=100, marker='.')
+    plt.scatter(_collectors['Longitude_Decimal'], _collectors['Latitude_Decimal'], color=_collectors['color'], s=100, marker='.')
     
     plt.tight_layout()
     plt.gcf().set_size_inches(40, 30)

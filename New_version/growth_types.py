@@ -13,7 +13,7 @@ def check_day(_collectors: pd.DataFrame, collector: pd.DataFrame, current_day: i
 
     global true_positive_total_error, difference_values, true_positives
 
-    if pd.isnull(collector.Data_1o_Esporos): # False positive
+    if pd.isnull(collector.Primeiro_Esporo): # False positive
 
         if pd.isnull(collector.discovery_day):
 
@@ -22,7 +22,7 @@ def check_day(_collectors: pd.DataFrame, collector: pd.DataFrame, current_day: i
         return
 
     else: # True positive
-        difference = abs((current_day - collector.Data_1o_Esporos).days)
+        difference = abs((current_day - collector.Primeiro_Esporo).days)
 
         difference_values.append(difference)
 
@@ -35,12 +35,12 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
     infection_circles = []
 
-    start_day = _collectors['Data_1o_Esporos'].iloc[0]
+    start_day = _collectors['Primeiro_Esporo'].iloc[0]
 
     for i in range(len(first_apperances)):
 
         infection_circle = Infection_Circle(
-            Point(first_apperances['Longitude'].iloc[i], first_apperances['Latitude'].iloc[i]),
+            Point(first_apperances['Longitude_Decimal'].iloc[i], first_apperances['Latitude_Decimal'].iloc[i]),
             1,
             start_day
         )
@@ -52,7 +52,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
         # Make the rest of the first apperances, litteraly, appear on the correct day (if they are not already there)
         for i in range(len(first_apperances)):
 
-            if start_day + datetime.timedelta(day) == first_apperances['Data_1o_Esporos'].iloc[i]:
+            if start_day + datetime.timedelta(day) == first_apperances['Primeiro_Esporo'].iloc[i]:
 
                 # --> Colocar um teste que verifique se o coletor já criou um infection circle antes
 
@@ -62,14 +62,14 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
                     centroid = (circle.circle.centroid.x, circle.circle.centroid.y)
 
-                    if centroid == (first_apperances['Longitude'].iloc[i], first_apperances['Latitude'].iloc[i]):
+                    if centroid == (first_apperances['Longitude_Decimal'].iloc[i], first_apperances['Latitude_Decimal'].iloc[i]):
                         check = True
                         break
 
                 if check: continue
 
                 infection_circle = Infection_Circle(
-                    Point(first_apperances['Longitude'].iloc[i], first_apperances['Latitude'].iloc[i]),
+                    Point(first_apperances['Longitude_Decimal'].iloc[i], first_apperances['Latitude_Decimal'].iloc[i]),
                     1,
                     start_day
                 )
@@ -84,7 +84,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
                     if collector.Detected == 0:
 
-                        if infection_circle.circle.contains(Point(collector.Longitude, collector.Latitude)):
+                        if infection_circle.circle.contains(Point(collector.Longitude_Decimal, collector.Latitude_Decimal)):
 
                             _collectors.loc[collector.Index, 'Detected'] = 1
 
@@ -99,7 +99,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
                             check_day(_collectors, collector, start_day + datetime.timedelta(day))
 
                             new_infection_circle = Infection_Circle(
-                                Point(collector.Longitude, collector.Latitude),
+                                Point(collector.Longitude_Decimal, collector.Latitude_Decimal),
                                 1, 
                                 start_day + datetime.timedelta(day)
                             )

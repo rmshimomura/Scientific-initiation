@@ -21,9 +21,9 @@ def read_basic_info():
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
     # Read collectors file and sort them based on the date of the first spores
-    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True)
-    _collectors = _collectors.sort_values(by=['Data_1o_Esporos'])
-            
+    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2021Final.csv', sep=',', decimal='.', parse_dates=['Primeiro Esporo'], infer_datetime_format=True)
+    _collectors = _collectors.sort_values(by=['Primeiro Esporo'])
+
     _collectors = utils.clean_up(_collectors)
 
     _collectors['discovery_day'] = None
@@ -36,12 +36,8 @@ def coloring_collectors(_collectors):
 
     _collectors['color'] = 'white'
 
-    # first_apperances = _collectors[_collectors['Data_1o_Esporos'] == _collectors['Data_1o_Esporos'].min()]
     first_apperances = _collectors[0:2]
     # first_apperances = _collectors[0:6]
-
-
-    print(len(first_apperances))
 
     for apperance in first_apperances.itertuples():
         _collectors.loc[apperance.Index, 'color'] = 'yellow'
@@ -55,15 +51,15 @@ TEST_PARAMS = {
     'number_of_days' : 100,
     'growth_function_distance' : gf.logaritmic_growth_distance,
     'growth_function_days' : gf.logaritmic_growth_days,
-    'base' : 10000,
+    'base' : 1000,
     'animation' : False
 }
 
 _map, _collectors = read_basic_info()
 
-start_day = _collectors['Data_1o_Esporos'].iloc[0]
+
+start_day = _collectors['Primeiro_Esporo'].iloc[0]
 old_circles = []
-number_of_valid_collectors = utils.count_valid_collectors(_collectors)
 
 coloring_collectors(_collectors)
 
