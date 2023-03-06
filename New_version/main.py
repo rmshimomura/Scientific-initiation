@@ -4,13 +4,24 @@ import utils, datetime
 import growth_types as gt
 import growth_functions as gf
 import matplotlib.pyplot as plt
+import os
+
+root_folder = None
+
+if 'Meu Drive' in os.getcwd():
+    root_folder = 'Meu Drive'
+elif 'My Drive' in os.getcwd():
+    root_folder = 'My Drive'
 
 def read_basic_info():
+
+    global root_folder
+
     # Read map file
-    _map = gpd.read_file('G:/My Drive/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
+    _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
     # Read collectors file and sort them based on the date of the first spores
-    _collectors = pd.read_csv('G:/My Drive/IC/Codes/Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True)
+    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2122.csv', sep=';', decimal=',', parse_dates=['Data_1o_Esporos'], infer_datetime_format=True)
     _collectors = _collectors.sort_values(by=['Data_1o_Esporos'])
             
     _collectors = utils.clean_up(_collectors)
@@ -39,8 +50,6 @@ def coloring_collectors(_collectors):
     for i in first_apperances.itertuples():
         _collectors.loc[i.Index, 'color'] = 'yellow'
         _collectors.loc[i.Index, 'Detected'] = 1
-
-    
 
 TEST_PARAMS = {
     'number_of_days' : 100,
