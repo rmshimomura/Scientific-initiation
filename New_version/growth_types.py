@@ -49,13 +49,9 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
     for day in range(TEST_PARAMS['number_of_days']):
 
-        # Make the rest of the first apperances, litteraly, appear on the correct day (if they are not already there)
         for i in range(len(first_apperances)):
 
             if start_day + datetime.timedelta(day) == first_apperances['Primeiro_Esporo'].iloc[i]:
-
-                # --> Colocar um teste que verifique se o coletor já criou um infection circle antes
-
                 check = False
 
                 for circle in infection_circles:

@@ -21,7 +21,7 @@ def read_basic_info():
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
     # Read collectors file and sort them based on the date of the first spores
-    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2021Final.csv', sep=',', decimal='.', parse_dates=['Primeiro Esporo'], infer_datetime_format=True)
+    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2122_transformed.csv', sep=',', decimal='.', parse_dates=['Primeiro Esporo'], infer_datetime_format=True)
     _collectors = _collectors.sort_values(by=['Primeiro Esporo'])
 
     _collectors = utils.clean_up(_collectors)
@@ -47,21 +47,38 @@ def coloring_collectors(_collectors):
         _collectors.loc[i.Index, 'color'] = 'yellow'
         _collectors.loc[i.Index, 'Detected'] = 1
 
+def add_fake_collectors(_collectors):
+
+    min_point = _map.total_bounds[0:2]
+    max_point = _map.total_bounds[2:4]
+
+    total_length = max_point[0] - min_point[0]
+    total_height = max_point[1] - min_point[1]
+
+    for i in range(30):
+        for j in range(15):
+            _collectors.loc[len(_collectors), ['Latitude_Decimal', 'Longitude_Decimal', 'color', 'Detected', 'Fake']] = min_point[1] + total_height * j / 15, min_point[0] + total_length * i / 30, 'black', 0, True
+
 TEST_PARAMS = {
     'number_of_days' : 100,
     'growth_function_distance' : gf.logaritmic_growth_distance,
     'growth_function_days' : gf.logaritmic_growth_days,
     'base' : 1000,
-    'animation' : False
+    'animation' : True
 }
 
 _map, _collectors = read_basic_info()
+coloring_collectors(_collectors)
+add_fake_collectors(_collectors)
 
+
+# _map.plot()
+# plt.scatter(_collectors['Longitude_Decimal'], _collectors['Latitude_Decimal'], color=_collectors['color'])
+# plt.show()
 
 start_day = _collectors['Primeiro_Esporo'].iloc[0]
 old_circles = []
 
-coloring_collectors(_collectors)
 
 true_positive_penalty, infection_circles = \
     gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)

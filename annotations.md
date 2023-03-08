@@ -8,9 +8,9 @@
 - [x] Arrumar erros no RMSE
 - [x] Opção de "animação"
 - [x] Gerar csv com os resultados
-- [ ] Transformar o csv que eu estou usando para o que o Evandro usa
-- 1. Adaptar o programa atual para aceitar o csv 2021Final
-- 2. Rodar com o csv enriquecido com os fakes (ideia do quadriculado) os carrapichos já feitos.
+- [x] Transformar o csv que eu estou usando para o que o Evandro usa
+- 1. Adaptar o programa atual para aceitar o csv 2021Final ok
+- 2. Rodar com o csv enriquecido com os fakes (ideia do quadriculado) os carrapichos já feitos. FAZER!
 
 > Na hora de escolher o tamanho dos quadradinhos, calcular a menor bouding box do Paraná e a partir daí fazer vários testes com tamanhos diferentes (20x20, 20x30, 10x10...)
 
