@@ -21,8 +21,8 @@ def read_basic_info():
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
     # Read collectors file and sort them based on the date of the first spores
-    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2021Final.csv', sep=',', decimal='.', parse_dates=['Primeiro Esporo'], infer_datetime_format=True)
-    _collectors = _collectors.sort_values(by=['Primeiro Esporo'])
+    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2021Final.csv', sep=',', decimal='.', parse_dates=['Primeiro_Esporo'], infer_datetime_format=True)
+    _collectors = _collectors.sort_values(by=['Primeiro_Esporo'])
 
     _collectors = utils.clean_up(_collectors)
 
@@ -56,7 +56,7 @@ def add_fake_collectors(_collectors):
 
     total_length = max_point[0] - min_point[0]
     total_height = max_point[1] - min_point[1]
-    fake_collectors_file.write('Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro Esporo,Estadio Fenologico,Longitude Decimal,Latitude Decimal,Dias_apos_O0,Data\n')
+    fake_collectors_file.write('Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro_Esporo,Estadio Fenologico,Longitude Decimal,Latitude Decimal,Dias_apos_O0,Data\n')
 
     for i in range(30):
         for j in range(15):
@@ -73,21 +73,26 @@ TEST_PARAMS = {
 
 _map, _collectors = read_basic_info()
 coloring_collectors(_collectors)
-add_fake_collectors(_collectors)
 
-teste_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
-# print(teste_buffer)
+print(_collectors.head()['Primeiro_Esporo'])
 
-_map.plot()
+# add_fake_collectors(_collectors)
 
-for i in range(len(teste_buffer)):
-    x, y = teste_buffer[i].exterior.xy
-    plt.plot(x, y, color='red')
+# teste_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
 
-# plt.scatter(teste_buffer.centroid.x, teste_buffer.centroid.y, color='yellow', s=10)
-plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=15)
-plt.show()
+''' -- Debug burr 
 
+# _map.plot()
+
+# for i in range(len(teste_buffer)):
+#     x, y = teste_buffer[i].exterior.xy
+#     plt.plot(x, y, color='red')
+
+# # plt.scatter(teste_buffer.centroid.x, teste_buffer.centroid.y, color='yellow', s=10)
+# plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=15)
+# plt.show()
+
+'''
 
 # start_day = _collectors['Primeiro_Esporo'].iloc[0]
 # old_circles = []

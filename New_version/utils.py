@@ -37,7 +37,7 @@ def clean_up(_collectors: pd.DataFrame)-> pd.DataFrame:
 
     _collectors = _collectors.rename(columns={'Longitude Decimal': 'LongitudeDecimal'})
     _collectors = _collectors.rename(columns={'Latitude Decimal': 'LatitudeDecimal'})
-    _collectors = _collectors.rename(columns={'Primeiro Esporo': 'Primeiro_Esporo'})
+    _collectors = _collectors.rename(columns={'Primeiro_Esporo': 'Primeiro_Esporo'})
 
     # Parse dates
     for i in range(0, len(_collectors)):

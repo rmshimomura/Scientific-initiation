@@ -1,4 +1,4 @@
-Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro Esporo,Estadio Fenologico,LongitudeDecimal,LatitudeDecimal,Dias_apos_O0,Data
+Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro_Esporo,Estadio Fenologico,LongitudeDecimal,LatitudeDecimal,Dias_apos_O0,Data
 Centro Sul,Ponta Grossa,Ponta Grossa,Orcial Ceolin Bortolotto,NA 5909 RG,Com esporos,16/11/2021,Pré-emergência,-50.05539,-25.093497,21,2021-11-16
 Oeste,Toledo,Terra Roxa,Claúdio Dalazem,64i61 Rsf Ipro,Com esporos,14/02/2022,R6,-54.022267,-24.204027,111,2022-02-14
 Norte,Londrina,Bela Vista do Paraíso,Genésio Bachega,CZ26B42 IPRO,Com esporos,18/01/2022,R5.2,-51.218922,-22.976976,84,2022-01-18
