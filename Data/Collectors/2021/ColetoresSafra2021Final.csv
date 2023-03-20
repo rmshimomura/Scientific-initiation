@@ -1,4 +1,4 @@
-Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro Esporo,Estadio Fenologico,Longitude Decimal,Latitude Decimal,Dias_apos_O0,Data
+Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro Esporo,Estadio Fenologico,LongitudeDecimal,LatitudeDecimal,Dias_apos_O0,Data
 Oeste,Cascavel,Cascavel,Dario Cesar Stein,58I60 RSF IPRO,Com esporos,2001/02/21,R5.4,-53.179615910834002,-24.984143220095199,52,2021/02/01
 Sudoeste,Dois Vizinhos,Salto do Lontra,Domingos Verdi,55I57 RSF IPRO,Com esporos,2001/02/21,R5.4,-53.332739243980100,-25.811404277153901,52,2021/02/01
 Norte,Cornelio Procopio,Santo Antonio do Paraiso,Jovair Goncalves Ribeiro,NA 5909 RG,Com esporos,2002/02/21,R5.4,-50.650029074960898,-23.574972507954001,53,2021/02/02

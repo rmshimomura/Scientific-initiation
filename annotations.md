@@ -9,6 +9,8 @@
 - [x] Opção de "animação"
 - [x] Gerar csv com os resultados
 - [x] Transformar o csv que eu estou usando para o que o Evandro usa
+- [] Crescimento dos carrapicho 
+- Pensar no crescimento dinâmico
 - 1. Adaptar o programa atual para aceitar o csv 2021Final ok
 - 2. Rodar com o csv enriquecido com os fakes (ideia do quadriculado) os carrapichos já feitos. FAZER!
 
