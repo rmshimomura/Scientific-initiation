@@ -27,6 +27,7 @@ def read_basic_info():
     _collectors = utils.clean_up(_collectors)
 
     _collectors['discovery_day'] = None
+    _collectors['Fake'] = False
 
     return _map, _collectors
 
@@ -36,7 +37,7 @@ def coloring_collectors(_collectors):
 
     _collectors['color'] = 'white'
 
-    first_apperances = _collectors[0:2]
+    first_apperances = _collectors[0:3]
     # first_apperances = _collectors[0:6]
 
     for apperance in first_apperances.itertuples():
@@ -63,6 +64,12 @@ def add_fake_collectors(_collectors):
             _collectors.loc[len(_collectors), ['LatitudeDecimal', 'LongitudeDecimal', 'color', 'Detected', 'Fake']] = min_point[1] + total_height * j / 15, min_point[0] + total_length * i / 30, 'black', 0, True
             fake_collectors_file.write(f',,,,,,,,{min_point[0] + total_length * i / 30},{min_point[1] + total_height * j / 15},, \n')
 
+def update_with_fake_collectors(_collectors):
+
+    fakes = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/Fake_Collectors.csv', sep=',', decimal='.', parse_dates=['Primeiro_Esporo'], infer_datetime_format=True)
+    fakes['Fake'] = True
+    return pd.concat([_collectors, fakes], ignore_index=True)
+
 TEST_PARAMS = {
     'number_of_days' : 100,
     'growth_function_distance' : gf.logaritmic_growth_distance,
@@ -74,9 +81,9 @@ TEST_PARAMS = {
 _map, _collectors = read_basic_info()
 coloring_collectors(_collectors)
 
-print(_collectors.head()['Primeiro_Esporo'])
+_collectors = update_with_fake_collectors(_collectors)
 
-# add_fake_collectors(_collectors)
+print(_collectors['Fake'])
 
 # teste_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
 
