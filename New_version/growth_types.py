@@ -40,7 +40,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
     for i in range(len(first_apperances)):
 
         infection_circle = Infection_Circle(
-            Point(first_apperances['Longitude_Decimal'].iloc[i], first_apperances['Latitude_Decimal'].iloc[i]),
+            Point(first_apperances['LongitudeDecimal'].iloc[i], first_apperances['LatitudeDecimal'].iloc[i]),
             1,
             start_day
         )
@@ -58,14 +58,14 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
                     centroid = (circle.circle.centroid.x, circle.circle.centroid.y)
 
-                    if centroid == (first_apperances['Longitude_Decimal'].iloc[i], first_apperances['Latitude_Decimal'].iloc[i]):
+                    if centroid == (first_apperances['LongitudeDecimal'].iloc[i], first_apperances['LatitudeDecimal'].iloc[i]):
                         check = True
                         break
 
                 if check: continue
 
                 infection_circle = Infection_Circle(
-                    Point(first_apperances['Longitude_Decimal'].iloc[i], first_apperances['Latitude_Decimal'].iloc[i]),
+                    Point(first_apperances['LongitudeDecimal'].iloc[i], first_apperances['LatitudeDecimal'].iloc[i]),
                     1,
                     start_day
                 )
@@ -80,7 +80,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
                     if collector.Detected == 0:
 
-                        if infection_circle.circle.contains(Point(collector.Longitude_Decimal, collector.Latitude_Decimal)):
+                        if infection_circle.circle.contains(Point(collector.LongitudeDecimal, collector.LatitudeDecimal)):
 
                             _collectors.loc[collector.Index, 'Detected'] = 1
 
@@ -95,7 +95,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
                             check_day(_collectors, collector, start_day + datetime.timedelta(day))
 
                             new_infection_circle = Infection_Circle(
-                                Point(collector.Longitude_Decimal, collector.Latitude_Decimal),
+                                Point(collector.LongitudeDecimal, collector.LatitudeDecimal),
                                 1, 
                                 start_day + datetime.timedelta(day)
                             )

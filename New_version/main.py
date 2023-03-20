@@ -21,7 +21,7 @@ def read_basic_info():
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
     # Read collectors file and sort them based on the date of the first spores
-    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2122_transformed.csv', sep=',', decimal='.', parse_dates=['Primeiro Esporo'], infer_datetime_format=True)
+    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2021Final.csv', sep=',', decimal='.', parse_dates=['Primeiro Esporo'], infer_datetime_format=True)
     _collectors = _collectors.sort_values(by=['Primeiro Esporo'])
 
     _collectors = utils.clean_up(_collectors)
@@ -49,15 +49,19 @@ def coloring_collectors(_collectors):
 
 def add_fake_collectors(_collectors):
 
+    fake_collectors_file = open('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/Fake_Collectors.csv', 'w')
+
     min_point = _map.total_bounds[0:2]
     max_point = _map.total_bounds[2:4]
 
     total_length = max_point[0] - min_point[0]
     total_height = max_point[1] - min_point[1]
+    fake_collectors_file.write('Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro Esporo,Estadio Fenologico,Longitude Decimal,Latitude Decimal,Dias_apos_O0,Data\n')
 
     for i in range(30):
         for j in range(15):
-            _collectors.loc[len(_collectors), ['Latitude_Decimal', 'Longitude_Decimal', 'color', 'Detected', 'Fake']] = min_point[1] + total_height * j / 15, min_point[0] + total_length * i / 30, 'black', 0, True
+            _collectors.loc[len(_collectors), ['LatitudeDecimal', 'LongitudeDecimal', 'color', 'Detected', 'Fake']] = min_point[1] + total_height * j / 15, min_point[0] + total_length * i / 30, 'black', 0, True
+            fake_collectors_file.write(f',,,,,,,,{min_point[0] + total_length * i / 30},{min_point[1] + total_height * j / 15},, \n')
 
 TEST_PARAMS = {
     'number_of_days' : 100,
@@ -71,40 +75,49 @@ _map, _collectors = read_basic_info()
 coloring_collectors(_collectors)
 add_fake_collectors(_collectors)
 
+teste_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
+# print(teste_buffer)
 
-# _map.plot()
-# plt.scatter(_collectors['Longitude_Decimal'], _collectors['Latitude_Decimal'], color=_collectors['color'])
-# plt.show()
+_map.plot()
 
-start_day = _collectors['Primeiro_Esporo'].iloc[0]
-old_circles = []
+for i in range(len(teste_buffer)):
+    x, y = teste_buffer[i].exterior.xy
+    plt.plot(x, y, color='red')
+
+# plt.scatter(teste_buffer.centroid.x, teste_buffer.centroid.y, color='yellow', s=10)
+plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=15)
+plt.show()
 
 
-true_positive_penalty, infection_circles = \
-    gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
+# start_day = _collectors['Primeiro_Esporo'].iloc[0]
+# old_circles = []
 
-true_negative_penalty = 0
 
-false_positive_penalty = utils.calculate_false_positives_penalty(_collectors, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
+# true_positive_penalty, infection_circles = \
+#     gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
 
-false_negative_penalty = utils.calculate_false_negatives_penalty(_collectors, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
+# true_negative_penalty = 0
 
-PENALTIES = {
-    'true_positive' : true_positive_penalty,
-    'true_negative' : true_negative_penalty,
-    'false_positive' : false_positive_penalty,
-    'false_negative' : false_negative_penalty
-}
+# false_positive_penalty = utils.calculate_false_positives_penalty(_collectors, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
 
-utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
+# false_negative_penalty = utils.calculate_false_negatives_penalty(_collectors, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
 
-print(f"TEST PARAMS: {TEST_PARAMS}")
-print(f"True positive penalty: {true_positive_penalty}")
-print(f"True negative penalty: {true_negative_penalty}")
-print(f"False positive penalty: {false_positive_penalty}")
-print(f"False negative penalty: {false_negative_penalty}")
+# PENALTIES = {
+#     'true_positive' : true_positive_penalty,
+#     'true_negative' : true_negative_penalty,
+#     'false_positive' : false_positive_penalty,
+#     'false_negative' : false_negative_penalty
+# }
 
-# for i in range(len(infection_circles)):
-#     print(f"Circle {i} has {infection_circles[i].buffer * 111.045} km of radius and {infection_circles[i].life_span} life span")
+# utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
 
-if TEST_PARAMS['animation']: plt.show()
+# print(f"TEST PARAMS: {TEST_PARAMS}")
+# print(f"True positive penalty: {true_positive_penalty}")
+# print(f"True negative penalty: {true_negative_penalty}")
+# print(f"False positive penalty: {false_positive_penalty}")
+# print(f"False negative penalty: {false_negative_penalty}")
+
+# # for i in range(len(infection_circles)):
+# #     print(f"Circle {i} has {infection_circles[i].buffer * 111.045} km of radius and {infection_circles[i].life_span} life span")
+
+# if TEST_PARAMS['animation']: plt.show()
