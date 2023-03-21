@@ -4,7 +4,7 @@ import datetime
 from shapely.geometry import Point
 import growth_functions as gf
 import math
-import csv
+import geopandas as gpd
 
 def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day)-> None:
 
@@ -120,3 +120,13 @@ def find_closest_positive_collector(_collectors: pd.DataFrame, collector: pd.Dat
             closest_collector = collectors_with_spores.iloc[i]
 
     return closest_point.distance(collector_point)
+
+def debug_burr(_map, burr_buffer, _collectors, plt):
+
+    _map.plot()
+    plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], c=_collectors['color'])
+    for i in range(len(burr_buffer)):
+        x, y = burr_buffer[i].exterior.xy
+        plt.plot(x, y, color='red', alpha=0.7, linewidth=3, solid_capstyle='round', zorder=2)
+        plt.plot(burr_buffer[i].centroid.x, burr_buffer[i].centroid.y, 'o', color='black', markersize=5)
+    plt.show()

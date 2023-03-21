@@ -114,3 +114,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
     plots.save_fig_on_day(_map, _collectors, infection_circles, old_circles, start_day, TEST_PARAMS['number_of_days'])
 
     return true_positive_total_error, infection_circles
+
+def burr_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, old_circles: list, TEST_PARAMS: dict) -> int:
+
+    pass
