@@ -75,38 +75,27 @@ TEST_PARAMS = {
     'growth_function_distance' : gf.logaritmic_growth_distance,
     'growth_function_days' : gf.logaritmic_growth_days,
     'base' : 1000,
-    'animation' : True
+    'animation' : True,
+    'Fake_Collectors' : False,
 }
 
 _map, _collectors = read_basic_info()
 coloring_collectors(_collectors)
+burr_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
+# utils.associate_collectors_to_burr(_collectors, burr_buffer)
+start_day = _collectors['Primeiro_Esporo'].iloc[0]
 
-_collectors = update_with_fake_collectors(_collectors)
+if TEST_PARAMS['Fake_Collectors']:
+    if not os.path.exists('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/Fake_Collectors.csv'):
+        add_fake_collectors(_collectors)
 
-print(_collectors['Fake'])
+    _collectors = update_with_fake_collectors(_collectors)
 
-# teste_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
-
-''' -- Debug burr 
-
-# _map.plot()
-
-# for i in range(len(teste_buffer)):
-#     x, y = teste_buffer[i].exterior.xy
-#     plt.plot(x, y, color='red')
-
-# # plt.scatter(teste_buffer.centroid.x, teste_buffer.centroid.y, color='yellow', s=10)
-# plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=15)
-# plt.show()
-
-'''
-
-# start_day = _collectors['Primeiro_Esporo'].iloc[0]
+''' -- Circular Growth
 # old_circles = []
-
-
 # true_positive_penalty, infection_circles = \
 #     gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
+'''
 
 # true_negative_penalty = 0
 
@@ -128,8 +117,5 @@ print(_collectors['Fake'])
 # print(f"True negative penalty: {true_negative_penalty}")
 # print(f"False positive penalty: {false_positive_penalty}")
 # print(f"False negative penalty: {false_negative_penalty}")
-
-# # for i in range(len(infection_circles)):
-# #     print(f"Circle {i} has {infection_circles[i].buffer * 111.045} km of radius and {infection_circles[i].life_span} life span")
 
 # if TEST_PARAMS['animation']: plt.show()
