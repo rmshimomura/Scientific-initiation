@@ -1,6 +1,6 @@
 import geopandas as gpd
 import pandas as pd
-import utils, datetime
+import utils
 import growth_types as gt
 import growth_functions as gf
 import matplotlib.pyplot as plt
@@ -15,19 +15,19 @@ elif 'My Drive' in os.getcwd():
 
 def read_basic_info():
 
-    global root_folder
+    global root_folder, burr_buffer
 
     # Read map file
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
-
-    # Read collectors file and sort them based on the date of the first spores
     _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2021Final.csv', sep=',', decimal='.', parse_dates=['Primeiro_Esporo'], infer_datetime_format=True)
+    burr_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
     _collectors = _collectors.sort_values(by=['Primeiro_Esporo'])
-
+    _collectors['burr'] = range(0, len(_collectors))
     _collectors = utils.clean_up(_collectors)
 
     _collectors['discovery_day'] = None
     _collectors['Fake'] = False
+
 
     return _map, _collectors
 
@@ -81,8 +81,8 @@ TEST_PARAMS = {
 
 _map, _collectors = read_basic_info()
 coloring_collectors(_collectors)
-burr_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
-# utils.associate_collectors_to_burr(_collectors, burr_buffer)
+utils.debug_burr(_map, burr_buffer, _collectors, plt)
+
 start_day = _collectors['Primeiro_Esporo'].iloc[0]
 
 if TEST_PARAMS['Fake_Collectors']:

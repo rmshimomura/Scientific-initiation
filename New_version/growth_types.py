@@ -115,6 +115,8 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
     return true_positive_total_error, infection_circles
 
-def burr_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, old_circles: list, TEST_PARAMS: dict) -> int:
+# def burr_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, TEST_PARAMS: dict) -> int:
 
-    pass
+#     start_day = _collectors['Primeiro_Esporo'].iloc[0]
+
+#     for i in range(len(first_apperances))
