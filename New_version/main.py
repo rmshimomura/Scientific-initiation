@@ -4,6 +4,7 @@ import utils
 import growth_types as gt
 import growth_functions as gf
 import matplotlib.pyplot as plt
+import datetime
 import os
 
 root_folder = None
@@ -22,6 +23,7 @@ def read_basic_info():
     _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2021Final.csv', sep=',', decimal='.', parse_dates=['Primeiro_Esporo'], infer_datetime_format=True)
     burr_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
     _collectors = _collectors.sort_values(by=['Primeiro_Esporo'])
+
     _collectors['burr'] = range(0, len(_collectors))
     _collectors = utils.clean_up(_collectors)
 
@@ -38,7 +40,6 @@ def coloring_collectors(_collectors):
     _collectors['color'] = 'white'
 
     first_apperances = _collectors[0:3]
-    # first_apperances = _collectors[0:6]
 
     for apperance in first_apperances.itertuples():
         _collectors.loc[apperance.Index, 'color'] = 'yellow'
@@ -74,14 +75,16 @@ TEST_PARAMS = {
     'number_of_days' : 100,
     'growth_function_distance' : gf.logaritmic_growth_distance,
     'growth_function_days' : gf.logaritmic_growth_days,
-    'base' : 1000,
+    'base' : 1000000,
     'animation' : True,
     'Fake_Collectors' : False,
 }
 
 _map, _collectors = read_basic_info()
+old_geometries = []
 coloring_collectors(_collectors)
 utils.debug_burr(_map, burr_buffer, _collectors, plt)
+# utils.check_burr(_map, burr_buffer, _collectors, plt)
 
 start_day = _collectors['Primeiro_Esporo'].iloc[0]
 
@@ -91,11 +94,11 @@ if TEST_PARAMS['Fake_Collectors']:
 
     _collectors = update_with_fake_collectors(_collectors)
 
-''' -- Circular Growth
-# old_circles = []
+# '''
 # true_positive_penalty, infection_circles = \
-#     gt.circular_growth(_map, _collectors, first_apperances, old_circles, TEST_PARAMS)
-'''
+#     gt.circular_growth(_map, _collectors, first_apperances, old_geometries, TEST_PARAMS)
+# '''
+# true_positive_penalty, burrs_list = gt.burr_growth(_map, _collectors, first_apperances, old_geometries, burr_buffer, TEST_PARAMS)
 
 # true_negative_penalty = 0
 
