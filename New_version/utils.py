@@ -121,10 +121,20 @@ def find_closest_positive_collector(_collectors: pd.DataFrame, collector: pd.Dat
 
 def debug_burr(_map, burr_buffer, _collectors, plt):
 
-    _map.plot()
+    _map.plot(color='lightgrey', edgecolor='grey', linewidth=0.5)
     plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], c=_collectors['color'])
     for i in range(len(_collectors)):
         # plt.plot(_collectors['LongitudeDecimal'].iloc[i], _collectors['LatitudeDecimal'].iloc[i], 'o', color='black', markersize=5)
         x, y = burr_buffer[_collectors['burr'].iloc[i]].exterior.xy
         plt.plot(x, y, color='red', alpha=0.7, linewidth=3, solid_capstyle='round')
+    plt.show()
+
+def check_burr(_map, burr_buffer, _collectors, plt):
+
+    _map.plot(color='lightgrey', edgecolor='grey', linewidth=0.5)
+    for i in range(len(burr_buffer)):
+        x, y = burr_buffer[i].exterior.xy
+        plt.plot(x, y, color='red', alpha=0.7, linewidth=3, solid_capstyle='round')
+        plt.plot(_collectors['LongitudeDecimal'].iloc[i], _collectors['LatitudeDecimal'].iloc[i], 'o', color='black', markersize=5)
+        plt.pause(2)
     plt.show()
