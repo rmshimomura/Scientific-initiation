@@ -76,14 +76,13 @@ TEST_PARAMS = {
     'growth_function_distance' : gf.logaritmic_growth_distance,
     'growth_function_days' : gf.logaritmic_growth_days,
     'base' : 1000000,
-    'animation' : True,
+    'animation' : False,
     'Fake_Collectors' : False,
 }
 
 _map, _collectors = read_basic_info()
 old_geometries = []
 coloring_collectors(_collectors)
-utils.debug_burr(_map, burr_buffer, _collectors, plt)
 # utils.check_burr(_map, burr_buffer, _collectors, plt)
 
 start_day = _collectors['Primeiro_Esporo'].iloc[0]
@@ -94,31 +93,30 @@ if TEST_PARAMS['Fake_Collectors']:
 
     _collectors = update_with_fake_collectors(_collectors)
 
-# '''
-# true_positive_penalty, infection_circles = \
-#     gt.circular_growth(_map, _collectors, first_apperances, old_geometries, TEST_PARAMS)
-# '''
+true_positive_penalty, infection_circles = \
+    gt.circular_growth(_map, _collectors, first_apperances, old_geometries, TEST_PARAMS)
+
 # true_positive_penalty, burrs_list = gt.burr_growth(_map, _collectors, first_apperances, old_geometries, burr_buffer, TEST_PARAMS)
 
-# true_negative_penalty = 0
+true_negative_penalty = 0
 
-# false_positive_penalty = utils.calculate_false_positives_penalty(_collectors, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
+false_positive_penalty = utils.calculate_false_positives_penalty(_collectors, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
 
-# false_negative_penalty = utils.calculate_false_negatives_penalty(_collectors, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
+false_negative_penalty = utils.calculate_false_negatives_penalty(_collectors, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
 
-# PENALTIES = {
-#     'true_positive' : true_positive_penalty,
-#     'true_negative' : true_negative_penalty,
-#     'false_positive' : false_positive_penalty,
-#     'false_negative' : false_negative_penalty
-# }
+PENALTIES = {
+    'true_positive' : true_positive_penalty,
+    'true_negative' : true_negative_penalty,
+    'false_positive' : false_positive_penalty,
+    'false_negative' : false_negative_penalty
+}
 
-# utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
+utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
 
-# print(f"TEST PARAMS: {TEST_PARAMS}")
-# print(f"True positive penalty: {true_positive_penalty}")
-# print(f"True negative penalty: {true_negative_penalty}")
-# print(f"False positive penalty: {false_positive_penalty}")
-# print(f"False negative penalty: {false_negative_penalty}")
+print(f"TEST PARAMS: {TEST_PARAMS}")
+print(f"True positive penalty: {true_positive_penalty}")
+print(f"True negative penalty: {true_negative_penalty}")
+print(f"False positive penalty: {false_positive_penalty}")
+print(f"False negative penalty: {false_negative_penalty}")
 
-# if TEST_PARAMS['animation']: plt.show()
+if TEST_PARAMS['animation']: plt.show()

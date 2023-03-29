@@ -1,0 +1,2 @@
+number_of_days,growth_function_distance,growth_function_days,base,animation,Fake_Collectors,Start_day,End_day,Test_time,TPP,TNP,FPP,FNP
+100,<function logaritmic_growth_distance at 0x0000020162850E50>,<function logaritmic_growth_days at 0x0000020162850EE0>,1000000,False,False,2020-11-12 00:00:00,2021-02-19 00:00:00,2023-03-29 11:03:46.908153,159.38071256730387,0,59.75311525442582,3.9701413614408114

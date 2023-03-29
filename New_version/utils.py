@@ -5,27 +5,29 @@ from shapely.geometry import Point
 import growth_functions as gf
 import math
 import geopandas as gpd
+import os
 
 def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day)-> None:
 
-    f = open('data.csv', 'w')
 
-    # For each key in TEST_PARAMS, write to a csv file
-    for key in TEST_PARAMS:
-        if key == 'growth_function_distance':
-            f.write("%s,%s \n" % (key, TEST_PARAMS[key].__name__))
-        elif key == 'growth_function_days':
-            f.write("%s,%s \n" % (key, TEST_PARAMS[key].__name__))
-        else:
-            f.write("%s,%s \n" % (key, TEST_PARAMS[key]))
+    # Retrive the keys from the dictionary
+    keys = TEST_PARAMS.keys()
+    values = TEST_PARAMS.values()
+
+    # Check if the file data.csv exists
+    if not os.path.exists('data.csv'):
+        f = open('data.csv', 'w')
+        f.write(f"{','.join(keys) + ',Start_day,End_day,Test_time,TPP,TNP,FPP,FNP'}\n")
+        f.close()
+    
+    for value in values:
+
+        if 'gt' in str(value) :
+            value = value.__name__
         
-    # For each key in PENALTIES, write to a csv file
-    for key in PENALTIES:
-        f.write("%s,%s \n" % (key, PENALTIES[key]))
+    f = open('data.csv', 'a')
 
-    f.write("Start day,%s \n" % start_day)
-
-    f.write("End day,%s \n" % end_day)
+    f.write(f"{','.join(str(value) for value in values) + f',{start_day},{end_day},{datetime.datetime.now()},' + ','.join(str(value) for value in PENALTIES.values())}\n")
 
     f.close()
 
