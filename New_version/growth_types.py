@@ -118,7 +118,7 @@ def circular_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_app
 
     plots.save_fig_on_day(_map, _collectors, infection_circles, old_geometries, start_day, TEST_PARAMS['number_of_days'], None)
 
-    return true_positive_total_error, infection_circles
+    return true_positive_total_error, infection_circles, 'Circular Growth'
 
 def burr_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperances: pd.DataFrame, old_geometries: list, burrs: gpd.GeoSeries, TEST_PARAMS: dict) -> int:
 
@@ -131,7 +131,7 @@ def burr_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperan
         burrs_list.append(
         Burr(
             burrs[first_apperances['burr'].iloc[i]],
-            0.001,
+            0.0001,
             start_day
         ))
 
@@ -158,7 +158,7 @@ def burr_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperan
                 # Else create a new burr
                 burr = Burr(
                     burrs[first_apperances['burr'].iloc[i]],
-                    1,
+                    0.0001,
                     start_day
                 )
                 
@@ -192,7 +192,7 @@ def burr_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperan
 
                             new_burr = Burr(
                                 burrs[collector.burr],
-                                0.001,
+                                0.0001,
                                 start_day + datetime.timedelta(day)
                             )
 
@@ -209,4 +209,4 @@ def burr_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_apperan
 
     plots.save_fig_on_day(_map, _collectors, None, None, start_day, TEST_PARAMS['number_of_days'], burrs_list)
 
-    return true_positive_total_error, burrs_list
+    return true_positive_total_error, burrs_list, 'Burr Growth'

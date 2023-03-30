@@ -7,7 +7,7 @@ import math
 import geopandas as gpd
 import os
 
-def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day)-> None:
+def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day, method_used)-> None:
 
 
     # Retrive the keys from the dictionary
@@ -17,17 +17,12 @@ def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day)-> None:
     # Check if the file data.csv exists
     if not os.path.exists('data.csv'):
         f = open('data.csv', 'w')
-        f.write(f"{','.join(keys) + ',Start_day,End_day,Test_time,TPP,TNP,FPP,FNP'}\n")
+        f.write(f"{'Method,' + ','.join(keys) + ',Start_day,End_day,Test_time,TPP,TNP,FPP,FNP'}\n")
         f.close()
-    
-    for value in values:
-
-        if 'gt' in str(value) :
-            value = value.__name__
         
     f = open('data.csv', 'a')
 
-    f.write(f"{','.join(str(value) for value in values) + f',{start_day},{end_day},{datetime.datetime.now()},' + ','.join(str(value) for value in PENALTIES.values())}\n")
+    f.write(f"{method_used},{','.join(str(value) for value in values) + f',{start_day},{end_day},{datetime.datetime.now()},' + ','.join(str(value) for value in PENALTIES.values())}\n")
 
     f.close()
 
@@ -42,7 +37,8 @@ def clean_up(_collectors: pd.DataFrame)-> pd.DataFrame:
     # Parse dates
     for i in range(0, len(_collectors)):
         if not pd.isnull(_collectors["Primeiro_Esporo"].iloc[i]):
-            _collectors.loc[i, 'Primeiro_Esporo'] = _collectors["Primeiro_Esporo"].iloc[i].strftime('%Y-%m-%d')        
+            # _collectors.loc[i, 'Primeiro_Esporo'] = _collectors["Primeiro_Esporo"].iloc[i].strftime('%Y/%m/%d')
+            _collectors.loc[i, 'Primeiro_Esporo'] = datetime.datetime.strptime(_collectors["Primeiro_Esporo"].iloc[i], '%d/%m/%y')
 
     # Remove unecessary columns
     _collectors = _collectors.drop(columns=['Cultivar', 'Estadio Fenologico'])
@@ -138,5 +134,5 @@ def check_burr(_map, burr_buffer, _collectors, plt):
         x, y = burr_buffer[i].exterior.xy
         plt.plot(x, y, color='red', alpha=0.7, linewidth=3, solid_capstyle='round')
         plt.plot(_collectors['LongitudeDecimal'].iloc[i], _collectors['LatitudeDecimal'].iloc[i], 'o', color='black', markersize=5)
-        plt.pause(2)
+        plt.pause(0.1)
     plt.show()

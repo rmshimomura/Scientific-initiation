@@ -67,14 +67,17 @@ def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection
         
         old_geometries.clear()
 
-        # plot_infection_circles(infection_circles, old_geometries)
+    if infection_circles is not None:
+        plot_infection_circles(infection_circles, old_geometries)
     
     if burrs is not None:
-        burrs.plot(color='black', linewidth=0.5)
+        for _ in burrs:
+            x, y = _.geometry.exterior.xy
+            plt.plot(x, y, color='black', linewidth=0.5)
 
     # plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
     plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=100, marker='.')
     
     plt.tight_layout()
     # plt.gcf().set_size_inches(40, 30)
-    plt.savefig(f'G:/' + root_folder + f'/IC/Codes/Plots/plot_{day}.svg', bbox_inches='tight')
+    plt.savefig(f'G:/' + root_folder + f"/IC/Codes/Plots/plot_{day}_{'burr' if burrs is not None else 'circles'}.svg", bbox_inches='tight')
