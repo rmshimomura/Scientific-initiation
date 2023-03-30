@@ -6,6 +6,7 @@ import growth_functions as gf
 import matplotlib.pyplot as plt
 import datetime
 import os
+import shapely.geometry as sg
 
 root_folder = None
 
@@ -20,13 +21,22 @@ def read_basic_info():
 
     # Read map file
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
-    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/ColetoresSafra2021Final.csv', sep=',', decimal='.', parse_dates=['Primeiro_Esporo'], infer_datetime_format=True)
-    burr_buffer = gpd.GeoSeries.from_file('G:/' + root_folder + '/IC/Codes/buffers-seminais/15-005-safra2021-buffer-seminais-carrap.shp')
+    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/With_Burrs/coletoressafra2122.csv', sep=',', decimal='.', infer_datetime_format=True)
+    # Make burr_buffer equal to a list of the last column of the _collectors dataframe
     _collectors = _collectors.sort_values(by=['Primeiro_Esporo'])
+    burr_buffer = _collectors['carrap'].tolist()
 
-    _collectors['burr'] = range(0, len(_collectors))
+    for i in range(len(burr_buffer)):
+        clear_string = burr_buffer[i].replace('POLYGON ((', '').replace('))', '').split(', ')
+        for j in range(len(clear_string)):
+            clear_string[j] = clear_string[j].split(' ')
+            clear_string[j] = [float(clear_string[j][0]), float(clear_string[j][1])]
+
+        burr_buffer[i] = sg.Polygon(clear_string)
+
     _collectors = utils.clean_up(_collectors)
 
+    _collectors['burr'] = range(0, len(burr_buffer))
     _collectors['discovery_day'] = None
     _collectors['Fake'] = False
 
@@ -75,8 +85,8 @@ TEST_PARAMS = {
     'number_of_days' : 100,
     'growth_function_distance' : gf.logaritmic_growth_distance,
     'growth_function_days' : gf.logaritmic_growth_days,
-    'base' : 1000000,
-    'animation' : False,
+    'base' : 1000,
+    'animation' : True,
     'Fake_Collectors' : False,
 }
 
@@ -93,10 +103,12 @@ if TEST_PARAMS['Fake_Collectors']:
 
     _collectors = update_with_fake_collectors(_collectors)
 
-true_positive_penalty, infection_circles = \
-    gt.circular_growth(_map, _collectors, first_apperances, old_geometries, TEST_PARAMS)
+method_used = None
 
-# true_positive_penalty, burrs_list = gt.burr_growth(_map, _collectors, first_apperances, old_geometries, burr_buffer, TEST_PARAMS)
+# true_positive_penalty, infection_circles, method_used = \
+#     gt.circular_growth(_map, _collectors, first_apperances, old_geometries, TEST_PARAMS)
+
+true_positive_penalty, burrs_list, method_used = gt.burr_growth(_map, _collectors, first_apperances, old_geometries, burr_buffer, TEST_PARAMS)
 
 true_negative_penalty = 0
 
@@ -111,7 +123,7 @@ PENALTIES = {
     'false_negative' : false_negative_penalty
 }
 
-utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
+utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1), method_used)
 
 print(f"TEST PARAMS: {TEST_PARAMS}")
 print(f"True positive penalty: {true_positive_penalty}")
