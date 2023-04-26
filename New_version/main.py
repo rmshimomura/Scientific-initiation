@@ -21,11 +21,15 @@ def read_basic_info():
 
     # Read map file
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
+
+    # Read collectors file
     _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/With_Burrs/coletoressafra2122.csv', sep=',', decimal='.', infer_datetime_format=True)
+
     # Make burr_buffer equal to a list of the last column of the _collectors dataframe
     _collectors = _collectors.sort_values(by=['Primeiro_Esporo'])
     burr_buffer = _collectors['carrap'].tolist()
 
+    # Create buffers from burrs string
     for i in range(len(burr_buffer)):
         clear_string = burr_buffer[i].replace('POLYGON ((', '').replace('))', '').split(', ')
         for j in range(len(clear_string)):
@@ -68,16 +72,18 @@ def add_fake_collectors(_collectors):
 
     total_length = max_point[0] - min_point[0]
     total_height = max_point[1] - min_point[1]
-    fake_collectors_file.write('Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro_Esporo,Estadio Fenologico,Longitude Decimal,Latitude Decimal,Dias_apos_O0,Data\n')
+    fake_collectors_file.write('Mesorregiao,Regiao,Municipio,Produtor,Situacao,Primeiro_Esporo,LongitudeDecimal,LatitudeDecimal,Dias_apos_O0,Data\n')
 
     for i in range(30):
         for j in range(15):
             _collectors.loc[len(_collectors), ['LatitudeDecimal', 'LongitudeDecimal', 'color', 'Detected', 'Fake']] = min_point[1] + total_height * j / 15, min_point[0] + total_length * i / 30, 'black', 0, True
-            fake_collectors_file.write(f',,,,,,,,{min_point[0] + total_length * i / 30},{min_point[1] + total_height * j / 15},, \n')
+            fake_collectors_file.write(f',,,,,,{min_point[0] + total_length * i / 30},{min_point[1] + total_height * j / 15},, \n')
 
 def update_with_fake_collectors(_collectors):
 
     fakes = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/Fake_Collectors.csv', sep=',', decimal='.', parse_dates=['Primeiro_Esporo'], infer_datetime_format=True)
+    fakes['color'] = 'black'
+    fakes['Detected'] = 0
     fakes['Fake'] = True
     return pd.concat([_collectors, fakes], ignore_index=True)
 
@@ -85,15 +91,14 @@ TEST_PARAMS = {
     'number_of_days' : 100,
     'growth_function_distance' : gf.logaritmic_growth_distance,
     'growth_function_days' : gf.logaritmic_growth_days,
-    'base' : 1000,
+    'base' : 200000,
     'animation' : True,
-    'Fake_Collectors' : False,
+    'Fake_Collectors' : True,
 }
 
 _map, _collectors = read_basic_info()
 old_geometries = []
 coloring_collectors(_collectors)
-# utils.check_burr(_map, burr_buffer, _collectors, plt)
 
 start_day = _collectors['Primeiro_Esporo'].iloc[0]
 
@@ -108,7 +113,8 @@ method_used = None
 # true_positive_penalty, infection_circles, method_used = \
 #     gt.circular_growth(_map, _collectors, first_apperances, old_geometries, TEST_PARAMS)
 
-true_positive_penalty, burrs_list, method_used = gt.burr_growth(_map, _collectors, first_apperances, old_geometries, burr_buffer, TEST_PARAMS)
+true_positive_penalty, burrs_list, method_used, fake_buffers_test = \
+    gt.burr_growth(_map, _collectors, first_apperances, old_geometries, burr_buffer, TEST_PARAMS)
 
 true_negative_penalty = 0
 
@@ -125,7 +131,7 @@ PENALTIES = {
 
 utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1), method_used)
 
-print(f"TEST PARAMS: {TEST_PARAMS}")
+# print(f"TEST PARAMS: {TEST_PARAMS}")
 print(f"True positive penalty: {true_positive_penalty}")
 print(f"True negative penalty: {true_negative_penalty}")
 print(f"False positive penalty: {false_positive_penalty}")

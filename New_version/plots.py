@@ -19,14 +19,14 @@ def plot_burrs(_map: gpd.GeoDataFrame, burrs: gpd.GeoSeries, old_geometries: lis
         x, y = geometry.exterior.xy
         old_geometries.append(plt.plot(x, y, color='black', linewidth=0.5))
 
-def plotting(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circles: list, old_geometries: list, start_day: datetime.date, day: int, burrs: gpd.GeoSeries) -> None:
+def plotting(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circles: list, old_geometries: list, start_day: datetime.date, day: int, burrs: gpd.GeoSeries, fake_collectors_buffers_list: list) -> None:
 
     if day == 0:
         _map.plot(color='lightgrey', edgecolor='grey', linewidth=0.5)
-        # mng = plt.get_current_fig_manager()
-        # # mng.full_screen_toggle()
-        # plt.xlabel('LongitudeDecimal', fontsize=14)
-        # plt.ylabel('LatitudeDecimal', fontsize=14)
+        mng = plt.get_current_fig_manager()
+        # mng.full_screen_toggle()
+        plt.xlabel('Longitude Decimal', fontsize=14)
+        plt.ylabel('Latitude Decimal', fontsize=14)
 
         # utils.show_detected_collectors_city_names(_collectors, plt)
     for geometry in old_geometries:
@@ -42,12 +42,19 @@ def plotting(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circle
         
         plot_burrs(_map, burrs, old_geometries)
     
-    # plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
+    if fake_collectors_buffers_list is not None:
+        for _list in fake_collectors_buffers_list:
+            for _buffer in _list.buffer_list:
+                _buffer = _buffer.line.buffer(_buffer.buffer)
+                x, y = _buffer.exterior.xy
+                plt.plot(x, y, color='blue', linewidth=0.5, linestyle='--')
+
+    plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
     plt.tight_layout()
     plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=100, marker='.')
-    plt.pause(0.1)
+    plt.pause(1)
 
-def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circles: list, old_geometries: list, start_day: datetime.date, day: int, burrs: gpd.GeoSeries) -> None:
+def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circles: list, old_geometries: list, start_day: datetime.date, day: int, burrs: gpd.GeoSeries, fake_collectors_buffers_list):
 
     _map.plot(color='lightgrey', edgecolor='grey', linewidth=1)
 
@@ -75,7 +82,14 @@ def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection
             x, y = _.geometry.exterior.xy
             plt.plot(x, y, color='black', linewidth=0.5)
 
-    # plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
+    if fake_collectors_buffers_list is not None:
+        for _list in fake_collectors_buffers_list:
+            for _buffer in _list.buffer_list:
+                _buffer = _buffer.line.buffer(1)
+                x, y = _buffer.exterior.xy
+                plt.plot(x, y, color='blue', linewidth=0.5, linestyle='--')
+
+    plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
     plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=100, marker='.')
     
     plt.tight_layout()

@@ -41,7 +41,7 @@ def clean_up(_collectors: pd.DataFrame)-> pd.DataFrame:
             _collectors.loc[i, 'Primeiro_Esporo'] = datetime.datetime.strptime(_collectors["Primeiro_Esporo"].iloc[i], '%d/%m/%y')
 
     # Remove unecessary columns
-    _collectors = _collectors.drop(columns=['Cultivar', 'Estadio Fenologico'])
+    _collectors = _collectors.drop(columns=['Cultivar', 'Estadio Fenologico', 'fake'])
 
     _collectors['Detected'] = 0
 
@@ -136,3 +136,31 @@ def check_burr(_map, burr_buffer, _collectors, plt):
         plt.plot(_collectors['LongitudeDecimal'].iloc[i], _collectors['LatitudeDecimal'].iloc[i], 'o', color='black', markersize=5)
         plt.pause(0.1)
     plt.show()
+
+def treat_position(origin, point_found, c_radius):
+    
+    result_point = []
+
+    if point_found.x == origin.x:
+        if point_found.y < origin.y:
+            return Point(point_found.x, point_found.y - c_radius)
+        else:
+            return Point(point_found.x, point_found.y + c_radius)
+    elif point_found.y == origin.y:
+        if point_found.x < origin.x:
+            return Point(point_found.x - c_radius, point_found.y)
+        else:
+            return Point(point_found.x + c_radius, point_found.y)
+
+    slope = (point_found.y - origin.y) / (point_found.x - origin.x)
+
+    if point_found.x < origin.x:
+        result_point.append(point_found.x - abs((math.cos(math.atan(slope)) * c_radius)))
+    else:
+        result_point.append(point_found.x + abs((math.cos(math.atan(slope)) * c_radius)))
+    if point_found.y < origin.y:
+        result_point.append(point_found.y - abs((math.sin(math.atan(slope)) * c_radius)))
+    else:
+        result_point.append(point_found.y + abs((math.sin(math.atan(slope)) * c_radius)))
+    
+    return Point(result_point[0], result_point[1])

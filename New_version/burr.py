@@ -9,5 +9,5 @@ class Burr:
 
         if self.life_span < 105:
             self.life_span += 1
-            self.buffer = growth_function(self.life_span, base)
+            self.buffer = growth_function(self.life_span, base)/20
             self.geometry = self.geometry.buffer(self.buffer)
