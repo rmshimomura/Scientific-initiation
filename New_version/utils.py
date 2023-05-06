@@ -47,6 +47,26 @@ def clean_up(_collectors: pd.DataFrame)-> pd.DataFrame:
 
     return _collectors
 
+def clean_up_2(_collectors: pd.DataFrame)-> pd.DataFrame: 
+    # Reset index
+    _collectors.index = range(0, len(_collectors)) 
+
+    _collectors = _collectors.rename(columns={'Longitude Decimal': 'LongitudeDecimal'})
+    _collectors = _collectors.rename(columns={'Latitude Decimal': 'LatitudeDecimal'})
+    _collectors = _collectors.rename(columns={'Primeiro_Esporo': 'Primeiro_Esporo'})
+
+    # Parse dates
+    for i in range(0, len(_collectors)):
+        if not pd.isnull(_collectors["Primeiro_Esporo"].iloc[i]):
+            _collectors.loc[i, 'Primeiro_Esporo'] = datetime.datetime.strptime(_collectors["Primeiro_Esporo"].iloc[i], '%d/%m/%Y')
+
+    # Remove unecessary columns
+    _collectors = _collectors.drop(columns=['Cultivar', 'Estadio Fenologico'])
+
+    _collectors['Detected'] = 0
+
+    return _collectors
+
 def show_detected_collectors_city_names(_collectors: pd.DataFrame, plt: plt)-> None:
     for i in range(len(_collectors)):
         # Show only cities with collectors with spores
@@ -123,7 +143,7 @@ def debug_burr(_map, burr_buffer, _collectors, plt):
     plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], c=_collectors['color'])
     for i in range(len(_collectors)):
         # plt.plot(_collectors['LongitudeDecimal'].iloc[i], _collectors['LatitudeDecimal'].iloc[i], 'o', color='black', markersize=5)
-        x, y = burr_buffer[_collectors['burr'].iloc[i]].exterior.xy
+        x, y = burr_buffer[int(_collectors['burr'].iloc[i])].exterior.xy
         plt.plot(x, y, color='red', alpha=0.7, linewidth=3, solid_capstyle='round')
     plt.show()
 
