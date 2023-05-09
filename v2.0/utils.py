@@ -41,27 +41,16 @@ def clean_up(_collectors: pd.DataFrame)-> pd.DataFrame:
             _collectors.loc[i, 'Primeiro_Esporo'] = datetime.datetime.strptime(_collectors["Primeiro_Esporo"].iloc[i], '%d/%m/%y')
 
     # Remove unecessary columns
-    _collectors = _collectors.drop(columns=['Cultivar', 'Estadio Fenologico', 'fake'])
 
-    _collectors['Detected'] = 0
+    # Check if the column 'fake' exists
+    if 'fake' in _collectors.columns:
+        _collectors = _collectors.drop(columns=['fake'])
+    
+    if 'Cultivar' in _collectors.columns:
+        _collectors = _collectors.drop(columns=['Cultivar'])
 
-    return _collectors
-
-def clean_up_2(_collectors: pd.DataFrame)-> pd.DataFrame: 
-    # Reset index
-    _collectors.index = range(0, len(_collectors)) 
-
-    _collectors = _collectors.rename(columns={'Longitude Decimal': 'LongitudeDecimal'})
-    _collectors = _collectors.rename(columns={'Latitude Decimal': 'LatitudeDecimal'})
-    _collectors = _collectors.rename(columns={'Primeiro_Esporo': 'Primeiro_Esporo'})
-
-    # Parse dates
-    for i in range(0, len(_collectors)):
-        if not pd.isnull(_collectors["Primeiro_Esporo"].iloc[i]):
-            _collectors.loc[i, 'Primeiro_Esporo'] = datetime.datetime.strptime(_collectors["Primeiro_Esporo"].iloc[i], '%d/%m/%Y')
-
-    # Remove unecessary columns
-    _collectors = _collectors.drop(columns=['Cultivar', 'Estadio Fenologico'])
+    if 'Estadio Fenologico' in _collectors.columns:
+        _collectors = _collectors.drop(columns=['Estadio Fenologico'])
 
     _collectors['Detected'] = 0
 

@@ -111,7 +111,7 @@ if TEST_PARAMS['Fake_Collectors']:
 method_used = None
 
 new_data = pd.read_csv('G:/' + root_folder + '/IC/Codes/NEW_DATA/coletores2223.csv', sep=',', decimal='.', infer_datetime_format=True)
-new_data = utils.clean_up_2(new_data)
+new_data = utils.clean_up(new_data)
 
 # Plot map
 _map.plot(color='white', edgecolor='lightgrey')
