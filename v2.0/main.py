@@ -110,22 +110,7 @@ if TEST_PARAMS['Fake_Collectors']:
 
 method_used = None
 
-new_data = pd.read_csv('G:/' + root_folder + '/IC/Codes/NEW_DATA/coletores2223.csv', sep=',', decimal='.', infer_datetime_format=True)
-new_data = utils.clean_up(new_data)
-
-# Plot map
-_map.plot(color='white', edgecolor='lightgrey')
-# Plot all points of new_data
-for i in new_data.itertuples():
-    plt.plot(i.LongitudeDecimal, i.LatitudeDecimal, '*', color='blue')
-
-# Plot all points of _collectors
-for i in _collectors.itertuples():
-    plt.plot(i.LongitudeDecimal, i.LatitudeDecimal, 'o', color='red')
-
-plt.show()
-
-# utils.debug_burr(_map, burr_buffer, _collectors,plt)
+utils.debug_burr(_map, burr_buffer, _collectors,plt)
 
 # true_positive_penalty, infection_circles, method_used = \
 #     gt.circular_growth(_map, _collectors, first_apperances, old_geometries, TEST_PARAMS)
