@@ -16,7 +16,7 @@ if 'Meu Drive' in os.getcwd():
 elif 'My Drive' in os.getcwd():
     root_folder = 'My Drive'
 
-file_name = 'coletoressafra2021'
+file_name = 'coletoressafra2223'
 
 def read_basic_info():
 
@@ -64,13 +64,16 @@ def coloring_collectors(_collectors):
 
 def grid_region(_map, _collectors, burr_buffer):
 
-    global file_name
+    global file_name, horizontal_len, vertical_len
 
-    # _map.plot(color='white', edgecolor='lightgrey')
+    # horizontal_len = math.ceil(total_length / 0.1)
+    # vertical_len = math.ceil(total_height / 0.1)
+    horizontal_len = 31
+    vertical_len = 23
 
-    new_points_data = open('G:/' + root_folder + '/IC/Codes/v.3.0/new_points/' + file_name + '.csv', 'w')
+    new_points_data = open(f"G:/{root_folder}/IC/Codes/v3.0/new_points/{file_name}_{horizontal_len}_{vertical_len}.csv", 'w')
 
-    new_points_data.write(',Mesorregiao,Regiao,Municipio,Produtor,Cultivar,LatitudeDecimal,LongitudeDecimal,Primeiro_Esporo,Estadio Fenologico,Situacao,Dias_apos_O0,Data,geometry,fake,carrap\n')
+    new_points_data.write('Mesorregiao,Regiao,Municipio,Produtor,Cultivar,LatitudeDecimal,LongitudeDecimal,Primeiro_Esporo,Estadio Fenologico,Situacao,Dias_apos_O0,Data,geometry,fake,carrap\n')
 
     min_point = _map.total_bounds[0:2]
     max_point = _map.total_bounds[2:4]
@@ -81,12 +84,7 @@ def grid_region(_map, _collectors, burr_buffer):
 
     map_exterior_geometry = shapely.ops.unary_union(_map.geometry).buffer(0.2)
 
-    global horizontal_len, vertical_len
-
-    # horizontal_len = math.ceil(total_length / 0.1)
-    # vertical_len = math.ceil(total_height / 0.1)
-    horizontal_len = 31
-    vertical_len = 23
+    
 
     for i in range(horizontal_len):
         for j in range(vertical_len):
@@ -100,6 +98,7 @@ def grid_region(_map, _collectors, burr_buffer):
 
     for box in boxes:
         
+        # Pick all points inside the box
         points_inside_box = []
         for i in _collectors.itertuples():
             collector_point = sg.Point(i.LongitudeDecimal, i.LatitudeDecimal)
@@ -117,56 +116,33 @@ def grid_region(_map, _collectors, burr_buffer):
             'Situacao': 'Encerrado sem esporos'
         }
 
+        # Search for the earliest apperance day
         for point in points_inside_box:
 
             if point.Primeiro_Esporo is not None and not pd.isnull(point.Primeiro_Esporo):
+
                 if first_apperance_day is None:
+
                     first_apperance_day = point.Primeiro_Esporo    
                     center_point['Situacao'] = point.Situacao
+
                 elif first_apperance_day > point.Primeiro_Esporo:
+
                     first_apperance_day = point.Primeiro_Esporo
 
         if first_apperance_day is not None:
 
             center_point['Primeiro_Esporo'] = first_apperance_day
 
+        # If any point detected a spore
         if center_point['Primeiro_Esporo'] is not None:
 
-            new_points_data.write(f",,,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},{center_point['Primeiro_Esporo'].strftime('%y-%m-%d').replace('-', '/')},,{center_point['Situacao']},,,,False,\n")
+            new_points_data.write(f",,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},{center_point['Primeiro_Esporo'].strftime('%d/%m/%y')},,{center_point['Situacao']},,,,False,\n")
         
+        # If no point detected a spore
         else:
             
-            new_points_data.write(f",,,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},,,{center_point['Situacao']},,,,False\n")
-
-        # if len(burrs_inside_box) == 0:
-        #     pass
-        #     # plt.plot(box_centroid.x, box_centroid.y, 'o', color='black', zorder=3, solid_capstyle='round', linewidth=0.2, alpha=0.5, markersize=1)
-
-        # elif len(burrs_inside_box) > 0:
-            
-
-        #     for _ in burrs_inside_box:
-        #         x, y = _.exterior.xy
-        #         plt.plot(x, y, color='black', zorder=3, solid_capstyle='round', linewidth=1, alpha=0.5)
-
-        #     plt.plot(box_centroid.x, box_centroid.y, '*', color='blue', zorder=3, solid_capstyle='round', linewidth=1, alpha=0.5, markersize=10)
-
-        # if contains:
-        #     x, y = box.exterior.xy
-        #     plt.fill(x, y, fc='green', ec='k', alpha=0.15, zorder=1)
-        # else:
-        #     x, y = box.exterior.xy
-        #     plt.fill(x, y, fc='red', ec='k', alpha=0.15, zorder=1)
-
-    # for i in _collectors.itertuples():
-
-    #     if not pd.isna(i.Primeiro_Esporo):
-
-    #         plt.plot(i.LongitudeDecimal, i.LatitudeDecimal, color=i.color, zorder=2, markersize=5, marker='o')
-        
-    #     else:
-
-    #         plt.plot(i.LongitudeDecimal, i.LatitudeDecimal, color='black', zorder=2, markersize=5, marker='^')
+            new_points_data.write(f",,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},,,{center_point['Situacao']},,,,False\n")
     
     
 def add_fake_collectors(_collectors):
