@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 import os
 import shapely.geometry as sg
 import shapely.ops
-import math
-import shapely.affinity as sa
+import datetime
 
 root_folder = None
 
@@ -17,6 +16,7 @@ elif 'My Drive' in os.getcwd():
     root_folder = 'My Drive'
 
 file_name = 'coletoressafra2223'
+year_analyzed = 2022
 
 def read_basic_info():
 
@@ -26,8 +26,7 @@ def read_basic_info():
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
     # Read collectors file
-    # _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/With_Burrs/' + file_name + '.csv', sep=',', decimal='.', infer_datetime_format=True)
-    _collectors = pd.read_csv('G:/My Drive/IC/Codes/NEW_DATA/coletoressafra2223.csv', sep=',', decimal='.', infer_datetime_format=True)
+    _collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Collectors/actual/' + file_name + '.csv', sep=',', decimal='.', infer_datetime_format=True)
 
     # Make burr_buffer equal to a list of the last column of the _collectors dataframe
     _collectors = _collectors.sort_values(by=['Primeiro_Esporo'])
@@ -64,7 +63,7 @@ def coloring_collectors(_collectors):
 
 def grid_region(_map, _collectors, burr_buffer):
 
-    global file_name, horizontal_len, vertical_len
+    global file_name, year_analyzed, horizontal_len, vertical_len
 
     # horizontal_len = math.ceil(total_length / 0.1)
     # vertical_len = math.ceil(total_height / 0.1)
@@ -73,7 +72,7 @@ def grid_region(_map, _collectors, burr_buffer):
 
     new_points_data = open(f"G:/{root_folder}/IC/Codes/v3.0/new_points/{file_name}_{horizontal_len}_{vertical_len}.csv", 'w')
 
-    new_points_data.write('Mesorregiao,Regiao,Municipio,Produtor,Cultivar,LatitudeDecimal,LongitudeDecimal,Primeiro_Esporo,Estadio Fenologico,Situacao,Dias_apos_O0,Data,geometry,fake,carrap\n')
+    new_points_data.write('Mesorregiao,Regiao,Municipio,Produtor,Cultivar,LatitudeDecimal,LongitudeDecimal,Primeiro_Esporo,Estadio Fenologico,Situacao,Dias_apos_O0,InicioCiclo,DiasAposInicioCiclo\n')
 
     min_point = _map.total_bounds[0:2]
     max_point = _map.total_bounds[2:4]
@@ -84,7 +83,8 @@ def grid_region(_map, _collectors, burr_buffer):
 
     map_exterior_geometry = shapely.ops.unary_union(_map.geometry).buffer(0.2)
 
-    
+    ## Create a datetime date for september 10th with year = year_analyzed
+    september_10th = datetime.datetime(year_analyzed, 9, 10)
 
     for i in range(horizontal_len):
         for j in range(vertical_len):
@@ -137,13 +137,14 @@ def grid_region(_map, _collectors, burr_buffer):
         # If any point detected a spore
         if center_point['Primeiro_Esporo'] is not None:
 
-            new_points_data.write(f",,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},{center_point['Primeiro_Esporo'].strftime('%d/%m/%y')},,{center_point['Situacao']},,,,False,\n")
+            days_differ = (center_point['Primeiro_Esporo'] - september_10th).days
+
+            new_points_data.write(f",,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},{center_point['Primeiro_Esporo'].strftime('%d/%m/%y')},,{center_point['Situacao']},,{september_10th.strftime('%d/%m/%y')},{days_differ}\n")
         
         # If no point detected a spore
         else:
             
-            new_points_data.write(f",,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},,,{center_point['Situacao']},,,,False\n")
-    
+            new_points_data.write(f",,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},,,{center_point['Situacao']},,{september_10th.strftime('%d/%m/%y')},\n")
     
 def add_fake_collectors(_collectors):
 
@@ -182,6 +183,41 @@ _map, _collectors = read_basic_info()
 old_geometries = []
 coloring_collectors(_collectors)
 
+if TEST_PARAMS['Fake_Collectors']:
+    if not os.path.exists('G:/' + root_folder + '/IC/Codes/Data/Collectors/2021/Fake_Collectors.csv'):
+        add_fake_collectors(_collectors)
+
+    _collectors = update_with_fake_collectors(_collectors)
+
+method_used = None
+
 grid_region(_map, _collectors, burr_buffer)
 
-plt.show()
+# true_positive_penalty, infection_circles, method_used = \
+#     gt.circular_growth(_map, _collectors, first_apperances, old_geometries, TEST_PARAMS)
+
+# true_positive_penalty, burrs_list, method_used, fake_buffers_test = \
+#     gt.burr_growth(_map, _collectors, first_apperances, old_geometries, burr_buffer, TEST_PARAMS)
+
+# true_negative_penalty = 0
+
+# false_positive_penalty = utils.calculate_false_positives_penalty(_collectors, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
+
+# false_negative_penalty = utils.calculate_false_negatives_penalty(_collectors, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
+
+# PENALTIES = {
+#     'true_positive' : true_positive_penalty,
+#     'true_negative' : true_negative_penalty,
+#     'false_positive' : false_positive_penalty,
+#     'false_negative' : false_negative_penalty
+# }
+
+# utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1), method_used)
+
+# # print(f"TEST PARAMS: {TEST_PARAMS}")
+# print(f"True positive penalty: {true_positive_penalty}")
+# print(f"True negative penalty: {true_negative_penalty}")
+# print(f"False positive penalty: {false_positive_penalty}")
+# print(f"False negative penalty: {false_negative_penalty}")
+
+if TEST_PARAMS['animation']: plt.show()
