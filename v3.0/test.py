@@ -16,7 +16,7 @@ if 'Meu Drive' in os.getcwd():
 elif 'My Drive' in os.getcwd():
     root_folder = 'My Drive'
 
-file_name = 'coletoressafra2122'
+file_name = 'coletoressafra2223_31_23'
 
 def read_basic_info():
 
@@ -31,20 +31,23 @@ def read_basic_info():
     # Make burr_buffer equal to a list of the last column of the _collectors dataframe
     _collectors = _collectors.sort_values(by=['Primeiro_Esporo'])
 
+    burr_buffer = []
+
+    if 'carrap' in _collectors.columns:
     # Check if any of the values in 'carrap' column is not null
-    if not pd.isna(_collectors['carrap']).any():
-        burr_buffer = _collectors['carrap'].tolist()
-    else:
-        burr_buffer = []
+        if not pd.isna(_collectors['carrap']).any():
+            burr_buffer = _collectors['carrap'].tolist()
+        else:
+            burr_buffer = []
 
-    # Create buffers from burrs string
-    for i in range(len(burr_buffer)):
-        clear_string = burr_buffer[i].replace('POLYGON ((', '').replace('))', '').split(', ')
-        for j in range(len(clear_string)):
-            clear_string[j] = clear_string[j].split(' ')
-            clear_string[j] = [float(clear_string[j][0]), float(clear_string[j][1])]
+        # Create buffers from burrs string
+        for i in range(len(burr_buffer)):
+            clear_string = burr_buffer[i].replace('POLYGON ((', '').replace('))', '').split(', ')
+            for j in range(len(clear_string)):
+                clear_string[j] = clear_string[j].split(' ')
+                clear_string[j] = [float(clear_string[j][0]), float(clear_string[j][1])]
 
-        burr_buffer[i] = sg.Polygon(clear_string)
+            burr_buffer[i] = sg.Polygon(clear_string)
 
     _collectors = utils.clean_up(_collectors)
 
@@ -179,5 +182,5 @@ coloring_collectors(_collectors)
 
 grid_region(_map, _collectors, burr_buffer)
 
-# plt.show()
-plt.savefig('G:/' + root_folder + '/IC/Codes/Results/' +  file_name + '.png', dpi=300)
+plt.show()
+# plt.savefig('G:/' + root_folder + '/IC/Codes/Results/' +  file_name + '.png', dpi=300)
