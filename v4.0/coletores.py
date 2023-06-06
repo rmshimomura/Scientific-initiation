@@ -39,9 +39,13 @@ def calcularDistanciaEntreColetores(geo_df):
 
 def deltaTempo(gdf,i,j,tooLarge=1000):
     row_i = gdf.loc[i]
-    dia_i = row_i['Dias_apos_O0'] 
+    dia_i = row_i['DiasAposInicioCiclo'] 
     row_j = gdf.loc[j]
-    dia_j = row_j['Dias_apos_O0']
+    dia_j = row_j['DiasAposInicioCiclo']
+
+    if dia_i == -1 or dia_j == -1:
+        return tooLarge
+
     if dia_i is pd.NaT or dia_j is pd.NaT:
         print("OK: TOO LARGE")
         delta_t = tooLarge
@@ -69,28 +73,9 @@ def constroiMatriz(matrizAdj, k: int, geo_df: GeoDataFrame, distancias,max_delta
             dt = deltaTempo(geo_df,i,j,max_delta_t + 10)
             if (dt <= max_delta_t):
                 veloc = calculaVelocidade(geo_df,i,j,distancias,dt)
+                print(veloc)
                 atualizaVelocidadeMedia(matrizAdj,i,j, k, geo_df.index, veloc)
     return matrizAdj
-    
-def _printMatriz(ma,gdf):
-    nrows = len(gdf.index)
-    
-    print("00\t",end="")
-    for i in range(nrows):
-        if i % 10 == 0:
-            print("|",end="")
-        else:
-            print(".",end="")
-    print("")
-        
-    for i in range(nrows): 
-        print("")
-        print(i,"\t",end="")
-        for j in range(nrows):
-            if ma.at[i,j] > 0:
-                print("X",sep=" ",end="")
-            else:
-                print("-",sep=" ",end="")
             
     
 
@@ -118,7 +103,7 @@ def _printMatriz(ma,gdf):
 #  Pacote para manipulação de grafos: https://networkx.org/
 
 
-def constroiGrafo(matrizAdj, geo_df, distancias, rpc: float):
+def constroiGrafo(matrizAdj, geo_df, distancias, raio_de_possivel_contaminacao: float):
     G = nx.DiGraph()
     
     G.add_nodes_from(matrizAdj.index)
@@ -130,26 +115,9 @@ def constroiGrafo(matrizAdj, geo_df, distancias, rpc: float):
         for j in matrizAdj.index:
             w = matrizAdj.at[i,j]
             distancia = distancias.at[i,j]
-            if (w > 0.0) and (distancia <= rpc):  # "poda" arestas muito longas
+            if (w > 0.0) and (distancia <= raio_de_possivel_contaminacao):  # "poda" arestas muito longas
                 G.add_edge(i,j,weight=w)
     return G
-                
-    
-def printPath(gdf,path):
-    linestring = []
-    for p in path:
-        pto = gdf.loc[p]
-        linestring.append(pto['geometry'])
-    return LineString(linestring)
-
-def coordinatesGeometry(gdf,path):
-    xs= []
-    ys = []
-    for p in path:
-        pto = gdf.loc[p]
-        xs.append(pto['geometry'].x)
-        ys.append(pto['geometry'].y)
-    return (xs,ys)
 
 
 # COLETORES
@@ -167,14 +135,11 @@ class Coletores:
                  nomeCampoDataPrimeiroEsporo: str):
         self.Longitude = nomeCampoLongitude
         self.Latitude = nomeCampoLatitude
-        self.DiasAposO0 = "Dias_apos_O0"
         self.DataPrimeiroEsporo = nomeCampoDataPrimeiroEsporo
         self.InicioCiclo = "InicioCiclo"
         self.DiasAposInicioCiclo = "DiasAposInicioCiclo"
         self.geo_df = None
         self.grafoPropagacao = None
-      #  self.topologiaCrescimento = None
-      #  self.topologiaCrescimentoIdx = None
         self.topologiaCrescimentoDict = dict()
      
     def to_csv(self, coletoresfn):
@@ -183,7 +148,7 @@ class Coletores:
     def to_file(self, coletoresfn):
         self.geo_df.to_file(coletoresfn+".shp")
         
-    def addColetores(self, coletoresfn, rai, rpc, max_delta_t, nomeCampoLongitude: str="" , nomeCampoLatitude: str = "", 
+    def addColetores(self, coletoresfn, raio_de_abrangencia_imediata, raio_de_possivel_contaminacao, max_delta_t, nomeCampoLongitude: str="" , nomeCampoLatitude: str = "", 
                     nomeCampoDataPrimeiroEsporo: str = "",  
                     InicioCiclo: str = "", DiasAposInicioCiclo: str = "",
                     fake = False, safraPrefix = "s", dateFormat="%d/%m/%Y", 
@@ -192,7 +157,7 @@ class Coletores:
                                  nomeCampoDataPrimeiroEsporo, InicioCiclo, DiasAposInicioCiclo, fake,safraPrefix, 
                                  dateFormat,separadorCampo,separadorDecimal)
         print(new_gdf)
-        (g,_) = self.criaGrafo(new_gdf,rpc, max_delta_t,safraPrefix)
+        (g,_) = self.criaGrafo(new_gdf,raio_de_possivel_contaminacao, max_delta_t,safraPrefix)
 
         try:
             if self.geo_df is None:
@@ -263,52 +228,42 @@ class Coletores:
     
     # max_delta_t: um dos criterios de poda. Só acrescenta uma aresta (v,u) se o numero de dias
     # transcorridos entre a primeira deteccao de v e depois de u nao exceder a max_delta_t dias.
-    def criaGrafo(self,new_gdf,rpc, max_delta_t,safraPrefix):
+    def criaGrafo(self,new_gdf,raio_de_possivel_contaminacao, max_delta_t=20):
         matrizAdjacencia = pd.DataFrame(0.0,index=new_gdf.index, columns=new_gdf.index)
         distancias = calcularDistanciaEntreColetores(new_gdf)
         matrizAdjacencia = constroiMatriz(matrizAdjacencia, 1, new_gdf, distancias,max_delta_t)
-        G = constroiGrafo(matrizAdjacencia,new_gdf, distancias, rpc)
-        return (G,distancias)  
+        G = constroiGrafo(matrizAdjacencia,new_gdf, distancias, raio_de_possivel_contaminacao)
+        self.grafoPropagacao = G
    
-    def calculaSegmentoGeometria(self,localColetor: Point, localColetorVizinho: Point, rai: float, rpc: float):
+    def calculaSegmentoGeometria(self,localColetor: Point, localColetorVizinho: Point, raio_de_abrangencia_imediata: float, raio_de_possivel_contaminacao: float):
         arc = LineString([localColetor,localColetorVizinho])
     
         segmentoA = affinity.rotate(arc, 90, origin=localColetor)
         segmentoB = affinity.rotate(arc, -90, origin=localColetor)
-        b1 = segmentoA.interpolate(rai);
-        b2 = segmentoB.interpolate(rai);
+        b1 = segmentoA.interpolate(raio_de_abrangencia_imediata);
+        b2 = segmentoB.interpolate(raio_de_abrangencia_imediata);
     
-        proporcao = arc.length / rpc  # < 1, pois aresta mais extensas que rpc foram "podadas" anteriormente
-        dt = rai + rai * proporcao
+        proporcao = arc.length / raio_de_possivel_contaminacao  # < 1, pois aresta mais extensas que raio_de_possivel_contaminacao foram "podadas" anteriormente
+        dt = raio_de_abrangencia_imediata + raio_de_abrangencia_imediata * proporcao
         p = arc.interpolate(dt)
     
         return (p , localColetorVizinho)
 
-    def geraTopologiasCrescimento(self, rai, rpc,largSeg):
+    def geraTopologiasCrescimento(self, raio_de_abrangencia_imediata, raio_de_possivel_contaminacao,largSeg):
         G = self.grafoPropagacao
-                                                 
-        #idx = [ ]
-        #gts = [ ]
     
         for nodeColetor in G.nodes():
             localColetor = G.nodes[nodeColetor]['local']
             indiceColetor = G.nodes[nodeColetor]['idx']
-            gt = GrowthTopology(localColetor, rai)
+            gt = GrowthTopology(localColetor, raio_de_abrangencia_imediata)
 
             for coletorVizinho in G.neighbors(nodeColetor):
                 localColetorVizinho = G.nodes[coletorVizinho]['local']
-                (p1,p2) = self.calculaSegmentoGeometria(localColetor,localColetorVizinho,rai,rpc)
+                (p1,p2) = self.calculaSegmentoGeometria(localColetor,localColetorVizinho,raio_de_abrangencia_imediata,raio_de_possivel_contaminacao)
                 gt.addSegment(p1,p2,largSeg)
-            #idx.append(indiceColetor)
-            #gts.append(gt)
             self.topologiaCrescimentoDict[indiceColetor] = gt
-        
-        #self.topologiaCrescimento = gts
-        #self.topologiaCrescimentoIdx = idx
        
     def addTopologiaCrescimento(self,gt,indiceColetor):
-        #self.geometriaCrascimento.append(gt)
-        #self.topologiaCrescimentoIdx.append(indiceColetor)
         self.topologiaCrescimentoDict[indiceColetor] = gt
         
     def expand(self, proportion: float,proportionLarg):
@@ -338,16 +293,16 @@ class Coletores:
 # 
 # ## Área de Abrangência Imediata (AI)
 # 
-# É definida por uma circunferência de raio rai, centrada na estação de monitoramento. Esta circunferência será distorcida a fim de gerar o buffer seminal da estação.
+# É definida por uma circunferência de raio raio_de_abrangencia_imediata, centrada na estação de monitoramento. Esta circunferência será distorcida a fim de gerar o buffer seminal da estação.
 # 
 # ## Área de Potencial Contaminação Direta (APC)
 # 
-# É definida por uma circunferência de raio rpc, centrada na estação de monitoramento. 
-# Define um critério de "poda" de arestas do grafo G: arestas de comprimento superior a rpc são desconsideradas.
+# É definida por uma circunferência de raio raio_de_possivel_contaminacao, centrada na estação de monitoramento. 
+# Define um critério de "poda" de arestas do grafo G: arestas de comprimento superior a raio_de_possivel_contaminacao são desconsideradas.
 # 
 # Para cada coletor é criada uma "topologia de crescimento". 
 # Esta topologia é constituída pelas coordenadas do coletor (center), 
-# pelo raio de abrangência imediata (rai) e um conjunto de segmentos. 
+# pelo raio de abrangência imediata (raio_de_abrangencia_imediata) e um conjunto de segmentos. 
 # Cada segmento é delimitado pela coordenada do coletor (início do crescimento) e 
 # pela coordenada do coletor adjacente no grafo de propagacao (crescimento máximo).
 # A este segmento é associado um ponto intermediário que representa o crescimento corrente.
@@ -357,9 +312,9 @@ class Coletores:
 from collections import namedtuple
 Segmento = namedtuple('Segmento','larg , seg')
 class GrowthTopology:
-    def __init__(self, center: Point, rai: float):
+    def __init__(self, center: Point, raio_de_abrangencia_imediata: float):
         self.center = center
-        self.r = rai
+        self.r = raio_de_abrangencia_imediata
         self._segs = []
         
     def addSegment(self, p: Point, pMax: Point,larg: float):

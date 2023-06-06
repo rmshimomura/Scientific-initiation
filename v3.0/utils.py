@@ -256,5 +256,5 @@ def grid_region(_map, _collectors, root_folder, file_name, year_analyzed):
         # If no point detected a spore
         else:
             
-            new_points_data.write(f"{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},,{center_point['Situacao']},{september_10th.strftime('%d/%m/%y')},\n")
+            new_points_data.write(f"{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},,{center_point['Situacao']},{september_10th.strftime('%d/%m/%y')},-1\n")
     
