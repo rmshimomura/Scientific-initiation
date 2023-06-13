@@ -73,7 +73,6 @@ def constroiMatriz(matrizAdj, k: int, geo_df: GeoDataFrame, distancias,max_delta
             dt = deltaTempo(geo_df,i,j,max_delta_t + 10)
             if (dt <= max_delta_t):
                 veloc = calculaVelocidade(geo_df,i,j,distancias,dt)
-                print(veloc)
                 atualizaVelocidadeMedia(matrizAdj,i,j, k, geo_df.index, veloc)
     return matrizAdj
             
