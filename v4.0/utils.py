@@ -92,17 +92,19 @@ def calculate_false_negatives_penalty(_collectors: pd.DataFrame, growth_function
 
     false_negatives = 0
 
-    not_detected_collectors = _collectors[_collectors['Detected'] == 0]
+    not_detected_positive_collectors = _collectors.query('Detected == 0 and Situacao == "Com esporos"')
 
-    for i in range(0, len(not_detected_collectors)):
+    for i in range(0, len(not_detected_positive_collectors)):
 
-        distance_to_reach = find_closest_positive_collector(_collectors, not_detected_collectors.iloc[i])
+        distance_to_reach = find_closest_positive_collector(_collectors, not_detected_positive_collectors.iloc[i])
 
         days_to_reach = growth_function(distance_to_reach, base)
 
         penalty += abs(days_to_reach ** 2)
 
         false_negatives += 1
+
+        print(f"Distance to reach: {distance_to_reach * 111.45}km, days to reach: {days_to_reach}")
 
     if penalty > 0:
         penalty = math.sqrt(penalty/false_negatives)
@@ -113,17 +115,28 @@ def find_closest_positive_collector(_collectors: pd.DataFrame, collector: pd.Dat
 
     collectors_with_spores = _collectors[_collectors['Situacao'] == 'Com esporos']
 
-    closest_collector = collectors_with_spores.iloc[0]
-    closest_point = Point(closest_collector['LongitudeDecimal'], closest_collector['LatitudeDecimal'])
+    # closest_collector = collectors_with_spores.iloc[0]
+    closest_collector = None
+    # closest_point = Point(closest_collector['LongitudeDecimal'], closest_collector['LatitudeDecimal'])
+    closest_point = None
     collector_point = Point(collector['LongitudeDecimal'], collector['LatitudeDecimal'])
 
     for i in range(0, len(collectors_with_spores)):
 
-        iterator_point = Point(collectors_with_spores.iloc[i]['LongitudeDecimal'], collectors_with_spores.iloc[i]['LatitudeDecimal'])
+        if collectors_with_spores.iloc[i].id != collector.id:
 
-        if iterator_point.distance(collector_point) < closest_point.distance(collector_point):
-            closest_point = iterator_point
-            closest_collector = collectors_with_spores.iloc[i]
+            if closest_collector is None:
+
+                closest_collector = collectors_with_spores.iloc[i]
+                closest_point = Point(closest_collector['LongitudeDecimal'], closest_collector['LatitudeDecimal'])
+
+            else: 
+
+                iterator_point = Point(collectors_with_spores.iloc[i]['LongitudeDecimal'], collectors_with_spores.iloc[i]['LatitudeDecimal'])
+
+                if iterator_point.distance(collector_point) < closest_point.distance(collector_point):
+                    closest_point = iterator_point
+                    closest_collector = collectors_with_spores.iloc[i]
 
     return closest_point.distance(collector_point)
 
