@@ -55,11 +55,15 @@ def add_fake_buffer(fake_buffer: fake_buffers.Fake_Buffer, collector_id: int):
 
     fake_collectors_buffers_list.append(new_fake_buffers_list)
 
-def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_appearances: pd.DataFrame, old_geometries: list, TEST_PARAMS: dict) -> int:
+def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries: list, TEST_PARAMS: dict) -> int:
 
     infection_circles = []
 
-    start_day = _collectors['Primeiro_Esporo'].iloc[0]
+    positive_collectors = _collectors.query('DiasAposInicioCiclo != -1')
+
+    first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
+
+    start_day = positive_collectors['Primeiro_Esporo'].iloc[0]
 
     for i in range(len(first_appearances)):
 
@@ -147,7 +151,7 @@ def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, fir
 
     # plots.save_fig_on_day(_map, _collectors, infection_circles, old_geometries, start_day, TEST_PARAMS['number_of_days'], None)
 
-    return true_positive_total_error, infection_circles, 'Circular Growth'
+    return true_positive_total_error, infection_circles, 'Circular Growth touch'
 
 def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries: list, TEST_PARAMS: dict):
 
@@ -235,7 +239,7 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
 
     # plots.save_fig_on_day(_map, _collectors, infection_circles, old_geometries, start_day, TEST_PARAMS['number_of_days'], None)
 
-    return true_positive_total_error, infection_circles, 'Circular Growth'
+    return true_positive_total_error, infection_circles, 'Circular Growth no touch'
 
 def burr_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_appearances: pd.DataFrame, old_geometries: list, burrs: gpd.GeoSeries, TEST_PARAMS: dict) -> int:
 

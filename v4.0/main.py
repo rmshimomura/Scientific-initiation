@@ -10,6 +10,7 @@ import shapely.geometry as sg
 import coletores, cria_buffers
 import time
 import datetime
+import random
 
 root_folder = None
 
@@ -18,8 +19,7 @@ if 'Meu Drive' in os.getcwd():
 elif 'My Drive' in os.getcwd():
     root_folder = 'My Drive'
 
-
-file_name = 'coletoressafra2021_31_23'
+file_name = 'coletoressafra2223_31_23'
 
 def read_basic_info():
 
@@ -46,83 +46,120 @@ def read_basic_info():
 
     return _map, _collectors_geo_df
 
-TEST_PARAMS = {
-    'number_of_days' : 30,
-    'growth_function_distance' : gf.logaritmic_growth_distance,
-    'growth_function_days' : gf.logaritmic_growth_days,
-    'base' : 200000,
-    'animation' : False,
-    'Fake_Collectors' : False,
-    'raio_de_abrangencia_imediata' : 0.05,
-    'raio_de_possivel_contaminacao' : 0.5,
-}
+def main(base):
 
-old_geometries = []
+    print(f"Base: {base}")
 
-_map, _collectors_geo_df = read_basic_info()
+    start_duration = time.time()
 
-# ''' Circular Growth No Touch Test
-start_day = _collectors_geo_df.query('DiasAposInicioCiclo != -1')['Primeiro_Esporo'].iloc[0]
+    TEST_PARAMS = {
+        'number_of_days' : 100,
+        'growth_function_distance' : gf.logaritmic_growth_distance,
+        'growth_function_days' : gf.logaritmic_growth_days,
+        'base' : base,
+        'animation' : False,
+        'Fake_Collectors' : False,
+        'raio_de_abrangencia_imediata' : 0.05,
+        'raio_de_possivel_contaminacao' : 0.5,
+    }
 
-true_positive_penalty, infection_circles, method_used = \
-    gt.circular_growth_no_touch(_map, _collectors_geo_df, old_geometries, TEST_PARAMS)
+    old_geometries = []
 
-true_negative_penalty = 0
+    _map, _collectors_geo_df = read_basic_info()
 
-false_positive_penalty = utils.calculate_false_positives_penalty(_collectors_geo_df, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
+    # ''' Circular Growth No Touch Test
+    start_day = _collectors_geo_df.query('DiasAposInicioCiclo != -1')['Primeiro_Esporo'].iloc[0]
 
-false_negative_penalty = utils.calculate_false_negatives_penalty(_collectors_geo_df, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
+    # true_positive_penalty, infection_circles, method_used = \
+        # gt.circular_growth_no_touch(_map, _collectors_geo_df, old_geometries, TEST_PARAMS)
 
-PENALTIES = {
-    'true_positive' : true_positive_penalty,
-    'true_negative' : true_negative_penalty,
-    'false_positive' : false_positive_penalty,
-    'false_negative' : false_negative_penalty
-}
+    true_positive_penalty, infection_circles, method_used = \
+        gt.circular_growth_touch(_map, _collectors_geo_df, old_geometries, TEST_PARAMS)
 
-print(f"TEST PARAMS: {TEST_PARAMS}")
-print(f"True positive penalty: {true_positive_penalty}")
-print(f"True negative penalty: {true_negative_penalty}")
-print(f"False positive penalty: {false_positive_penalty}")
-print(f"False negative penalty: {false_negative_penalty}")
-# '''
 
-''' Topology Test
-collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
-collectors_instance.geo_df = _collectors_geo_df
-collectors_instance.criaGrafo(_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
-collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
+    true_negative_penalty = 0
 
-# If the parameter is set to true, the buffers are generated in a weird way, that is incorrect
-buffers = cria_buffers.geraBuffersCarrapichos(collectors_instance.topologiaCrescimentoDict.values(), 0.005, True)
-_map.plot()
+    false_positive_penalty = utils.calculate_false_positives_penalty(_collectors_geo_df, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
 
-for key, growth_topology in collectors_instance.topologiaCrescimentoDict.items():
+    false_negative_penalty = utils.calculate_false_negatives_penalty(_collectors_geo_df, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
 
-    for segment in growth_topology.getSegments():
+    PENALTIES = {
+        'true_positive' : true_positive_penalty,
+        'true_negative' : true_negative_penalty,
+        'false_positive' : false_positive_penalty,
+        'false_negative' : false_negative_penalty
+    }
 
-        seg = segment.seg
-        plt.plot(*seg.xy, color='black', linewidth=0.5)
+    # print(f"TEST PARAMS: {TEST_PARAMS}")
+    # print(f"True positive penalty: {true_positive_penalty}")
+    # print(f"True negative penalty: {true_negative_penalty}")
+    # print(f"False positive penalty: {false_positive_penalty}")
+    # print(f"False negative penalty: {false_negative_penalty}")
+    # '''
 
-for _ in range(len(collectors_instance.geo_df)):
+    utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1), method_used, file_name, time.time() - start_duration)
 
-    center_point = collectors_instance.geo_df.iloc[_].geometry
-    plt.scatter(center_point.x, center_point.y, color=collectors_instance.geo_df.iloc[_].color, s=5)
-    plt.annotate(_, (center_point.x, center_point.y), fontsize=5)
+    ''' Topology Test
+    collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
+    collectors_instance.geo_df = _collectors_geo_df
+    collectors_instance.criaGrafo(_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
+    collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
 
-for _ in range(len(buffers)):
-    plt.plot(*buffers[_].exterior.xy, color='yellow', linewidth=0.5)
+    # If the parameter is set to true, the buffers are generated in a weird way, that is incorrect
+    buffers = cria_buffers.geraBuffersCarrapichos(collectors_instance.topologiaCrescimentoDict.values(), 0.005, True)
+    _map.plot()
 
-plt.show()
+    for key, growth_topology in collectors_instance.topologiaCrescimentoDict.items():
 
-first_apperances  = _collectors_geo_df[_collectors_geo_df['DiasAposInicioCiclo'] == _collectors_geo_df['DiasAposInicioCiclo'].min()]
+        for segment in growth_topology.getSegments():
 
-true_positive_penalty, infection_circles, method_used = \
-    gt.circular_growth(_map, _collectors_geo_df, first_apperances, old_geometries, TEST_PARAMS)
+            seg = segment.seg
+            plt.plot(*seg.xy, color='black', linewidth=0.5)
 
-gt.topology_growth(_map, collectors_instance, old_geometries, TEST_PARAMS, plt)
+    for _ in range(len(collectors_instance.geo_df)):
 
-plt.show()
-'''
+        center_point = collectors_instance.geo_df.iloc[_].geometry
+        plt.scatter(center_point.x, center_point.y, color=collectors_instance.geo_df.iloc[_].color, s=5)
+        plt.annotate(_, (center_point.x, center_point.y), fontsize=5)
 
-if TEST_PARAMS['animation']: plt.show()
+    for _ in range(len(buffers)):
+        plt.plot(*buffers[_].exterior.xy, color='yellow', linewidth=0.5)
+
+    plt.show()
+
+    first_apperances  = _collectors_geo_df[_collectors_geo_df['DiasAposInicioCiclo'] == _collectors_geo_df['DiasAposInicioCiclo'].min()]
+
+    true_positive_penalty, infection_circles, method_used = \
+        gt.circular_growth(_map, _collectors_geo_df, first_apperances, old_geometries, TEST_PARAMS)
+
+    gt.topology_growth(_map, collectors_instance, old_geometries, TEST_PARAMS, plt)
+
+    plt.show()
+    '''
+
+    if TEST_PARAMS['animation']: plt.show()
+
+if __name__ == "__main__":
+
+    # Give me 50 random numbers between 1 and 100 that are not repeated
+    numbers = []
+    while len(numbers) < 50:
+        number = random.randint(1, 10000)
+        if number not in numbers:
+            numbers.append(number)
+
+    # CGWT
+    for i in range(50):
+
+        main(numbers[i])
+
+    # CGNT
+    # for i in range(10):
+
+    #     random_base = random.randint(1, 100)
+
+    #     main(random_base)
+    #     main(random_base*10)
+    #     main(random_base*100)
+    #     main(random_base*1000)
+    #     main(random_base*10000)
