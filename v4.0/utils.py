@@ -9,22 +9,21 @@ import shapely
 import shapely.geometry as sg
 import geopandas as gpd
 
-def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day, method_used)-> None:
-
+def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day, method_used, file_name, test_duration)-> None:
 
     # Retrive the keys from the dictionary
     keys = TEST_PARAMS.keys()
     values = TEST_PARAMS.values()
 
     # Check if the file data.csv exists
-    if not os.path.exists('data.csv'):
-        f = open('data.csv', 'w')
-        f.write(f"{'Method,' + ','.join(keys) + ',Start_day,End_day,Test_time,TPP,TNP,FPP,FNP'}\n")
+    if not os.path.exists(f'results_{method_used.replace(" ", "_")}.csv'):
+        f = open(f'results_{method_used.replace(" ", "_")}.csv', 'w')
+        f.write(f"{'Method,Number of Days,Distance function,Days function,Base,RAI,RPC,Start day,End day,Test time,Test duration,File used,TPP,TNP,FPP,FNP'}\n")
         f.close()
         
-    f = open('data.csv', 'a')
+    f = open(f'results_{method_used.replace(" ", "_")}.csv', 'a')
 
-    f.write(f"{method_used},{','.join(str(value) for value in values) + f',{start_day},{end_day},{datetime.datetime.now()},' + ','.join(str(value) for value in PENALTIES.values())}\n")
+    f.write(f"{method_used},{TEST_PARAMS['number_of_days']},{TEST_PARAMS['growth_function_distance'].__name__},{TEST_PARAMS['growth_function_days'].__name__},{TEST_PARAMS['base']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_abrangencia_imediata']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_possivel_contaminacao']},{start_day},{end_day},{datetime.datetime.now()},{test_duration},{file_name},{','.join(str(value) for value in PENALTIES.values())}\n")
 
     f.close()
 
@@ -104,8 +103,6 @@ def calculate_false_negatives_penalty(_collectors: pd.DataFrame, growth_function
 
         false_negatives += 1
 
-        print(f"Distance to reach: {distance_to_reach * 111.45}km, days to reach: {days_to_reach}")
-
     if penalty > 0:
         penalty = math.sqrt(penalty/false_negatives)
 
@@ -115,9 +112,7 @@ def find_closest_positive_collector(_collectors: pd.DataFrame, collector: pd.Dat
 
     collectors_with_spores = _collectors[_collectors['Situacao'] == 'Com esporos']
 
-    # closest_collector = collectors_with_spores.iloc[0]
     closest_collector = None
-    # closest_point = Point(closest_collector['LongitudeDecimal'], closest_collector['LatitudeDecimal'])
     closest_point = None
     collector_point = Point(collector['LongitudeDecimal'], collector['LatitudeDecimal'])
 
