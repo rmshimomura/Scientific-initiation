@@ -19,11 +19,9 @@ if 'Meu Drive' in os.getcwd():
 elif 'My Drive' in os.getcwd():
     root_folder = 'My Drive'
 
-file_name = 'coletoressafra2223_31_23'
+def read_basic_info(file_name):
 
-def read_basic_info():
-
-    global root_folder, burr_buffer, file_name
+    global root_folder, burr_buffer
 
     # Read map file
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
@@ -46,14 +44,14 @@ def read_basic_info():
 
     return _map, _collectors_geo_df
 
-def main(base):
+def main(base, number_of_days, file_name):
 
     print(f"Base: {base}")
 
     start_duration = time.time()
 
     TEST_PARAMS = {
-        'number_of_days' : 100,
+        'number_of_days' : number_of_days,
         'growth_function_distance' : gf.logaritmic_growth_distance,
         'growth_function_days' : gf.logaritmic_growth_days,
         'base' : base,
@@ -65,16 +63,16 @@ def main(base):
 
     old_geometries = []
 
-    _map, _collectors_geo_df = read_basic_info()
+    _map, _collectors_geo_df = read_basic_info(file_name)
 
     # ''' Circular Growth No Touch Test
     start_day = _collectors_geo_df.query('DiasAposInicioCiclo != -1')['Primeiro_Esporo'].iloc[0]
 
-    # true_positive_penalty, infection_circles, method_used = \
-        # gt.circular_growth_no_touch(_map, _collectors_geo_df, old_geometries, TEST_PARAMS)
-
     true_positive_penalty, infection_circles, method_used = \
-        gt.circular_growth_touch(_map, _collectors_geo_df, old_geometries, TEST_PARAMS)
+        gt.circular_growth_no_touch(_map, _collectors_geo_df, old_geometries, TEST_PARAMS)
+
+    # true_positive_penalty, infection_circles, method_used = \
+    #     gt.circular_growth_touch(_map, _collectors_geo_df, old_geometries, TEST_PARAMS)
 
 
     true_negative_penalty = 0
@@ -141,25 +139,34 @@ def main(base):
 
 if __name__ == "__main__":
 
-    # Give me 50 random numbers between 1 and 100 that are not repeated
-    numbers = []
-    while len(numbers) < 50:
-        number = random.randint(1, 10000)
-        if number not in numbers:
-            numbers.append(number)
+    file_names = ['coletoressafra2021_31_23', 'coletoressafra2122_31_23', 'coletoressafra2223_31_23']
 
-    # CGWT
-    for i in range(50):
+    number_of_days = 137
 
-        main(numbers[i])
+    # numbers = []
+    # while len(numbers) < 50:
+    #     number = random.randint(1, 10000)
+    #     if number not in numbers:
+    #         numbers.append(number)
+
+    # # CGWT
+    # for i in range(50):
+
+    #     main(numbers[i])
 
     # CGNT
-    # for i in range(10):
+    for i in range(50):
 
-    #     random_base = random.randint(1, 100)
+        random_base = random.randint(1, 100)
 
-    #     main(random_base)
-    #     main(random_base*10)
-    #     main(random_base*100)
-    #     main(random_base*1000)
-    #     main(random_base*10000)
+        if len(str(random_base)) == 1:
+            random_base = random_base*10000
+        elif len(str(random_base)) == 2:
+            random_base = random_base*1000
+        elif len(str(random_base)) == 3:
+            random_base = random_base*100
+
+        for _ in file_names:
+
+            main(random_base, number_of_days, _)
+            main(random_base*10, number_of_days, _)

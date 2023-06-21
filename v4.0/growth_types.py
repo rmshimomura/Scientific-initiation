@@ -195,6 +195,8 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
                         start_day + datetime.timedelta(day)
                     )
 
+                    _collectors.loc[_collectors.index[current_collector_index], 'Detected'] = 1
+
                     infection_circles.append(infection_circle)
 
                     current_collector_index += 1
