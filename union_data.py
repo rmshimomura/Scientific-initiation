@@ -1,58 +1,52 @@
 import pandas as pd
-from datetime import datetime
+import itertools
+
+def generate_pairs(file_names):
+    pairs = []
+    combinations = itertools.combinations(file_names, 2)
+    for combination in combinations:
+        pairs.append(combination)
+    return pairs
 
 horizontal_len = 31
 vertical_len = 23
 
-c2021 = pd.read_csv(f"./v3.0/new_points/coletoressafra2021_{horizontal_len}_{vertical_len}.csv", sep=',', decimal='.', infer_datetime_format=True)
-c2122 = pd.read_csv(f"./v3.0/new_points/coletoressafra2122_{horizontal_len}_{vertical_len}.csv", sep=',', decimal='.', infer_datetime_format=True)
-c2223 = pd.read_csv(f"./v3.0/new_points/coletoressafra2223_{horizontal_len}_{vertical_len}.csv", sep=',', decimal='.', infer_datetime_format=True)
+names = ['2021', '2122', '2223']
 
-rows_size = len(c2021)
+pairs = generate_pairs(names)
 
-first = '2122'
-second = '2223'
+for pair in pairs:
 
-result_file = open(f"./UNION_DATA/{first}_{second}_{horizontal_len}_{vertical_len}.csv", "w")
+    first_file = pd.read_csv(f"./v4.0/processed_data/coletoressafra{pair[0]}_{horizontal_len}_{vertical_len}.csv", sep=',', decimal='.', infer_datetime_format=True)
+    second_file = pd.read_csv(f"./v4.0/processed_data/coletoressafra{pair[1]}_{horizontal_len}_{vertical_len}.csv", sep=',', decimal='.', infer_datetime_format=True)
 
-result_file.write('Mesorregiao,Regiao,Municipio,Produtor,Cultivar,LatitudeDecimal,LongitudeDecimal,Primeiro_Esporo,Estadio Fenologico,Situacao,Dias_apos_O0,Data,geometry,fake,carrap\n')
+    file_test = open(f'./{pair[0]}-{pair[1]}.csv', 'w')
+    file_test.write('LatitudeDecimal,LongitudeDecimal,Situacao,MediaDiasAposInicioCiclo,QuantidadeDeAnosUsados,QuantidadeDeAnosPositivos\n')
 
-for i in range(rows_size):
+    for i in range(len(first_file)):
 
-    collector_1 = c2122.iloc[i]
-    collector_2 = c2223.iloc[i]
+        _1_info = first_file.iloc[i]
+        _2_info = second_file.iloc[i]
 
-    if collector_1['Situacao'] == 'Com esporos' or collector_2['Situacao'] == 'Com esporos':
-        situation = 'Com esporos'
-    else:
-        situation = 'Encerrado sem esporos'
+        _1_days = _1_info['DiasAposInicioCiclo']
+        _2_days = _2_info['DiasAposInicioCiclo']
 
-    dates = [collector_1['Primeiro_Esporo'], collector_2['Primeiro_Esporo']]
+        if _1_days == -1:
+        
+            if _2_days == -1:
 
-    if type(dates[0]) == str and type(dates[1]) == str:
+                file_test.write(f'{_1_info["LatitudeDecimal"]},{_1_info["LongitudeDecimal"]},{_1_info["Situacao"]},-1,2,0\n')
 
-        # Extract day and month components from dates
-        date_parts = [datetime.strptime(date, '%d/%m/%y').date().replace(year=1900) for date in dates]
+            elif _2_days != -1:
 
-        # Calculate the average day and month
-        avg_day = sum(date.day for date in date_parts) // len(date_parts)
-        avg_month = sum(date.month for date in date_parts) // len(date_parts)
+                file_test.write(f'{_1_info["LatitudeDecimal"]},{_1_info["LongitudeDecimal"]},{_2_info["Situacao"]},{_2_days},2,1\n')
 
-        # Create the average date object with a placeholder year
-        average_date = datetime(year=1900, month=avg_month, day=avg_day).date()
+        elif _1_days != -1:
 
-        # Convert the average date to the desired format
-        average_date_formatted = average_date.strftime('%d/%m/%y')
+            if _2_days == -1:
 
-    elif type(dates[0]) == str and type(dates[1]) != str:
+                file_test.write(f'{_1_info["LatitudeDecimal"]},{_1_info["LongitudeDecimal"]},{_1_info["Situacao"]},{_1_days},2,1\n')
 
-        average_date_formatted = dates[0].date().replace(year=1900)
+            elif _2_days != -1:
 
-    elif type(dates[0]) != str and type(dates[1]) == str:
-
-        average_date_formatted = dates[1].date().replace(year=1900)
-
-    else:
-        average_date_formatted = ''
-
-    result_file.write(f",,,,,{collector_1['LatitudeDecimal']},{collector_1['LongitudeDecimal']},{average_date_formatted},{situation},,,,False,\n")
+                file_test.write(f'{_1_info["LatitudeDecimal"]},{_1_info["LongitudeDecimal"]},{_1_info["Situacao"]},{(_1_days + _2_days)/2},2,2\n')
