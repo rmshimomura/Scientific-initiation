@@ -155,6 +155,12 @@ def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old
 
 def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries: list, TEST_PARAMS: dict):
 
+    global true_positive_total_error, true_positives
+
+    true_positive_total_error = 0
+
+    true_positives = 0
+
     positive_collectors = _collectors.query('DiasAposInicioCiclo != -1')
 
     first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
@@ -234,8 +240,6 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
         if TEST_PARAMS['animation']: plots.plotting(_map, _collectors, infection_circles, old_geometries, start_day, day, None, None)
-
-    global true_positive_total_error
 
     true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
 

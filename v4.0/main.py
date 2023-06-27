@@ -46,7 +46,7 @@ def read_basic_info(file_name):
 
 def main(base, number_of_days, file_name):
 
-    print(f"Base: {base}")
+    print(f"Base: {base}, Number of days: {number_of_days}, File name: {file_name}")
 
     start_duration = time.time()
 
@@ -155,9 +155,19 @@ if __name__ == "__main__":
     #     main(numbers[i])
 
     # CGNT
-    for i in range(50):
 
-        random_base = random.randint(1, 100)
+    bases = []
+
+    while len (bases) < 20:
+
+        base = random.randint(1, 100)
+
+        if base not in bases:
+            bases.append(base)
+
+    for i in range(20):
+
+        random_base = bases[i]
 
         if len(str(random_base)) == 1:
             random_base = random_base*10000
