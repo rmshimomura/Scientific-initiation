@@ -54,7 +54,7 @@ def plotting(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circle
     plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=100, marker='.')
     plt.pause(1)
 
-def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circles: list, old_geometries: list, start_day: datetime.date, day: int, burrs: gpd.GeoSeries, fake_collectors_buffers_list):
+def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection_circles: list, old_geometries: list, start_day: datetime.date, day: int, burrs: gpd.GeoSeries, fake_collectors_buffers_list, TEST_PARAMS: dict) -> None:
 
     _map.plot(color='lightgrey', edgecolor='grey', linewidth=1)
 
@@ -89,9 +89,10 @@ def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection
                 x, y = _buffer.exterior.xy
                 plt.plot(x, y, color='blue', linewidth=0.5, linestyle='--')
 
-    plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + datetime.timedelta(day)).strftime('%Y-%m-%d')} ({day})", fontsize=20)
+    plt.title(f"Ferrugem asiática no Paraná - dia {(start_day + day)}, \nusando {TEST_PARAMS['train_file']} como arquivo de treinamento e \n{TEST_PARAMS['test_file']} como arquivo de teste", fontsize=20)
+
     plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], color=_collectors['color'], s=100, marker='.')
     
     plt.tight_layout()
     # plt.gcf().set_size_inches(40, 30)
-    plt.savefig(f'G:/' + root_folder + f"/IC/Codes/Plots/plot_{day}_{'burr' if burrs is not None else 'circles'}.svg", bbox_inches='tight')
+    plt.savefig(f'G:/' + root_folder + f"/IC/Codes/Plots/plot_{day}_{TEST_PARAMS['base']}_{TEST_PARAMS['train_file']}_{TEST_PARAMS['test_file']}{'burr' if burrs is not None else 'circles'}.svg", bbox_inches='tight')

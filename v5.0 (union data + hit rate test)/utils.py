@@ -17,8 +17,8 @@ def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day, method_use
 
     # Check if the file data.csv exists
     if not os.path.exists(f'results_{method_used.replace(" ", "_")}.csv'):
-        f = open(f'results_{method_used.replace(" ", "_")}.csv', 'w')
-        f.write(f"{'Method,Number of Days,Distance function,Days function,Base,RAI,RPC,Start day,End day,Test time,Test duration,File used,TPP,TNP,FPP,FNP'}\n")
+        f = open(f'hit_results_{method_used.replace(" ", "_")}.csv', 'w')
+        f.write(f"{'Method,Number of Days,Distance function,Days function,Base,RAI,RPC,Minimun Day,Days Passed,Test time,Test duration,File used,TPP,TNP,FPP,FNP'}\n")
         f.close()
         
     f = open(f'results_{method_used.replace(" ", "_")}.csv', 'a')
@@ -34,11 +34,6 @@ def clean_up(collectors_geo_data_frame: gpd.GeoDataFrame)-> gpd.GeoDataFrame:
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Longitude Decimal': 'LongitudeDecimal'})
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Latitude Decimal': 'LatitudeDecimal'})
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Primeiro_Esporo': 'Primeiro_Esporo'})
-
-    # Parse dates
-    for i in range(0, len(collectors_geo_data_frame)):
-        if not pd.isnull(collectors_geo_data_frame["Primeiro_Esporo"].iloc[i]):
-            collectors_geo_data_frame.loc[i, 'Primeiro_Esporo'] = datetime.datetime.strptime(collectors_geo_data_frame["Primeiro_Esporo"].iloc[i], '%d/%m/%y')
 
     # Remove unecessary columns
 

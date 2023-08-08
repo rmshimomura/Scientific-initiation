@@ -1,59 +1,31 @@
 import pandas as pd
 import geopandas as gpd
 import datetime, plots, math 
-from shapely.geometry import Point, LineString
+from shapely.geometry import Point
 from infection_circle import Infection_Circle
-from burr import Burr
-import fake_buffers
-import utils
 import coletores, cria_buffers
 
-difference_values = []
 true_positive_total_error = 0
 true_positives = 0
-fake_collectors_buffers_list = []
-RAI = 0.08
 
 def check_day(_collectors: pd.DataFrame, collector: pd.DataFrame, current_day: int) -> None:
 
-    global true_positive_total_error, difference_values, true_positives
+    global true_positive_total_error, true_positives
 
     if pd.isnull(collector.discovery_day):
 
         _collectors.loc[collector.Index, 'discovery_day'] = current_day
 
-    if pd.isnull(collector.Primeiro_Esporo): # False positive
+    if collector.Situacao == "Com esporos": # False positive
         
         return
 
     else: # True positive
-        difference = abs((current_day - collector.Primeiro_Esporo).days)
-
-        difference_values.append(difference)
+        difference = abs(current_day - collector.MediaDiasAposInicioCiclo)
 
         true_positive_total_error += difference**2
 
         true_positives += 1
-
-def add_fake_buffer(fake_buffer: fake_buffers.Fake_Buffer, collector_id: int):
-
-    global fake_collectors_buffers_list
-
-    if len(fake_collectors_buffers_list) > 0:
-
-        for fake_buffers_list in fake_collectors_buffers_list:
-
-            if fake_buffers_list.collector_id == collector_id:
-
-                fake_buffers_list.buffer_list.append(fake_buffer)
-
-                return
-
-    new_fake_buffers_list = fake_buffers.Fake_Buffer_List(collector_id)
-
-    new_fake_buffers_list.buffer_list.append(fake_buffer)
-
-    fake_collectors_buffers_list.append(new_fake_buffers_list)
 
 def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries: list, TEST_PARAMS: dict) -> int:
 
@@ -161,13 +133,13 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
 
     true_positives = 0
 
-    positive_collectors = _collectors.query('DiasAposInicioCiclo != -1')
+    positive_collectors = _collectors.query('MediaDiasAposInicioCiclo != -1')
 
-    first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
+    first_appearances = positive_collectors[positive_collectors['MediaDiasAposInicioCiclo'] == positive_collectors['MediaDiasAposInicioCiclo'].min()]
 
     infection_circles = []
 
-    start_day = positive_collectors['Primeiro_Esporo'].iloc[0]
+    start_day = positive_collectors['MediaDiasAposInicioCiclo'].iloc[0]
 
     for i in range(len(first_appearances)):
 
@@ -193,12 +165,12 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
             
             if current_collector_index < len(_collectors):
 
-                if start_day + datetime.timedelta(day) == _collectors['Primeiro_Esporo'].iloc[current_collector_index]:
+                if start_day + day >= _collectors['MediaDiasAposInicioCiclo'].iloc[current_collector_index]:
 
                     infection_circle = Infection_Circle(
                         Point(_collectors['LongitudeDecimal'].iloc[current_collector_index], _collectors['LatitudeDecimal'].iloc[current_collector_index]),
                         1,
-                        start_day + datetime.timedelta(day)
+                        start_day + day
                     )
 
                     _collectors.loc[_collectors.index[current_collector_index], 'Detected'] = 1
@@ -206,6 +178,7 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
                     infection_circles.append(infection_circle)
 
                     current_collector_index += 1
+
                     if len(infection_circles) == len(_collectors):
                         break
                     if current_collector_index == len(_collectors):
@@ -233,7 +206,7 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
 
                             _collectors.loc[collector.Index, 'color'] = 'red'
 
-                        check_day(_collectors, collector, start_day + datetime.timedelta(day))
+                        check_day(_collectors, collector, start_day + day)
         
         for infection_circle in infection_circles:
 
@@ -247,139 +220,194 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
 
     return true_positive_total_error, infection_circles, 'Circular Growth no touch'
 
-def burr_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, first_appearances: pd.DataFrame, old_geometries: list, burrs: gpd.GeoSeries, TEST_PARAMS: dict) -> int:
+def test_CGNT(_map, trained_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict):
 
-    global fake_collectors_buffers_list
+    global true_positive_total_error, true_positives
 
-    start_day = _collectors['Primeiro_Esporo'].iloc[0]
+    true_positive_total_error = 0
 
-    burrs_list = []
+    true_positives = 0
 
-    # Start first burrs
-    for i in range(len(first_appearances)):
+    positive_collectors = trained_collectors.query('MediaDiasAposInicioCiclo != -1')
 
-        burrs_list.append(
-        Burr(
-            burrs[first_appearances['burr'].iloc[i]],
-            0.0001,
+    first_appearances = positive_collectors[positive_collectors['MediaDiasAposInicioCiclo'] == positive_collectors['MediaDiasAposInicioCiclo'].min()]
+
+    infection_circles = []
+
+    start_day = positive_collectors['MediaDiasAposInicioCiclo'].iloc[0]
+
+    # North, East, South, West
+    regions_days_error = [[],[],[],[]]
+
+    true_positive = 0
+
+    false_positive = 0
+
+    for k in range(len(first_appearances)):
+
+        infection_circle = Infection_Circle(
+            Point(first_appearances['LongitudeDecimal'].iloc[k], first_appearances['LatitudeDecimal'].iloc[k]),
+            1,
             start_day
-        ))
+        )
+
+        trained_collector = trained_collectors.loc[first_appearances.index[k]]
+
+        test_collector = test_collectors.query('id == ' + str(trained_collector.id))
+
+        test_collectors.loc[test_collector.index[0], 'Detected'] = 1
+
+        test_collector = test_collectors.loc[test_collector.index[0]]
+
+        if test_collector['DiasAposInicioCiclo'] == -1:
+
+            false_positive += 1
+
+        else:
+
+            true_positive += 1
+
+            for j in range(len(TEST_PARAMS['regions'])):
+
+                if Point(test_collector.LongitudeDecimal, test_collector.LatitudeDecimal).within(TEST_PARAMS['regions'][j]):
+
+                    regions_days_error[j].append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
+
+        trained_collectors.loc[first_appearances.index[k], 'Detected'] = 1
+        trained_collectors.loc[first_appearances.index[k], 'color'] = 'green'
+        trained_collectors.loc[first_appearances.index[k], 'discovery_day'] = start_day
+
+        infection_circles.append(infection_circle)
+
+    # index of the last collector that had a infection circle created
+    current_collector_index = first_appearances.index[-1]
 
     for day in range(TEST_PARAMS['number_of_days']):
-        
-        day_original_len = len(burrs_list)
 
-        # The following for is for like, if the current day is the first day of the collector's infection, 
-        # check if there is already a burr growing for that collector, if not, create one.
-        if start_day + datetime.timedelta(day) <= first_appearances['Primeiro_Esporo'].iloc[i]:
-            for i in range(len(first_appearances)):
+        # Loop for activating new infection circles as the days passes
+        while True:
+            
+            if current_collector_index < len(trained_collectors):
 
-                # If the current day is the first day of the collector's infection
-                if start_day + datetime.timedelta(day) == first_appearances['Primeiro_Esporo'].iloc[i]:
+                if trained_collectors.loc[current_collector_index, 'Detected'] == 0:
 
-                    check = False
+                    if start_day + day >= trained_collectors.loc[current_collector_index, 'MediaDiasAposInicioCiclo']:
 
-                    for burr in burrs_list:
+                        # Time to create a new infection circle                    
+                        infection_circle = Infection_Circle(
+                            Point(trained_collectors['LongitudeDecimal'].iloc[current_collector_index], trained_collectors['LatitudeDecimal'].iloc[current_collector_index]),
+                            1,
+                            start_day + day
+                        )
                         
-                        # If a burr for the collector already exists
-                        if burr.geometry == burrs[first_appearances['burr'].iloc[i]]:
-                            check = True
+                        # Locate the collector in the trained_collectors dataframe
+                        trained_collector = trained_collectors.loc[trained_collectors.index[current_collector_index]]
+
+                        # Locate the collector in the test_collectors dataframe using the id
+                        test_collector = test_collectors.query('id == ' + str(trained_collector.id))
+                        test_collector = test_collectors.loc[test_collector.index[0]]
+
+                        # Check if the collector was detected
+                        if test_collector['Detected'] == 0:
+
+                            if test_collector['DiasAposInicioCiclo'] == -1:
+                                test_collectors.loc[test_collector.id, 'color'] = 'red'
+                                false_positive += 1
+
+                            else:
+
+                                test_collectors.loc[test_collector.id, 'color'] = 'green'
+
+                                true_positive += 1
+
+                                for k in range(len(TEST_PARAMS['regions'])):
+
+                                    if Point(test_collector.LongitudeDecimal, test_collector.LatitudeDecimal).within(TEST_PARAMS['regions'][k]):
+
+                                        regions_days_error[k].append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
+
+                            test_collectors.loc[test_collector.id, 'Detected'] = 1
+                            
+                        trained_collectors.loc[current_collector_index, 'Detected'] = 1
+
+                        if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
+                            print('Error')
+                            exit()
+
+                        infection_circles.append(infection_circle)
+
+                        current_collector_index += 1
+
+                        if len(infection_circles) == len(trained_collectors):
                             break
+                        if current_collector_index == len(trained_collectors):
+                            break
+                    else:
+                        break
+                else:
+                    # If the collector was already detected, just skip it
+                    current_collector_index += 1
+            else:
+                break
 
-                    if check: continue
+        for infection_circle in infection_circles:
 
-                    # Else create a new burr
-                    burr = Burr(
-                        burrs[first_appearances['burr'].iloc[i]],
-                        0.0001,
-                        start_day
-                    )
-                    
-                    burrs_list.append(burr)
+            for collector in test_collectors.itertuples():
 
-        if len(burrs_list) < len(_collectors):
+                if collector.Detected == 0:
 
-            for burr in burrs_list: # For each burr, check if it contains a collector
+                    if infection_circle.circle.contains(Point(collector.LongitudeDecimal, collector.LatitudeDecimal)):
 
-                if burrs_list.index(burr) >= day_original_len: break
+                        test_collectors.loc[collector.Index, 'Detected'] = 1
 
-                for collector in _collectors.itertuples(): # For each collector, check if it is inside the burr
+                        trained_collector = trained_collectors.query('id == ' + str(collector.id))
 
-                    if collector.Detected == False: # If the collector is not detected
-                        
-                        collector_point = Point(collector.LongitudeDecimal, collector.LatitudeDecimal)
+                        trained_collector = trained_collector.loc[trained_collector.index[0]]
 
-                        if collector.Fake == False:
+                        if trained_collector.id != test_collectors.loc[collector.Index, 'id']:
 
-                            if burr.geometry.contains(collector_point): # If the collector is inside the burr
+                            print('False')
 
-                                _collectors.loc[collector.Index, 'Detected'] = 1
+                        if collector.Situacao == 'Com esporos':
 
-                                if collector.Situacao == 'Com esporos':
+                            test_collectors.loc[collector.Index, 'color'] = 'green'
+                            true_positive += 1
 
-                                    _collectors.loc[collector.Index, 'color'] = 'green'
+                            for k in range(len(TEST_PARAMS['regions'])):
 
-                                else:
+                                if Point(test_collector.LongitudeDecimal, test_collector.LatitudeDecimal).within(TEST_PARAMS['regions'][k]):
 
-                                    _collectors.loc[collector.Index, 'color'] = 'red'
+                                    regions_days_error[k].append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
 
-                                check_day(_collectors, collector, start_day + datetime.timedelta(day))
+                        else:
 
-                                if collector.burr is None: continue 
+                            test_collectors.loc[collector.Index, 'color'] = 'red'
+                            false_positive += 1
 
-                                new_burr = Burr(
-                                    burrs[int(collector.burr)],
-                                    0.0001,
-                                    start_day + datetime.timedelta(day)
-                                )
+                        if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
+                            print('Error, hit + miss != len(test_collectors.query(\'Detected == 1\'))')
+                            exit()
 
-                                burrs_list.append(new_burr)
-                        else: 
+                        # check_day(test_collectors, collector, start_day + day)
+        
+        for infection_circle in infection_circles:
 
-                            if burr.geometry.contains(collector_point): # If the fake collector is inside the burr    
+            infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-                                _collectors.loc[collector.Index, 'Detected'] = 1
+    # All the collectors that were not detected but had spores, change their color to yellow
+    for collector in test_collectors.itertuples():
+            
+            if collector.Detected == 0:
+    
+                if collector.Situacao == 'Com esporos':
+    
+                    test_collectors.loc[collector.Index, 'color'] = 'yellow'
+                    test_collectors.loc[collector.Index, 'format_shape'] = '*'
 
-                                # Color is equal to black because it is a fake collector
-                                _collectors.loc[collector.Index, 'color'] = 'black'
+    plots.save_fig_on_day(_map, test_collectors, infection_circles, [], start_day, TEST_PARAMS['number_of_days'], None, None, TEST_PARAMS)
 
-                                check_day(_collectors, collector, start_day + datetime.timedelta(day))
+    return true_positive, false_positive, regions_days_error
 
-                                burr_centroid = Point(burr.geometry.centroid.x, burr.geometry.centroid.y)
-
-                                line_string = LineString([collector_point, utils.treat_position(burr_centroid, collector_point, RAI)])
-
-                                test_fake_buffer = fake_buffers.Fake_Buffer(line_string, 0.0001)
-
-                                add_fake_buffer(test_fake_buffer, collector.Index)
-                                
-                    elif collector.Fake == True:
-
-                        collector_point = Point(collector.LongitudeDecimal, collector.LatitudeDecimal)
-
-                        if burr.geometry.contains(collector_point):
-
-                            burr_centroid = Point(burr.geometry.centroid.x, burr.geometry.centroid.y)
-
-                            line_string = LineString([collector_point, utils.treat_position(burr_centroid, collector_point, RAI)])
-
-                            test_fake_buffer = fake_buffers.Fake_Buffer(line_string, 0.0001)
-
-                            add_fake_buffer(test_fake_buffer, collector.Index)
-
-
-        for burr in burrs_list:
-            burr.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
-
-        if TEST_PARAMS['animation']: plots.plotting(_map, _collectors, None, old_geometries, start_day, day, burrs_list, fake_collectors_buffers_list)
-
-    global true_positive_total_error
-
-    true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
-
-    # plots.save_fig_on_day(_map, _collectors, None, None, start_day, TEST_PARAMS['number_of_days'], burrs_list, fake_collectors_buffers_list)
-
-    return true_positive_total_error, burrs_list, 'Burr Growth', fake_collectors_buffers_list
 
 def topology_growth_no_touch(_map: gpd.GeoDataFrame, collectors_instance: coletores.Coletores, old_geometries: list, TEST_PARAMS: dict, plt):
 
