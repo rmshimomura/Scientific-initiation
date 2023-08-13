@@ -261,4 +261,22 @@ def grid_region(_map, _collectors, root_folder):
         else:
             
             new_points_data.write(f",,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},,,{center_point['Situacao']},,{september_10th.strftime('%d/%m/%y')},\n")
-    
+
+def generate_regions(_map):
+
+    map_max_x = _map.bounds.maxx.max()
+    map_min_x = _map.bounds.minx.min()
+    map_max_y = _map.bounds.maxy.max()
+    map_min_y = _map.bounds.miny.min()
+
+    center_x = (map_max_x + map_min_x) / 2
+    center_y = (map_max_y + map_min_y) / 2
+
+    regions = []
+    regions_names = ['north', 'east', 'south', 'west']
+    regions.append(sg.Polygon([(map_min_x, map_max_y), (map_max_x, map_max_y), (center_x, center_y)]))
+    regions.append(sg.Polygon([(map_max_x, map_min_y), (map_max_x, map_max_y), (center_x, center_y)]))
+    regions.append(sg.Polygon([(map_min_x, map_min_y), (map_max_x, map_min_y), (center_x, center_y)]))
+    regions.append(sg.Polygon([(map_min_x, map_min_y), (map_min_x, map_max_y), (center_x, center_y)]))
+
+    return regions, regions_names
