@@ -31,7 +31,7 @@ def read_basic_info(train_file, test_file):
     global root_folder, burr_buffer
 
     # Read collectors file
-    trained_collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Gridded_Data/Trained_Data/' + train_file + '.csv', sep=',', decimal='.', infer_datetime_format=True)
+    trained_collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Gridded_Data/Trained_Data/all_together/' + train_file + '.csv', sep=',', decimal='.', infer_datetime_format=True)
     trained_geometry = [sg.Point(x,y) for x,y in zip(trained_collectors.LongitudeDecimal, trained_collectors.LatitudeDecimal)]
     trained_collectors_geo_df = gpd.GeoDataFrame(trained_collectors, geometry=trained_geometry)
     trained_collectors_geo_df['discovery_day'] = None
@@ -70,29 +70,31 @@ def main(base, number_of_days, train_file, test_file):
 
     _map, trained_collectors_geo_df, test_collectors_geo_df = read_basic_info(train_file, test_file)
 
-    true_positive, false_negative, regions_days_error = gt.test_CGNT(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS)
+    # true_positive, false_negative, regions_days_error = gt.test_CGNT(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS)
 
-    total_error_sum = sum(regions_days_error[0]) + sum(regions_days_error[1]) + sum(regions_days_error[2]) + sum(regions_days_error[3])
+    # all_values = regions_days_error[0] + regions_days_error[1] + regions_days_error[2] + regions_days_error[3]
 
-    total_error_mean = total_error_sum / (len(regions_days_error[0]) + len(regions_days_error[1]) + len(regions_days_error[2]) + len(regions_days_error[3]))
+    # total_error_sum = sum(regions_days_error[0]) + sum(regions_days_error[1]) + sum(regions_days_error[2]) + sum(regions_days_error[3])
 
-    total_error_max = max(max(regions_days_error[0]), max(regions_days_error[1]), max(regions_days_error[2]), max(regions_days_error[3]))
+    # total_error_mean = total_error_sum / (len(regions_days_error[0]) + len(regions_days_error[1]) + len(regions_days_error[2]) + len(regions_days_error[3]))
 
-    total_error_min = min(min(regions_days_error[0]), min(regions_days_error[1]), min(regions_days_error[2]), min(regions_days_error[3]))
+    # total_error_max = max(max(regions_days_error[0]), max(regions_days_error[1]), max(regions_days_error[2]), max(regions_days_error[3]))
 
-    total_error_std = np.std(regions_days_error[0] + regions_days_error[1] + regions_days_error[2] + regions_days_error[3])
+    # total_error_min = min(min(regions_days_error[0]), min(regions_days_error[1]), min(regions_days_error[2]), min(regions_days_error[3]))
 
-    metrics.append(
-        [TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, number_of_days, true_positive, false_negative, 
-        sum(regions_days_error[0]) / len(regions_days_error[0]), sum(regions_days_error[1]) / len(regions_days_error[1]), sum(regions_days_error[2]) / len(regions_days_error[2]), sum(regions_days_error[3]) / len(regions_days_error[3]),
-        max(regions_days_error[0]), max(regions_days_error[1]), max(regions_days_error[2]), max(regions_days_error[3]),
-        min(regions_days_error[0]), min(regions_days_error[1]), min(regions_days_error[2]), min(regions_days_error[3]),
-        np.std(regions_days_error[0]),np.std(regions_days_error[1]),np.std(regions_days_error[2]),np.std(regions_days_error[3]),
-        total_error_mean, total_error_max, total_error_min, total_error_std,
-        len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))]
-    )
+    # total_error_std = np.std(regions_days_error[0] + regions_days_error[1] + regions_days_error[2] + regions_days_error[3])
 
-    ''' Circular Growth No Touch Test
+    # metrics.append(
+    #     [TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, number_of_days, true_positive, false_negative, 
+    #     sum(regions_days_error[0]) / len(regions_days_error[0]), sum(regions_days_error[1]) / len(regions_days_error[1]), sum(regions_days_error[2]) / len(regions_days_error[2]), sum(regions_days_error[3]) / len(regions_days_error[3]),
+    #     max(regions_days_error[0]), max(regions_days_error[1]), max(regions_days_error[2]), max(regions_days_error[3]),
+    #     min(regions_days_error[0]), min(regions_days_error[1]), min(regions_days_error[2]), min(regions_days_error[3]),
+    #     np.std(regions_days_error[0]),np.std(regions_days_error[1]),np.std(regions_days_error[2]),np.std(regions_days_error[3]),
+    #     total_error_mean, total_error_max, total_error_min, total_error_std,
+    #     len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))]
+    # )
+
+    ''' [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Circular Growth No Touch
 
     old_geometries = []
 
@@ -127,7 +129,7 @@ def main(base, number_of_days, train_file, test_file):
 
     '''
 
-    ''' Topology Test
+    ''' [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Topology Test 
 
     old_geometries = []
 
@@ -177,46 +179,35 @@ if __name__ == "__main__":
 
     _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
-    map_max_x = _map.bounds.maxx.max()
-    map_min_x = _map.bounds.minx.min()
-    map_max_y = _map.bounds.maxy.max()
-    map_min_y = _map.bounds.miny.min()
+    regions, regions_names = utils.generate_regions(_map)
 
-    center_x = (map_max_x + map_min_x) / 2
-    center_y = (map_max_y + map_min_y) / 2
+    # for _ in range(len(regions)):
+    #     plt.plot(*regions[_].exterior.xy, color='black', linewidth=0.5)
+    #     plt.annotate(regions_names[_], (regions[_].centroid.x, regions[_].centroid.y), fontsize=5)
 
-    regions = []
-    regions_names = ['north', 'east', 'south', 'west']
-    regions.append(sg.Polygon([(map_min_x, map_max_y), (map_max_x, map_max_y), (center_x, center_y)]))
-    regions.append(sg.Polygon([(map_max_x, map_min_y), (map_max_x, map_max_y), (center_x, center_y)]))
-    regions.append(sg.Polygon([(map_min_x, map_min_y), (map_max_x, map_min_y), (center_x, center_y)]))
-    regions.append(sg.Polygon([(map_min_x, map_min_y), (map_min_x, map_max_y), (center_x, center_y)]))
+    main(990000, number_of_days, 'all_3', 'coletoressafra2021_31_23')
+    main(990000, number_of_days, 'all_3', 'coletoressafra2122_31_23')
+    main(990000, number_of_days, 'all_3', 'coletoressafra2223_31_23')
+    # main(99000, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
+    # main(9900, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
+    # main(990, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
+    # main(99, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
+    # main(990000, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
+    # main(99000, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
+    # main(9900, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
+    # main(990, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
+    # main(99, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
+    # main(990000, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
+    # main(99000, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
+    # main(9900, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
+    # main(990, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
+    # main(99, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
 
-    for _ in range(len(regions)):
-        plt.plot(*regions[_].exterior.xy, color='black', linewidth=0.5)
-        plt.annotate(regions_names[_], (regions[_].centroid.x, regions[_].centroid.y), fontsize=5)
+    # info = open('G:/' + root_folder + '/IC/Codes/Plots/metrics.csv', 'w', encoding='utf-8')
 
-    main(990000, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
-    main(99000, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
-    main(9900, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
-    main(990, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
-    main(99, number_of_days, '2021-2122', 'coletoressafra2223_31_23')
-    main(990000, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
-    main(99000, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
-    main(9900, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
-    main(990, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
-    main(99, number_of_days, '2021-2223', 'coletoressafra2122_31_23')
-    main(990000, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
-    main(99000, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
-    main(9900, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
-    main(990, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
-    main(99, number_of_days, '2122-2223', 'coletoressafra2021_31_23')
+    # info.write('train_file, test_file,base,number_of_days,true_positive,false_positive,days_error_mean_north,days_error_mean_east,days_error_mean_south,days_error_mean_west,days_error_max_north,days_error_max_east,days_error_max_south,days_error_max_west,days_error_min_north,days_error_min_east,days_error_min_south,days_error_min_west,days_error_std_north,days_error_std_east,days_error_std_south,days_error_std_west,days_error_mean_total,days_error_max_total,days_error_min_total,days_error_std_total,real_with_spores,real_without_spores,detected_with_spores,not_detected_with_spores\n')
 
-    info = open('G:/' + root_folder + '/IC/Codes/Plots/metrics.csv', 'w', encoding='utf-8')
-
-    info.write('train_file, test_file,base,number_of_days,true_positive,false_positive,days_error_mean_north,days_error_mean_east,days_error_mean_south,days_error_mean_west,days_error_max_north,days_error_max_east,days_error_max_south,days_error_max_west,days_error_min_north,days_error_min_east,days_error_min_south,days_error_min_west,days_error_std_north,days_error_std_east,days_error_std_south,days_error_std_west,days_error_mean_total,days_error_max_total,days_error_min_total,days_error_std_total,real_with_spores,real_without_spores,detected_with_spores,not_detected_with_spores\n')
-
-    for _ in metrics:
-        info.write(str(_).replace('[', '').replace(']', '').replace('\'', '') + '\n')
+    # for _ in metrics:
+    #     info.write(str(_).replace('[', '').replace(']', '').replace('\'', '') + '\n')
     
-    info.close()
+    # info.close()

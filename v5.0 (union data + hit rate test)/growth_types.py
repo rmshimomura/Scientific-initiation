@@ -404,7 +404,7 @@ def test_CGNT(_map, trained_collectors: pd.DataFrame, test_collectors: pd.DataFr
                     test_collectors.loc[collector.Index, 'color'] = 'yellow'
                     test_collectors.loc[collector.Index, 'format_shape'] = '*'
 
-    plots.save_fig_on_day(_map, test_collectors, infection_circles, [], start_day, TEST_PARAMS['number_of_days'], None, None, TEST_PARAMS)
+    # plots.save_fig_on_day(_map, test_collectors, infection_circles, [], start_day, TEST_PARAMS['number_of_days'], None, None, TEST_PARAMS)
 
     return true_positive, false_positive, regions_days_error
 
