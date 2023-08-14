@@ -23,7 +23,7 @@ def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day, method_use
         
     f = open(f'results_{method_used.replace(" ", "_")}.csv', 'a')
 
-    f.write(f"{method_used},{TEST_PARAMS['number_of_days']},{TEST_PARAMS['growth_function_distance'].__name__},{TEST_PARAMS['growth_function_days'].__name__},{TEST_PARAMS['base']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_abrangencia_imediata']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_possivel_contaminacao']},{start_day},{end_day},{datetime.datetime.now()},{test_duration},{file_name},{','.join(str(value) for value in PENALTIES.values())}\n")
+    f.write(f"{method_used},{TEST_PARAMS['number_of_days']},{TEST_PARAMS['growth_function_distance'].__name__},{TEST_PARAMS['growth_function_days'].__name__},{TEST_PARAMS['base']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_abrangencia_imediata']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_possivel_contaminacao']},{start_day},{end_day},{datetime.datetime.now()},{test_duration},{file_name if file_name != None else TEST_PARAMS['test_file']},{','.join(str(value) for value in PENALTIES.values())}\n")
 
     f.close()
 
@@ -34,8 +34,6 @@ def clean_up(collectors_geo_data_frame: gpd.GeoDataFrame)-> gpd.GeoDataFrame:
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Longitude Decimal': 'LongitudeDecimal'})
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Latitude Decimal': 'LatitudeDecimal'})
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Primeiro_Esporo': 'Primeiro_Esporo'})
-
-    # Remove unecessary columns
 
     # Check if the column 'fake' exists
     if 'fake' in collectors_geo_data_frame.columns:
@@ -73,7 +71,7 @@ def calculate_false_positives_penalty(_collectors: pd.DataFrame, final_day: date
 
     for i in range(0, len(_collectors)):
         if pd.isnull(_collectors['Primeiro_Esporo'].iloc[i]) and _collectors['Detected'].iloc[i] == 1:
-            penalty += (abs(final_day - _collectors['discovery_day'].iloc[i]).days ** 2)
+            penalty += (abs(final_day - _collectors['discovery_day'].iloc[i])** 2)
             false_positives += 1
 
     penalty = math.sqrt(penalty/false_positives)
