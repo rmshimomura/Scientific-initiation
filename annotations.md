@@ -47,3 +47,7 @@
 - Falso negativo: O modelo diz que não tem, mas existem esporos ali
 
         Quantidade de dias que seriam necessários para chegar até o determinado coletor partindo do coletor verdadeiro positivo mais próximo
+
+Map length: 735.1995280519512 km
+Map height: 468.1821515409006 km
+Square size: 23.71611380812746km x 20.35574571916959km (Proporção 31_23)
