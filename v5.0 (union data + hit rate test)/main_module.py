@@ -220,6 +220,8 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
             len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))]
         )
 
+        return metrics
+
 
     # return TEST_PARAMS, PENALTIES
 

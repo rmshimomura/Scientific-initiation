@@ -6,26 +6,36 @@ import os
 if __name__ == "__main__":
     
     number_of_days = 137
-    bases = random.sample(range(100, 1000000), 10)
+    # bases = random.sample(range(100, 1000000), 10)
+    bases = [990000]
 
     metrics = []
 
-    Looking_for_parameter = True
+    Looking_for_parameter = False
 
-    Testing = False
+    Testing = True
 
-    Circular_growth_no_touch = False
+    Circular_growth_no_touch = True
 
-    Circular_growth_touch = True
+    Circular_growth_touch = False
 
     Topology_growth = False
 
     for base in bases:
         args_list = [
-         [base, number_of_days, None, 'coletoressafra2021_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
-         [base, number_of_days, None, 'coletoressafra2122_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
-         [base, number_of_days, None, 'coletoressafra2223_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth]]
+         [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
+         [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2122_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
+         [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2223_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
 
+         [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2021_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
+         [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2122_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
+         [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2223_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
+
+         [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2021_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
+         [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2122_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
+         [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2223_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth]
+
+        ]
         num_processes = len(args_list)
         pool = mp.Pool(processes=num_processes)
 
