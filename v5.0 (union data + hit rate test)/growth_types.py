@@ -52,42 +52,13 @@ def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old
             start_day
         )
 
+        _collectors.loc[first_appearances.index[i], 'Detected'] = 1
+        _collectors.loc[first_appearances.index[i], 'color'] = 'green'
+        _collectors.loc[first_appearances.index[i], 'discovery_day'] = start_day
+
         infection_circles.append(infection_circle)
 
     for day in range(TEST_PARAMS['number_of_days']):
-
-        # The following for is for like, if the current day is the first day of the collector's infection, 
-        # check if there is already a infection circle for that collector, if not, create one.
-
-        if start_day + day <= first_appearances['DiasAposInicioCiclo'].iloc[i]:
-
-            for i in range(len(first_appearances)):
-
-                # If the current day is the first day of the collector's infection
-                if start_day + day == first_appearances['DiasAposInicioCiclo'].iloc[i]:
-
-                    check = False
-
-                    for circle in infection_circles:
-
-                        centroid = (circle.circle.centroid.x, circle.circle.centroid.y)
-
-                        # If a infection circle for the collector already exists
-                        if centroid == (first_appearances['LongitudeDecimal'].iloc[i], first_appearances['LatitudeDecimal'].iloc[i]):
-                            # Don't create a new infection circle
-                            check = True
-                            break
-
-                    if check: continue
-
-                    # Else create a new infection circle
-                    infection_circle = Infection_Circle(
-                        Point(first_appearances['LongitudeDecimal'].iloc[i], first_appearances['LatitudeDecimal'].iloc[i]),
-                        1,
-                        start_day
-                    )
-
-                    infection_circles.append(infection_circle)
 
         if len(infection_circles) < len(_collectors):
             
