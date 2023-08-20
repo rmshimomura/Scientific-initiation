@@ -44,6 +44,7 @@ def read_basic_info(train_file, test_file):
         trained_geometry = [sg.Point(x,y) for x,y in zip(trained_collectors.LongitudeDecimal, trained_collectors.LatitudeDecimal)]
         trained_collectors_geo_df = gpd.GeoDataFrame(trained_collectors, geometry=trained_geometry)
         trained_collectors_geo_df['discovery_day'] = None
+        trained_collectors_geo_df['circle_created'] = 0
         trained_collectors_geo_df['id'] = trained_collectors_geo_df.index
         trained_collectors_geo_df = trained_collectors_geo_df.sort_values(by=['MediaDiasAposInicioCiclo'])
         trained_collectors_geo_df = utils.clean_up(trained_collectors_geo_df)
@@ -57,7 +58,7 @@ def read_basic_info(train_file, test_file):
     test_collectors_geo_df['discovery_day'] = None
     test_collectors_geo_df['id'] = test_collectors_geo_df.index
     test_collectors_geo_df['color'] = 'black'
-    test_collectors_geo_df['format_shape'] = 'o'
+    test_collectors_geo_df['circle_created'] = 0
 
     return trained_collectors_geo_df, test_collectors_geo_df
 
@@ -105,16 +106,12 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
 
             # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Circular Growth No Touch
 
-            start_day = trained_collectors_geo_df.query('MediaDiasAposInicioCiclo != -1')['MediaDiasAposInicioCiclo'].iloc[0]
+            start_day = test_collectors_geo_df.query('DiasAposInicioCiclo != -1')['DiasAposInicioCiclo'].iloc[0]
 
             true_positive_penalty, infection_circles, method_used = \
-                gt.circular_growth_no_touch(_map, trained_collectors_geo_df, old_geometries, TEST_PARAMS)
+                gt.circular_growth_no_touch(_map, test_collectors_geo_df, None, TEST_PARAMS)
 
-            false_positive_penalty = utils.calculate_false_positives_penalty(trained_collectors_geo_df, start_day + datetime.timedelta(days=TEST_PARAMS['number_of_days'] - 1))
-
-            false_negative_penalty = utils.calculate_false_negatives_penalty(trained_collectors_geo_df, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
-
-        elif CIRCULAR_GROWTH_TOUCH:
+        elif CIRCULAR_GROWTH_TOUCH: # For now, only not learning based
 
             # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Circular Growth Touch
 
@@ -124,10 +121,6 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
 
             true_positive_penalty, infection_circles, method_used = \
                 gt.circular_growth_touch(_map, test_collectors_geo_df, old_geometries, TEST_PARAMS)
-
-            false_positive_penalty = utils.calculate_false_positives_penalty(test_collectors_geo_df, start_day + TEST_PARAMS['number_of_days'] - 1)
-
-            false_negative_penalty = utils.calculate_false_negatives_penalty(test_collectors_geo_df, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
 
         elif TOPOLOGY_GROWTH:
 
@@ -172,6 +165,10 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
             '''
 
 
+        false_positive_penalty = utils.calculate_false_positives_penalty(test_collectors_geo_df, start_day + TEST_PARAMS['number_of_days'] - 1)
+
+        false_negative_penalty = utils.calculate_false_negatives_penalty(test_collectors_geo_df, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
+
         PENALTIES = {
             'true_positive' : true_positive_penalty,
             'true_negative' : true_negative_penalty,
@@ -187,13 +184,34 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
         print(f"False positive penalty: {false_positive_penalty}")
         print(f"False negative penalty: {false_negative_penalty}")
 
-        utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + TEST_PARAMS['number_of_days'], method_used, train_file, -1)
+        # utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + TEST_PARAMS['number_of_days'], method_used, train_file, -1)
+        
+        results_metrics = [
+            method_used,
+            number_of_days,
+            TEST_PARAMS['growth_function_distance'].__name__,
+            TEST_PARAMS['growth_function_days'].__name__,
+            base,
+            train_file if train_file is not None else 'None',
+            test_file,
+            true_positive_penalty,
+            true_negative_penalty,
+            false_positive_penalty,
+            false_negative_penalty
+        ]
+
+        return results_metrics
+
 
     elif TESTING:
 
         if CIRCULAR_GROWTH_NO_TOUCH:
 
-            true_positive, false_negative, regions_days_error = t.test_CGNT(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS)
+            true_positive, false_negative, regions_days_error = t.learning_based(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
+
+        elif CIRCULAR_GROWTH_TOUCH:
+
+            true_positive, false_negative, regions_days_error = t.learning_based(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
 
         else:
 

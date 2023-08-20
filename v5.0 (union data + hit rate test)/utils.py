@@ -21,7 +21,7 @@ def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day, method_use
         f.write(f"{'Method,Number of Days,Distance function,Days function,Base,RAI,RPC,Minimun Day,Days Passed,Test time,Test duration,File used,TPP,TNP,FPP,FNP'}\n")
         f.close()
         
-    f = open(f'results_{method_used.replace(" ", "_")}.csv', 'a')
+    f = open(f'hit_results_{method_used.replace(" ", "_")}.csv', 'a')
 
     f.write(f"{method_used},{TEST_PARAMS['number_of_days']},{TEST_PARAMS['growth_function_distance'].__name__},{TEST_PARAMS['growth_function_days'].__name__},{TEST_PARAMS['base']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_abrangencia_imediata']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_possivel_contaminacao']},{start_day},{end_day},{datetime.datetime.now()},{test_duration},{file_name if file_name != None else TEST_PARAMS['test_file']},{','.join(str(value) for value in PENALTIES.values())}\n")
 
@@ -70,7 +70,7 @@ def calculate_false_positives_penalty(_collectors: pd.DataFrame, final_day: date
     false_positives = 0
 
     for i in range(0, len(_collectors)):
-        if pd.isnull(_collectors['Primeiro_Esporo'].iloc[i]) and _collectors['Detected'].iloc[i] == 1:
+        if _collectors['DiasAposInicioCiclo'].iloc[i] == -1 and _collectors['Detected'].iloc[i] == 1:
             penalty += (abs(final_day - _collectors['discovery_day'].iloc[i])** 2)
             false_positives += 1
 

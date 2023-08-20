@@ -2,7 +2,7 @@ import pandas as pd
 from infection_circle import Infection_Circle
 from shapely.geometry import Point
 
-def test_CGNT(_map, trained_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict):
+def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict, mode):
 
     positive_collectors = trained_collectors.query('MediaDiasAposInicioCiclo != -1')
 
@@ -140,10 +140,6 @@ def test_CGNT(_map, trained_collectors: pd.DataFrame, test_collectors: pd.DataFr
 
                         trained_collector = trained_collector.loc[trained_collector.index[0]]
 
-                        if trained_collector.id != test_collectors.loc[collector.Index, 'id']:
-
-                            print('False')
-
                         if collector.Situacao == 'Com esporos':
 
                             test_collectors.loc[collector.Index, 'color'] = 'green'
@@ -163,6 +159,17 @@ def test_CGNT(_map, trained_collectors: pd.DataFrame, test_collectors: pd.DataFr
                         if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
                             print('Error, hit + miss != len(test_collectors.query(\'Detected == 1\'))')
                             exit()
+
+                        if mode == 'Touch':
+                            new_infection_circle = Infection_Circle(
+                                Point(collector.LongitudeDecimal, collector.LatitudeDecimal),
+                                1, 
+                                start_day + day
+                            )
+
+                            trained_collectors.loc[trained_collector.index[0], 'Detected'] = 1
+
+                            infection_circles.append(new_infection_circle)
         
         for infection_circle in infection_circles:
 
