@@ -62,15 +62,7 @@ def read_basic_info(train_file, test_file):
 
     return trained_collectors_geo_df, test_collectors_geo_df
 
-def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
-
-    if LFP == 1 and T == 1:
-        print('Looking for parameter and testing cannot happen at the same time.')
-        return -1, 'Fail mode type'
-    
-    if (CGNT == 1 and CGT == 1) or (CGNT == 1 and TG == 1) or (CGT == 1 and TG == 1):
-        print('Only one growth type can be used at a time.')
-        return -1, 'Fail growth type'
+def main(base, number_of_days, train_file, test_file, operation_mode, growth_type):
 
     global _map, regions, regions_names
 
@@ -88,41 +80,40 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
         'regions' : regions,
     }
 
-    LOOKING_FOR_PARAMETER = LFP
-    TESTING = T
-
-    CIRCULAR_GROWTH_NO_TOUCH = CGNT
-    CIRCULAR_GROWTH_TOUCH = CGT
-    TOPOLOGY_GROWTH = TG
-
-
     trained_collectors_geo_df, test_collectors_geo_df = read_basic_info(train_file, test_file)
 
-    if LOOKING_FOR_PARAMETER:
+    if operation_mode == 'parameter_search':
 
         true_negative_penalty = 0
 
-        if CIRCULAR_GROWTH_NO_TOUCH:
+        start_day = test_collectors_geo_df.query('DiasAposInicioCiclo != -1').sort_values(by=['DiasAposInicioCiclo'])['DiasAposInicioCiclo'].iloc[0]
+
+        if growth_type == 'CGNT':
 
             # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Circular Growth No Touch
-
-            start_day = test_collectors_geo_df.query('DiasAposInicioCiclo != -1')['DiasAposInicioCiclo'].iloc[0]
 
             true_positive_penalty, infection_circles, method_used = \
                 gt.circular_growth_no_touch(_map, test_collectors_geo_df, None, TEST_PARAMS)
 
-        elif CIRCULAR_GROWTH_TOUCH: # For now, only not learning based
+        elif growth_type == 'CGT': # For now, only not learning based
 
             # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Circular Growth Touch
-
-            start_day = test_collectors_geo_df.query("DiasAposInicioCiclo != -1").sort_values(by=['DiasAposInicioCiclo'])['DiasAposInicioCiclo'].iloc[0]
 
             old_geometries = []
 
             true_positive_penalty, infection_circles, method_used = \
                 gt.circular_growth_touch(_map, test_collectors_geo_df, old_geometries, TEST_PARAMS)
 
-        elif TOPOLOGY_GROWTH:
+        elif growth_type == 'MG':
+
+            # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Mixed Growth Touch
+
+            true_positive_penalty, infection_circles, method_used = \
+                gt.mix_growth(_map, test_collectors_geo_df, None, TEST_PARAMS)
+
+            pass
+
+        elif growth_type == 'TG':
 
             ''' [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Topology Test 
 
@@ -169,13 +160,6 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
 
         false_negative_penalty = utils.calculate_false_negatives_penalty(test_collectors_geo_df, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
 
-        PENALTIES = {
-            'true_positive' : true_positive_penalty,
-            'true_negative' : true_negative_penalty,
-            'false_positive' : false_positive_penalty,
-            'false_negative' : false_negative_penalty
-        }
-
         print(f"BASE USED: {base}")
         print(f"Train file used: {train_file}")
         print(f"Test file used: {test_file}")
@@ -183,8 +167,6 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
         print(f"True negative penalty: {true_negative_penalty}")
         print(f"False positive penalty: {false_positive_penalty}")
         print(f"False negative penalty: {false_negative_penalty}")
-
-        # utils.write_csv(TEST_PARAMS, PENALTIES, start_day, start_day + TEST_PARAMS['number_of_days'], method_used, train_file, -1)
         
         results_metrics = [
             method_used,
@@ -203,13 +185,13 @@ def main(base, number_of_days, train_file, test_file, LFP, T, CGNT, CGT, TG):
         return results_metrics
 
 
-    elif TESTING:
+    elif operation_mode == 'test':
 
-        if CIRCULAR_GROWTH_NO_TOUCH:
+        if growth_type == 'CGNT':
 
             true_positive, false_negative, regions_days_error = t.learning_based(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
 
-        elif CIRCULAR_GROWTH_TOUCH:
+        elif growth_type == 'CGT':
 
             true_positive, false_negative, regions_days_error = t.learning_based(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
 

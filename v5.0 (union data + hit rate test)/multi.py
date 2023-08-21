@@ -6,39 +6,35 @@ import os
 if __name__ == "__main__":
     
     number_of_days = 137
-    # bases = random.sample(range(800, 1200), 10)
-    # bases = [158]
+    # bases = random.sample(range(100, 12000), 20)
+
+    # bases = [1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300]
 
     bases = [
-        90000,
-        80000,
-        70000,
-        60000,
-        50000,
-        40000,
-        30000,
-        20000,
-        10000
+        1000000,
+        900000,
+        800000,
+        700000,
+        600000,
+        500000,
+        400000,
+        300000,
+        200000,
+        100000,
     ]
 
     metrics = []
 
-    Looking_for_parameter = 1
+    operation_mode = 'parameter_search'
 
-    Testing = 0
-
-    Circular_growth_no_touch = 1
-
-    Circular_growth_touch = 0
-
-    Topology_growth = 0
+    growth_type = 'MG'
 
     for base in bases:
         args_list = [
 
-         [base, number_of_days, None, 'coletoressafra2021_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
-         [base, number_of_days, None, 'coletoressafra2122_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
-         [base, number_of_days, None, 'coletoressafra2223_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth]
+         [base, number_of_days, None, 'coletoressafra2021_31_23', operation_mode, growth_type],
+         [base, number_of_days, None, 'coletoressafra2122_31_23', operation_mode, growth_type],
+         [base, number_of_days, None, 'coletoressafra2223_31_23', operation_mode, growth_type]
 
         #  [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
         #  [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2122_31_23', Looking_for_parameter, Testing, Circular_growth_no_touch, Circular_growth_touch, Topology_growth],
@@ -77,7 +73,7 @@ if __name__ == "__main__":
     elif 'My Drive' in os.getcwd():
         root_folder = 'My Drive'
 
-    if Testing:
+    if operation_mode == 'test':
 
 
         info = open('G:/' + root_folder + '/IC/Codes/Results/Growth_tests/all_means.csv', 'w', encoding='utf-8')
@@ -89,14 +85,14 @@ if __name__ == "__main__":
         
         info.close()
 
-    elif Looking_for_parameter:
+    elif operation_mode == 'parameter_search':
 
-        if not os.path.exists(f'results_{"CGT" if Circular_growth_touch else "CGNT"}.csv'):
-            f = open(f'results_{"CGT" if Circular_growth_touch else "CGNT"}.csv', 'w', encoding='utf-8')
+        if not os.path.exists(f'results_{growth_type}.csv'):
+            f = open(f'results_{growth_type}.csv', 'w', encoding='utf-8')
             f.write(f"{'Method,Number of Days,Distance function,Days function,Base,Train file used,Test file used,TPP,TNP,FPP,FNP'}\n")
             f.close()
         
-        f = open(f'results_{"CGT" if Circular_growth_touch else "CGNT"}.csv', 'a', encoding='utf-8')
+        f = open(f'results_{growth_type}.csv', 'a', encoding='utf-8')
 
         for i in range(len(metrics)):
             f.write(','.join(map(str, metrics[i]))+'\n')
