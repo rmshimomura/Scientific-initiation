@@ -34,6 +34,8 @@ def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old
 
     global true_positive_total_error
 
+    _collectors.sort_values(by=['DiasAposInicioCiclo'], inplace=True)
+
     true_positive_total_error = 0
 
     infection_circles = []
@@ -153,10 +155,10 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
 
                 if _collectors.loc[current_collector_index, 'circle_created'] == 0:
 
-                    if start_day + day >= _collectors['DiasAposInicioCiclo'].iloc[current_collector_index]:
+                    if start_day + day >= _collectors.loc[current_collector_index, 'DiasAposInicioCiclo']:
 
                         infection_circle = Infection_Circle(
-                            Point(_collectors['LongitudeDecimal'].iloc[current_collector_index], _collectors['LatitudeDecimal'].iloc[current_collector_index]),
+                            Point(_collectors.loc[current_collector_index, 'LongitudeDecimal'], _collectors.loc[current_collector_index, 'LatitudeDecimal']),
                             1,
                             start_day + day
                         )
@@ -214,17 +216,19 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
 
     global true_positive_total_error, true_positives
 
+    _collectors.sort_values(by=['DiasAposInicioCiclo'], inplace=True)
+
     true_positive_total_error = 0
 
     true_positives = 0
 
-    positive_collectors = _collectors.query('MediaDiasAposInicioCiclo != -1')
+    positive_collectors = _collectors.query('DiasAposInicioCiclo != -1')
 
-    first_appearances = positive_collectors[positive_collectors['MediaDiasAposInicioCiclo'] == positive_collectors['MediaDiasAposInicioCiclo'].min()]
+    first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
 
     infection_circles = []
 
-    start_day = positive_collectors['MediaDiasAposInicioCiclo'].iloc[0]
+    start_day = positive_collectors['DiasAposInicioCiclo'].iloc[0]
 
     for i in range(len(first_appearances)):
 
@@ -241,39 +245,44 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
 
         infection_circles.append(infection_circle)
 
-    # index of the last collector that had a infection circle created
-    current_collector_index = first_appearances.index[-1]
+    count = len(first_appearances)
 
     for day in range(TEST_PARAMS['number_of_days']):
 
         # Loop for activating new infection circles as the days passes
         while True:
             
-            if current_collector_index < len(_collectors):
+            if count < len(positive_collectors):
+
+                current_collector_index = positive_collectors.index[count]
 
                 if _collectors.loc[current_collector_index, 'circle_created'] == 0:
 
-                    if start_day + day >= _collectors['MediaDiasAposInicioCiclo'].iloc[current_collector_index]:
+                    if start_day + day >= _collectors.loc[current_collector_index,'DiasAposInicioCiclo']:
 
                         infection_circle = Infection_Circle(
-                            Point(_collectors['LongitudeDecimal'].iloc[current_collector_index], _collectors['LatitudeDecimal'].iloc[current_collector_index]),
+                            Point(_collectors.loc[current_collector_index, 'LongitudeDecimal'], _collectors.loc[current_collector_index, 'LatitudeDecimal']),
                             1,
                             start_day + day
                         )
 
-                        _collectors.loc[_collectors.index[current_collector_index], 'Detected'] = 1
-                        _collectors.loc[_collectors.index[current_collector_index], 'circle_created'] = 1
+                        _collectors.loc[current_collector_index, 'Detected'] = 1
+                        _collectors.loc[current_collector_index, 'circle_created'] = 1
+                        _collectors.loc[current_collector_index, 'color'] = 'green'
+                        _collectors.loc[current_collector_index, 'discovery_day'] = start_day + day
 
                         infection_circles.append(infection_circle)
 
-                        current_collector_index += 1
+                        count += 1
 
                         if len(infection_circles) == len(_collectors):
                             break
-                        if current_collector_index == len(_collectors):
+                        if count == len(_collectors):
                             break
                     else:
                         break
+                else:
+                    count += 1
             else:
                 break
 
@@ -286,6 +295,7 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
                     if infection_circle.circle.contains(Point(collector.LongitudeDecimal, collector.LatitudeDecimal)):
 
                         _collectors.loc[collector.Index, 'Detected'] = 1
+                        _collectors.loc[collector.Index, 'discovery_day'] = start_day + day
 
                         if collector.Situacao == 'Com esporos':
 
@@ -320,9 +330,7 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
 
     true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
 
-    # plots.save_fig_on_day(_map, _collectors, infection_circles, old_geometries, start_day, TEST_PARAMS['number_of_days'], None)
-
-    return true_positive_total_error, infection_circles, 'Learning based Circular Growth touch'
+    return true_positive_total_error, infection_circles, 'Mixed Growth'
 
 def topology_growth_no_touch(_map: gpd.GeoDataFrame, collectors_instance: coletores.Coletores, old_geometries: list, TEST_PARAMS: dict, plt):
 

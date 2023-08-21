@@ -4,19 +4,16 @@ from shapely.geometry import Point
 
 def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict, mode):
 
+    trained_collectors.sort_values(by=['MediaDiasAposInicioCiclo'], inplace=True)
     positive_collectors = trained_collectors.query('MediaDiasAposInicioCiclo != -1')
-
     first_appearances = positive_collectors[positive_collectors['MediaDiasAposInicioCiclo'] == positive_collectors['MediaDiasAposInicioCiclo'].min()]
-
     infection_circles = []
-
     start_day = positive_collectors['MediaDiasAposInicioCiclo'].iloc[0]
 
     # North, East, South, West
     regions_days_error = [[],[],[],[]]
 
     true_positive = 0
-
     false_positive = 0
 
     for k in range(len(first_appearances)):
@@ -50,22 +47,23 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
                     regions_days_error[j].append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
 
         trained_collectors.loc[first_appearances.index[k], 'Detected'] = 1
+        trained_collectors.loc[first_appearances.index[k], 'circle_created'] = 1
         trained_collectors.loc[first_appearances.index[k], 'color'] = 'green'
         trained_collectors.loc[first_appearances.index[k], 'discovery_day'] = start_day
 
         infection_circles.append(infection_circle)
 
-    # index of the last collector that had a infection circle created
-    current_collector_index = first_appearances.index[-1]
+    count = len(first_appearances)
 
     for day in range(TEST_PARAMS['number_of_days']):
 
-        # Loop for activating new infection circles as the days passes
         while True:
             
-            if current_collector_index < len(trained_collectors):
+            if count < len(positive_collectors):
 
-                if trained_collectors.loc[current_collector_index, 'Detected'] == 0:
+                current_collector_index = positive_collectors.index[count]
+
+                if trained_collectors.loc[current_collector_index, 'circle_created'] == 0:
 
                     if start_day + day >= trained_collectors.loc[current_collector_index, 'MediaDiasAposInicioCiclo']:
 
