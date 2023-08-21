@@ -2,25 +2,36 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Importing the dataset
+info_CGT = pd.read_csv('G:/My Drive/IC/Codes/results_CGNT.csv', sep=',', decimal='.')
 
-info_CGT = pd.read_csv('G:/My Drive/IC/Codes/Results/Search_for_parameter/results_Circular_Growth_no_touch.csv', sep=',', decimal='.')
+valid = info_CGT.sort_values(by=['Base'])
 
-info_CGT = info_CGT.drop(columns=['RAI','RPC','Test time', 'Test duration', 'Distance function', 'Days function'])
+_2021 = valid[valid['Test file used'] == "coletoressafra2021_31_23"]
+_2122 = valid[valid['Test file used'] == "coletoressafra2122_31_23"]
+_2223 = valid[valid['Test file used'] == "coletoressafra2223_31_23"]
 
-valid = info_CGT.query('FNP == 0')
+# Plotting points and connecting lines for 2021 data
+plt.plot(_2021['Base'], _2021['TPP'], 'o-', color='black', label='2021 TPP', markersize=10)
+plt.plot(_2021['Base'], _2021['FPP'], '*-', color='black', label='2021 FPP', markersize=10)
 
-valid = valid.sort_values(by=['Base'])
 
-# Plot with lines and dots
+# Plotting points and connecting lines for 2122 data
+plt.plot(_2122['Base'], _2122['TPP'], 'D-', color='red', label='2122 TPP', markersize=10)
+plt.plot(_2122['Base'], _2122['FPP'], 's-', color='red', label='2122 FPP', markersize=10)
 
-# plt.plot(valid['Base'], valid['TPP'], 'o', color='black')
-# plt.plot(valid['Base'], valid['FPP'], 'o', color='red')
-
-plt.plot(valid['Base'], valid['TPP'], 'o', color='black')
-plt.plot(valid['Base'], valid['FPP'], 'o', color='red')
+# Plotting points and connecting lines for 2223 data
+plt.plot(_2223['Base'], _2223['TPP'], 'H-', color='blue', label='2223 TPP', markersize=10)
+plt.plot(_2223['Base'], _2223['FPP'], 'p-', color='blue', label='2223 FPP', markersize=10)
 
 plt.xlabel('Base')
 plt.ylabel('TPP/FPP')
-plt.legend(['TPP', 'FPP'])
+
+# Creating a legend for the colors
+color_legend = plt.legend(loc='upper right', frameon=True)
+
+# Adding the first legend back to the axes
+plt.gca().add_artist(color_legend)
+
+# plt.yscale('log')
 
 plt.show()

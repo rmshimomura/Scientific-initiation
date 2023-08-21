@@ -1,0 +1,3 @@
+# SAME THING
+print(_collectors.iloc[count])
+print(_collectors.loc[_collectors.index[count]])
