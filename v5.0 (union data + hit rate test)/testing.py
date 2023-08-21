@@ -69,22 +69,22 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
 
                         # Time to create a new infection circle                    
                         infection_circle = Infection_Circle(
-                            Point(trained_collectors['LongitudeDecimal'].iloc[current_collector_index], trained_collectors['LatitudeDecimal'].iloc[current_collector_index]),
+                            Point(trained_collectors.loc[current_collector_index, 'LongitudeDecimal'], trained_collectors.loc[current_collector_index,'LatitudeDecimal']),
                             1,
                             start_day + day
                         )
                         
                         # Locate the collector in the trained_collectors dataframe
-                        trained_collector = trained_collectors.loc[trained_collectors.index[current_collector_index]]
+                        trained_collector = trained_collectors.loc[current_collector_index]
 
                         # Locate the collector in the test_collectors dataframe using the id
-                        test_collector = test_collectors.query('id == ' + str(trained_collector.id))
-                        test_collector = test_collectors.loc[test_collector.index[0]]
+                        test_collector = test_collectors.loc[trained_collector.id]
 
                         # Check if the collector was detected
                         if test_collector['Detected'] == 0:
 
                             if test_collector['DiasAposInicioCiclo'] == -1:
+
                                 test_collectors.loc[test_collector.id, 'color'] = 'red'
                                 false_positive += 1
 
@@ -110,17 +110,17 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
 
                         infection_circles.append(infection_circle)
 
-                        current_collector_index += 1
+                        count += 1
 
                         if len(infection_circles) == len(trained_collectors):
                             break
-                        if current_collector_index == len(trained_collectors):
+                        if count == len(trained_collectors):
                             break
                     else:
                         break
                 else:
                     # If the collector was already detected, just skip it
-                    current_collector_index += 1
+                    count += 1
             else:
                 break
 
@@ -134,11 +134,19 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
 
                         test_collectors.loc[collector.Index, 'Detected'] = 1
 
+
                         trained_collector = trained_collectors.query('id == ' + str(collector.id))
+                        trained_collector_index = trained_collector.index[0]
+                        trained_collector = trained_collectors.loc[trained_collector_index]
 
-                        trained_collector = trained_collector.loc[trained_collector.index[0]]
+                        if trained_collector.id == collector.id:
+                            pass
+                        else:
+                            print('Error')
+                            print(trained_collector.id, collector.id)
+                            exit()
 
-                        if collector.Situacao == 'Com esporos':
+                        if collector.Situacao == 'Com esporos': # True positive
 
                             test_collectors.loc[collector.Index, 'color'] = 'green'
                             true_positive += 1
@@ -149,7 +157,7 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
 
                                     regions_days_error[k].append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
 
-                        else:
+                        else: # False positive
 
                             test_collectors.loc[collector.Index, 'color'] = 'red'
                             false_positive += 1
@@ -165,9 +173,14 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
                                 start_day + day
                             )
 
-                            trained_collectors.loc[trained_collector.index[0], 'Detected'] = 1
+                            trained_collectors.loc[trained_collector_index, 'Detected'] = 1
+
 
                             infection_circles.append(new_infection_circle)
+
+                        if trained_collectors.loc[trained_collector_index,'id'] != trained_collector.id:
+                            print('Error')
+                            exit()
         
         for infection_circle in infection_circles:
 

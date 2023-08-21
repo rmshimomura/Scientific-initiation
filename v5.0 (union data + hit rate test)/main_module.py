@@ -189,11 +189,17 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         if growth_type == 'CGNT':
 
-            true_positive, false_negative, regions_days_error = t.learning_based(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
+            true_positive, false_negative, regions_days_error = t.learning_based(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
 
         elif growth_type == 'CGT':
 
-            true_positive, false_negative, regions_days_error = t.learning_based(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
+            pass
+
+            # true_positive, false_negative, regions_days_error = t.learning_based(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
+
+        elif growth_type == 'MG':
+
+            true_positive, false_negative, regions_days_error = t.learning_based(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
 
         else:
 
