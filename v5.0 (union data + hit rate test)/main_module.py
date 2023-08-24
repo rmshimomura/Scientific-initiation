@@ -115,45 +115,46 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         elif growth_type == 'TG':
 
-            ''' [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Topology Test 
+            # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Topology Test 
 
             old_geometries = []
 
-            collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
-            collectors_instance.geo_df = _collectors_geo_df
-            collectors_instance.criaGrafo(_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
-            collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
+            trained_collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
+            trained_collectors_instance.geo_df = trained_collectors_geo_df
+            trained_collectors_instance.criaGrafo(trained_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
+            trained_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
 
-            # If the parameter is set to true, the buffers are generated in a weird way, that is incorrect
-            buffers = cria_buffers.geraBuffersCarrapichos(collectors_instance.topologiaCrescimentoDict.values(), 0.005, True)
-            _map.plot()
+            # TODO Daqui para baixo, seria mandar o trained_collectors_instance para a funcao de crescimento
 
-            for key, growth_topology in collectors_instance.topologiaCrescimentoDict.items():
+            # # If the parameter is set to true, the buffers are generated in a weird way, that is incorrect
+            # buffers = cria_buffers.geraBuffersCarrapichos(trained_collectors_instance.topologiaCrescimentoDict.values(), 0.005, False)
+            # _map.plot()
 
-                for segment in growth_topology.getSegments():
+            # for key, growth_topology in trained_collectors_instance.topologiaCrescimentoDict.items():
 
-                    seg = segment.seg
-                    plt.plot(*seg.xy, color='black', linewidth=0.5)
+            #     for segment in growth_topology.getSegments():
 
-            for _ in range(len(collectors_instance.geo_df)):
+            #         seg = segment.seg
+            #         plt.plot(*seg.xy, color='black', linewidth=0.5)
 
-                center_point = collectors_instance.geo_df.iloc[_].geometry
-                plt.scatter(center_point.x, center_point.y, color=collectors_instance.geo_df.iloc[_].color, s=5)
-                plt.annotate(_, (center_point.x, center_point.y), fontsize=5)
+            # for _ in range(len(trained_collectors_instance.geo_df)):
 
-            for _ in range(len(buffers)):
-                plt.plot(*buffers[_].exterior.xy, color='yellow', linewidth=0.5)
+            #     center_point = trained_collectors_instance.geo_df.iloc[_].geometry
+            #     plt.scatter(center_point.x, center_point.y, color=trained_collectors_instance.geo_df.iloc[_].color, s=5)
+            #     plt.annotate(_, (center_point.x, center_point.y), fontsize=5)
 
-            plt.show()
+            # for _ in range(len(buffers)):
+            #     plt.plot(*buffers[_].exterior.xy, color='yellow', linewidth=0.5)
 
-            first_apperances  = _collectors_geo_df[_collectors_geo_df['DiasAposInicioCiclo'] == _collectors_geo_df['DiasAposInicioCiclo'].min()]
+            # plt.show()
 
-            true_positive_penalty, infection_circles, method_used = \
-                gt.circular_growth(_map, _collectors_geo_df, first_apperances, old_geometries, TEST_PARAMS)
+            exit()
 
-            gt.topology_growth(_map, collectors_instance, old_geometries, TEST_PARAMS, plt)
+            # first_apperances  = trained_collectors_geo_df[trained_collectors_geo_df['DiasAposInicioCiclo'] == trained_collectors_geo_df['DiasAposInicioCiclo'].min()]
 
-            '''
+            # gt.topology_growth(_map, trained_collectors_instance, old_geometries, TEST_PARAMS, plt)
+
+            
 
 
         false_positive_penalty = utils.calculate_false_positives_penalty(test_collectors_geo_df, start_day + TEST_PARAMS['number_of_days'] - 1)
@@ -227,3 +228,6 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         )
 
         return metrics
+
+if __name__ == '__main__':
+    main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')

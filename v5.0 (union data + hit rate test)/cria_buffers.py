@@ -3,7 +3,9 @@ import math
 from shapely.geometry import Point
 from shapely.geometry import Polygon, LineString
 from shapely import affinity
-from coletores import GrowthTopology
+import coletores as col
+from geopandas import GeoSeries
+
 
 
 # Criação de Buffers a Partir de uma Topologia de Crescimento
@@ -52,7 +54,7 @@ def calculaTrianguloExpansaoPontaChata(segmento, r, rPonta):
 
     return bufferExpansao
 
-def criaCarrapicho(gt: GrowthTopology, proportR: float, comPontaChata: bool, rPonta: float):
+def criaCarrapicho(gt: col.GrowthTopology, proportR: float, comPontaChata: bool, rPonta: float):
     r = gt.r * proportR
     buffer = gt.center.buffer(r)
     segs = gt.getSegments()
@@ -100,7 +102,7 @@ def calculaElipseExpansao(segmento,r,minAspecRat = 0.2):
     b2 = affinity.rotate(elipse,ang,use_radians=True)
     return b2
 
-def criaAmora(gt: GrowthTopology, proportR: float = 0.1):
+def criaAmora(gt: col.GrowthTopology, proportR: float = 0.1):
     r = gt.r * proportR
     buffer = gt.center.buffer(r)
     segs = gt.getSegments()
@@ -120,7 +122,7 @@ def geraBuffersAmora(topol_cresc, proportR: float):
 # este tipo de buffer  e' primariamente para debug. Enfatiza os pontos de referencia
 # da topologia de crescimento
 
-def criaEsqueleto(gt: GrowthTopology):
+def criaEsqueleto(gt: col.GrowthTopology):
     r = gt.r / 1000
     buffer = gt.center.buffer(r)
     segs = gt.getSegments()
@@ -168,7 +170,7 @@ def calculaBufferMembroBoneco(seg, r1,r2, npassos: int):
         buffer = buffer.union(bufferI)
     return buffer
         
-def criaBonecoMichelin(gt: GrowthTopology, r1: float, r2: float):
+def criaBonecoMichelin(gt: col.GrowthTopology, r1: float, r2: float):
     segs = gt.getSegments()
     buffer = gt.center.buffer(r1)
     for (largSeg,seg) in segs:
@@ -188,3 +190,48 @@ def geraBuffersBonecosMichelin(topol_cresc, r1: float, r2: float):
         buffs.append(buf)
     return buffs
 
+
+
+
+# Crescimento
+def funcProduzCarrapichos(fator,comPontaChata=False,rPonta=0.000001):
+    return lambda topol_cresc: geraBuffersCarrapichos(topol_cresc,fator, comPontaChata, rPonta)
+
+def funcProduzBonecosMichelin(r1: float, r2: float):
+    return lambda topol_cresc: geraBuffersBonecosMichelin(topol_cresc,r1,r2)
+    
+def criaBuffers(topol_crescDict, funcProduzBuffer):
+ 
+    topol_cresc = topol_crescDict.values()
+    idx =  topol_crescDict.keys()
+    bufs = funcProduzBuffer(topol_cresc)
+    bufs_gs = GeoSeries(bufs,idx) 
+                    
+    return (bufs_gs)    
+
+def simulaCrescimento(coletores_ja_detectados : list, f, fLarg, numero_dias = 10, diasPorIntervalo=1):
+
+    fProduzBuffers = funcProduzCarrapichos(0.05,True,0.00001)
+
+    # TODO: trocar por dias de cada coletor
+    # incremento = 1.0 + f(d)
+    # incrementoLarg = 1.0 + fLarg(d)
+    # coletores.expand(incremento,incrementoLarg)
+
+    ''' TODO
+    Trocar por:
+    gt.growTopology(incremento, incrementoLarg) com proporcoes para cada um dos coletores que foram detectados ja
+    Cada coletor vai ter uma quantidade de dias de crescimento diferentes
+    '''
+
+
+    return criaBuffers(coletores_ja_detectados.topologiaCrescimentoDict, fProduzBuffers)
+    
+    #PARA CADA COLETOR coletorDestino QUE FOR TOCADO POR ALGUM BUFFER DE ALGUM COLETOR coletorOrigem FACA
+    #   topologiaColetor = GrowGeometry(Point(coletorDestino.x, coletorDestino.y), rai)  # se primeiro toque
+    #   seja a reta r que passa por coletorOrigem e coletorDestino,
+    #      seja p o ponto em r a uma distancia rai depois de coletorDestino
+    #      seja pMax o ponto em r a uma distancia rpc depois do coletorDestino
+    #   topologiaColetor.addSegment( p, pMax):
+    
+    
