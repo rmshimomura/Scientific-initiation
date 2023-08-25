@@ -11,60 +11,50 @@ if __name__ == "__main__":
     # bases = [1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300]
 
     bases = [
-        100000000,
-        90000000,
-        80000000,
-        70000000,
-        60000000,
-        50000000,
-        40000000,
-        30000000,
-        20000000,
-        10000000,
-        9000000,
-        8000000,
-        7000000,
-        6000000,
-        5000000,
-        4000000,
-        3000000,
-        2000000,
-        1000000,
-        900000,
-        800000,
-        700000,
-        600000,
-        500000,
-        400000,
-        300000,
-        200000,
-        100000,
+        # 807003392603.5468,  # 20km
+        3353515271.3289995, # 25km
+        86679601.69000001,  # 30km
+        6366910.974999996,  # 35km
+        898333.6750000002,  # 40km
+        195859.48300000007, # 45km
+        57909.54299999999,  # 50km
+        21368.440999999988, # 55km
+        9310.188000000004,  # 60km
     ]
 
     metrics = []
 
-    operation_mode = 'test'
+    operation_mode = 'parameter_search'
 
-    growth_type = 'MG'
+    growth_type = 'CGT'
 
     for base in bases:
         args_list = [
 
-            # [base, number_of_days, None, 'coletoressafra2021_31_23', operation_mode, growth_type],
-            # [base, number_of_days, None, 'coletoressafra2122_31_23', operation_mode, growth_type],
-            # [base, number_of_days, None, 'coletoressafra2223_31_23', operation_mode, growth_type]
+            [base, number_of_days, None, 'coletoressafra2021_31_23', operation_mode, growth_type, 7],
+            [base, number_of_days, None, 'coletoressafra2122_31_23', operation_mode, growth_type, 7],
+            [base, number_of_days, None, 'coletoressafra2223_31_23', operation_mode, growth_type, 7],
 
-            [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', operation_mode, growth_type],
-            [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2122_31_23', operation_mode, growth_type],
-            [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2223_31_23', operation_mode, growth_type],
+            [base, number_of_days, None, 'coletoressafra2021_31_23', operation_mode, growth_type, 8],
+            [base, number_of_days, None, 'coletoressafra2122_31_23', operation_mode, growth_type, 8],
+            [base, number_of_days, None, 'coletoressafra2223_31_23', operation_mode, growth_type, 8],
 
-            [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2021_31_23', operation_mode, growth_type],
-            [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2122_31_23', operation_mode, growth_type],
-            [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2223_31_23', operation_mode, growth_type],
+            [base, number_of_days, None, 'coletoressafra2021_31_23', operation_mode, growth_type, 9],
+            [base, number_of_days, None, 'coletoressafra2122_31_23', operation_mode, growth_type, 9],
+            [base, number_of_days, None, 'coletoressafra2223_31_23', operation_mode, growth_type, 9],
 
-            [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2021_31_23', operation_mode, growth_type],
-            [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2122_31_23', operation_mode, growth_type],
-            [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2223_31_23', operation_mode, growth_type]
+
+            # [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', operation_mode, growth_type],
+            # [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2122_31_23', operation_mode, growth_type],
+            # [base, number_of_days, 'arithmetic_mean_31_23', 'coletoressafra2223_31_23', operation_mode, growth_type],
+
+            # [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2021_31_23', operation_mode, growth_type],
+            # [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2122_31_23', operation_mode, growth_type],
+            # [base, number_of_days, 'geometric_mean_31_23', 'coletoressafra2223_31_23', operation_mode, growth_type],
+
+            # [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2021_31_23', operation_mode, growth_type],
+            # [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2122_31_23', operation_mode, growth_type],
+            # [base, number_of_days, 'harmonic_mean_31_23', 'coletoressafra2223_31_23', operation_mode, growth_type]
 
             # [base, number_of_days, '2021-2122', 'coletoressafra2223_31_23', operation_mode, growth_type],
             # [base, number_of_days, '2021-2223', 'coletoressafra2122_31_23', operation_mode, growth_type],
@@ -109,8 +99,13 @@ if __name__ == "__main__":
     elif operation_mode == 'parameter_search':
 
         if not os.path.exists(f'results_{growth_type}.csv'):
+
             f = open(f'results_{growth_type}.csv', 'w', encoding='utf-8')
-            f.write(f"{'Method,Number of Days,Distance function,Days function,Base,Train file used,Test file used,TPP,TNP,FPP,FNP'}\n")
+
+            if growth_type == 'CGT':
+                f.write(f"{'Method,Number of Days,Distance function,Days function,Base,Train file used,Test file used,TPP,TNP,FPP,FNP,number_of_starting_points'}\n")
+            else:
+                f.write(f"{'Method,Number of Days,Distance function,Days function,Base,Train file used,Test file used,TPP,TNP,FPP,FNP'}\n")
             f.close()
         
         f = open(f'results_{growth_type}.csv', 'a', encoding='utf-8')

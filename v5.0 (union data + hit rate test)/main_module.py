@@ -62,7 +62,7 @@ def read_basic_info(train_file, test_file):
 
     return trained_collectors_geo_df, test_collectors_geo_df
 
-def main(base, number_of_days, train_file, test_file, operation_mode, growth_type):
+def main(base, number_of_days, train_file, test_file, operation_mode, growth_type, number_of_starting_points=1):
 
     global _map, regions, regions_names
 
@@ -102,7 +102,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             old_geometries = []
 
             true_positive_penalty, infection_circles, method_used = \
-                gt.circular_growth_touch(_map, test_collectors_geo_df, old_geometries, TEST_PARAMS)
+                gt.circular_growth_touch(_map, test_collectors_geo_df, old_geometries, number_of_starting_points, TEST_PARAMS)
 
         elif growth_type == 'MG':
 
@@ -168,6 +168,11 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         print(f"True negative penalty: {true_negative_penalty}")
         print(f"False positive penalty: {false_positive_penalty}")
         print(f"False negative penalty: {false_negative_penalty}")
+        print(f"Method used: {method_used}")
+        if growth_type == 'CGT':
+            print(f"Number of starting points: {number_of_starting_points}")
+
+        print("\n")
         
         results_metrics = [
             method_used,
@@ -180,11 +185,13 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             true_positive_penalty,
             true_negative_penalty,
             false_positive_penalty,
-            false_negative_penalty
+            false_negative_penalty,
         ]
 
-        return results_metrics
+        if growth_type == 'CGT':
+            results_metrics.append(number_of_starting_points)
 
+        return results_metrics
 
     elif operation_mode == 'test':
 
@@ -230,4 +237,5 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         return metrics
 
 if __name__ == '__main__':
-    main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')
+    # main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')
+    main(3353515271.3289995, 137, None, 'coletoressafra2021_31_23', 'parameter_search', 'CGT', 5)
