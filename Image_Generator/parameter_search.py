@@ -4,7 +4,7 @@ import pandas as pd
 method = 'MG'
 
 # Importing the dataset
-info = pd.read_csv(f'G:/My Drive/IC/Codes/results_{method}.csv', sep=',', decimal='.')
+info = pd.read_csv(f'G:/My Drive/IC/Codes/Results/Search_for_parameter/results_{method}.csv', sep=',', decimal='.')
 
 valid = info.sort_values(by=['Base'])
 
