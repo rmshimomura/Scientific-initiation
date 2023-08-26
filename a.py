@@ -1,40 +1,42 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+cgnt_data = pd.read_csv('results_CGNT.csv', sep=',', decimal='.')
+mg_data = pd.read_csv('results_MG.csv', sep=',', decimal='.')
 
-data = pd.read_csv('./Results/Search_for_parameter/results_CGT.csv', sep=',', decimal='.')
+cgnt_data.sort_values(by=['Radius'], inplace=True)
+mg_data.sort_values(by=['Radius'], inplace=True)
 
-data.sort_values(by=['number_of_starting_points'], inplace=True)
+cgnt_data_2021 = cgnt_data[cgnt_data['Test file used'] == 'coletoressafra2021_31_23']
+cgnt_data_2122 = cgnt_data[cgnt_data['Test file used'] == 'coletoressafra2122_31_23']
+cgnt_data_2223 = cgnt_data[cgnt_data['Test file used'] == 'coletoressafra2223_31_23']
 
-data = data[data['Base'] == 9310.188000000004]
+mg_data_2021 = mg_data[mg_data['Test file used'] == 'coletoressafra2021_31_23']
+mg_data_2122 = mg_data[mg_data['Test file used'] == 'coletoressafra2122_31_23']
+mg_data_2223 = mg_data[mg_data['Test file used'] == 'coletoressafra2223_31_23']
 
-data_2021 = data[data['Test file used'] == 'coletoressafra2021_31_23']
-data_2122 = data[data['Test file used'] == 'coletoressafra2122_31_23']
-data_2223 = data[data['Test file used'] == 'coletoressafra2223_31_23']
+fig = plt.figure(figsize=(10, 6))
 
-fig = plt.figure(figsize=(1920/100, 1080/100))
+# plt.plot(cgnt_data_2021['Radius'], cgnt_data_2021['TPP'], '*-', label='CGNT-TPP-2021', markersize=10)
+# plt.plot(cgnt_data_2122['Radius'], cgnt_data_2122['TPP'], '*-', label='CGNT-TPP-2122', markersize=10)
+plt.plot(cgnt_data_2223['Radius'], cgnt_data_2223['TPP'], '*-', label='CGNT-TPP-2223', markersize=10)
 
-plt.plot(data_2021['number_of_starting_points'], data_2021['TPP'], '*-.', label='TPP-2021', markersize=10)
-plt.plot(data_2122['number_of_starting_points'], data_2122['TPP'], '*-.', label='TPP-2122', markersize=10)
-plt.plot(data_2223['number_of_starting_points'], data_2223['TPP'], '*-.', label='TPP-2223', markersize=10, color='black')
+# plt.plot(mg_data_2021['Radius'], mg_data_2021['TPP'], '^--', label='MG-TPP-2021', markersize=10)
+# plt.plot(mg_data_2122['Radius'], mg_data_2122['TPP'], '^--', label='MG-TPP-2122', markersize=10)
+plt.plot(mg_data_2223['Radius'], mg_data_2223['TPP'], '^--', label='MG-TPP-2223', markersize=10)
 
-plt.plot(data_2021['number_of_starting_points'], data_2021['FPP'], 'o-', label='FPP-2021')
-plt.plot(data_2122['number_of_starting_points'], data_2122['FPP'], 'o-', label='FPP-2122')
-plt.plot(data_2223['number_of_starting_points'], data_2223['FPP'], 'o-', label='FPP-2223')
+# plt.plot(cgnt_data_2021['Radius'], cgnt_data_2021['FPP'], 'o-', label='CGNT-FPP-2021')
+# plt.plot(cgnt_data_2122['Radius'], cgnt_data_2122['FPP'], 'o-', label='CGNT-FPP-2122')
+plt.plot(cgnt_data_2223['Radius'], cgnt_data_2223['FPP'], 'o-', label='CGNT-FPP-2223')
 
-plt.plot(data_2021['number_of_starting_points'], data_2021['FNP'], 'o--', label='FNP-2021')
-plt.plot(data_2122['number_of_starting_points'], data_2122['FNP'], 'o--', label='FNP-2122')
-plt.plot(data_2223['number_of_starting_points'], data_2223['FNP'], 'o--', label='FNP-2223', color='darkblue')
+# plt.plot(mg_data_2021['Radius'], mg_data_2021['FPP'], 'o--', label='MG-FPP-2021')
+# plt.plot(mg_data_2122['Radius'], mg_data_2122['FPP'], 'o--', label='MG-FPP-2122')
+plt.plot(mg_data_2223['Radius'], mg_data_2223['FPP'], 'o--', label='MG-FPP-2223')
 
-plt.xlabel('Number of starting points')
+plt.xlabel('Max radius (km)')
 plt.ylabel('Penalty')
 
-plt.title('Circular Growth Touch - Max radius of 60km')
-
-plt.plot([3], [0], 'o', color='red', fillstyle='none', markersize=25, markeredgewidth=3)
-plt.annotate('Point where all collectors\nhave been found (FNP == 0)', xy=(3, 0), xytext=(3, 20), arrowprops=dict(facecolor='black', shrink=0.05), horizontalalignment='center', verticalalignment='top')
-plt.axvspan(3.9, 4.1, alpha=0.3, color='red', hatch='//')
-plt.annotate('Chosen k', xy=(4.1, 10), xytext=(5, 10.7), arrowprops=dict(facecolor='black', shrink=0.05), horizontalalignment='center', verticalalignment='top')
+plt.title('Penalties:\nCircular Growth Touch vs Mixed Growth (2223)')
 
 plt.legend()
-fig.savefig('./Results/Search_for_parameter/CGT_results.png', dpi=100, bbox_inches='tight')
+fig.savefig('CGNT_VS_MG_penalties_2223.png', dpi=300, bbox_inches='tight')

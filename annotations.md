@@ -67,6 +67,10 @@ Diagonal: 31.2539667553344 km
 
 - Base ideal para chegar a um raio de 50km: 57909.54299999999 - 50.00000006856275km
 
+- Base ideal para chegar a um raio de 55km: 21368.440999999988 - 55.00000025810737km
+
+- Base ideal para chegar a um raio de 60km: 9310.188000000004 - 60.000000041480114km
+
 No arquivo de testes, os erros são calculados majoritariamente da seguinte forma:
 
 test_collector['DiasAposInicioCiclo'] - (start_day + day)
