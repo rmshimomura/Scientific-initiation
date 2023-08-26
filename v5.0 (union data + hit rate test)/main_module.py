@@ -27,8 +27,6 @@ number_of_days = 137
 
 _map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
-regions, regions_names = utils.generate_regions(_map)
-
 metrics = []
 
 def read_basic_info(train_file, test_file):
@@ -40,18 +38,25 @@ def read_basic_info(train_file, test_file):
 
     if train_file is not None:
         # Read collectors file
-        trained_collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Gridded_Data/Trained_Data/all_together/' + train_file + '.csv', sep=',', decimal='.', infer_datetime_format=True)
+        trained_collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Gridded_Data/' + train_file + '.csv', sep=',', decimal='.', infer_datetime_format=True)
         trained_geometry = [sg.Point(x,y) for x,y in zip(trained_collectors.LongitudeDecimal, trained_collectors.LatitudeDecimal)]
         trained_collectors_geo_df = gpd.GeoDataFrame(trained_collectors, geometry=trained_geometry)
         trained_collectors_geo_df['discovery_day'] = None
         trained_collectors_geo_df['circle_created'] = 0
         trained_collectors_geo_df['id'] = trained_collectors_geo_df.index
-        trained_collectors_geo_df = trained_collectors_geo_df.sort_values(by=['MediaDiasAposInicioCiclo'])
+
+        if 'MediaDiasAposInicioCiclo' in trained_collectors_geo_df.columns:
+
+            trained_collectors_geo_df = trained_collectors_geo_df.sort_values(by=['MediaDiasAposInicioCiclo'])
+        
+        else:
+            trained_collectors_geo_df = trained_collectors_geo_df.sort_values(by=['DiasAposInicioCiclo'])
+
         trained_collectors_geo_df = utils.clean_up(trained_collectors_geo_df)
         trained_collectors_geo_df.loc[trained_collectors_geo_df['Situacao'] == 'Com esporos', 'color'] = 'green'
         trained_collectors_geo_df.loc[trained_collectors_geo_df['Situacao'] == 'Encerrado sem esporos', 'color'] = 'red'
 
-    test_collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Gridded_Data/Test_Data/' + test_file + '.csv', sep=',', decimal='.', infer_datetime_format=True)
+    test_collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Gridded_Data/' + test_file + '.csv', sep=',', decimal='.', infer_datetime_format=True)
     test_geometry = [sg.Point(x,y) for x,y in zip(test_collectors.LongitudeDecimal, test_collectors.LatitudeDecimal)]
     test_collectors_geo_df = gpd.GeoDataFrame(test_collectors, geometry=test_geometry)
     test_collectors_geo_df = utils.clean_up(test_collectors_geo_df)
@@ -64,7 +69,7 @@ def read_basic_info(train_file, test_file):
 
 def main(base, number_of_days, train_file, test_file, operation_mode, growth_type, number_of_starting_points=1):
 
-    global _map, regions, regions_names
+    global _map
 
     TEST_PARAMS = {
         'number_of_days' : number_of_days,
@@ -77,7 +82,6 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         'raio_de_possivel_contaminacao' : 0.5,
         'train_file' : train_file,
         'test_file' : test_file,
-        'regions' : regions,
     }
 
     trained_collectors_geo_df, test_collectors_geo_df = read_basic_info(train_file, test_file)
@@ -197,40 +201,36 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         if growth_type == 'CGNT':
 
-            true_positive, false_negative, regions_days_error = t.learning_based(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
+            true_positive, false_negative, days_error = t.learning_based(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
 
         elif growth_type == 'CGT':
 
             pass
 
-            # true_positive, false_negative, regions_days_error = t.learning_based(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
+            true_positive, false_negative, days_error = t.normal_testing(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, number_of_starting_points)
 
         elif growth_type == 'MG':
 
-            true_positive, false_negative, regions_days_error = t.learning_based(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
+            true_positive, false_negative, days_error = t.learning_based(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
 
         else:
 
             print("Testing not implemented yet")
             exit(1)
 
-        total_error_sum = sum(regions_days_error[0]) + sum(regions_days_error[1]) + sum(regions_days_error[2]) + sum(regions_days_error[3])
+        error_sum = sum(days_error)
 
-        total_error_mean = total_error_sum / (len(regions_days_error[0]) + len(regions_days_error[1]) + len(regions_days_error[2]) + len(regions_days_error[3]))
+        error_mean = error_sum / (len(days_error))
 
-        total_error_max = max(max(regions_days_error[0]), max(regions_days_error[1]), max(regions_days_error[2]), max(regions_days_error[3]))
+        error_max = max(days_error)
 
-        total_error_min = min(min(regions_days_error[0]), min(regions_days_error[1]), min(regions_days_error[2]), min(regions_days_error[3]))
+        error_min = min(days_error)
 
-        total_error_std = np.std(regions_days_error[0] + regions_days_error[1] + regions_days_error[2] + regions_days_error[3])
-
+        error_std = np.std(days_error)
+        
         metrics.append(
             [TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, number_of_days, true_positive, false_negative, 
-            sum(regions_days_error[0]) / len(regions_days_error[0]), sum(regions_days_error[1]) / len(regions_days_error[1]), sum(regions_days_error[2]) / len(regions_days_error[2]), sum(regions_days_error[3]) / len(regions_days_error[3]),
-            max(regions_days_error[0]), max(regions_days_error[1]), max(regions_days_error[2]), max(regions_days_error[3]),
-            min(regions_days_error[0]), min(regions_days_error[1]), min(regions_days_error[2]), min(regions_days_error[3]),
-            np.std(regions_days_error[0]),np.std(regions_days_error[1]),np.std(regions_days_error[2]),np.std(regions_days_error[3]),
-            total_error_mean, total_error_max, total_error_min, total_error_std,
+            error_mean, error_max, error_min, error_std,
             len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))]
         )
 
@@ -238,4 +238,4 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
 if __name__ == '__main__':
     # main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')
-    main(3353515271.3289995, 137, None, 'coletoressafra2021_31_23', 'parameter_search', 'CGT', 5)
+    main(9310.188000000004, 137, '/Test_Data/coletoressafra2021_31_23', '/Test_Data/coletoressafra2122_31_23', 'test', 'CGT', 4)

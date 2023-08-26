@@ -10,8 +10,7 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
     infection_circles = []
     start_day = positive_collectors['MediaDiasAposInicioCiclo'].iloc[0]
 
-    # North, East, South, West
-    regions_days_error = [[],[],[],[]]
+    days_error = []
 
     true_positive = 0
     false_positive = 0
@@ -40,11 +39,7 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
 
             true_positive += 1
 
-            for j in range(len(TEST_PARAMS['regions'])):
-
-                if Point(test_collector.LongitudeDecimal, test_collector.LatitudeDecimal).within(TEST_PARAMS['regions'][j]):
-
-                    regions_days_error[j].append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
+            days_error.append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
 
         trained_collectors.loc[first_appearances.index[k], 'Detected'] = 1
         trained_collectors.loc[first_appearances.index[k], 'circle_created'] = 1
@@ -94,11 +89,7 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
 
                                 true_positive += 1
 
-                                for k in range(len(TEST_PARAMS['regions'])):
-
-                                    if Point(test_collector.LongitudeDecimal, test_collector.LatitudeDecimal).within(TEST_PARAMS['regions'][k]):
-
-                                        regions_days_error[k].append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
+                                days_error.append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
 
                             test_collectors.loc[test_collector.id, 'Detected'] = 1
                             
@@ -151,11 +142,7 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
                             test_collectors.loc[collector.Index, 'color'] = 'green'
                             true_positive += 1
 
-                            for k in range(len(TEST_PARAMS['regions'])):
-
-                                if Point(test_collector.LongitudeDecimal, test_collector.LatitudeDecimal).within(TEST_PARAMS['regions'][k]):
-
-                                    regions_days_error[k].append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
+                            days_error.append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
 
                         else: # False positive
 
@@ -198,4 +185,139 @@ def learning_based(trained_collectors: pd.DataFrame, test_collectors: pd.DataFra
 
     # plots.save_fig_on_day(_map, test_collectors, infection_circles, [], start_day, TEST_PARAMS['number_of_days'], None, None, TEST_PARAMS)
 
-    return true_positive, false_positive, regions_days_error
+    return true_positive, false_positive, days_error
+
+def normal_testing(base_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict, number_of_starting_points=4):
+
+    base_collectors.sort_values(by=['DiasAposInicioCiclo'], inplace=True)
+    positive_collectors = base_collectors.query('DiasAposInicioCiclo != -1')
+    first_k_appearances = positive_collectors[0:number_of_starting_points]
+    infection_circles = []
+    start_day = positive_collectors['DiasAposInicioCiclo'].iloc[0]
+
+    # North, East, South, West
+    days_error = []
+    true_positive = 0
+    false_positive = 0
+
+    count = 0
+
+    for day in range(TEST_PARAMS['number_of_days']):
+
+        # Create the k first infection circles on the correct day
+        while True:
+
+            if count < len(first_k_appearances):
+
+                current_collector_index = first_k_appearances.index[count]
+
+                if base_collectors.loc[current_collector_index, 'circle_created'] == 0:
+
+                    if start_day + day >= base_collectors.loc[current_collector_index, 'DiasAposInicioCiclo']:
+
+                        infection_circle = Infection_Circle(
+                            Point(base_collectors.loc[current_collector_index, 'LongitudeDecimal'], base_collectors.loc[current_collector_index,'LatitudeDecimal']),
+                            1,
+                            start_day + day
+                        )
+
+                        base_collector = base_collectors.loc[current_collector_index]
+
+                        test_collector = test_collectors.loc[base_collector.id]
+
+                        if test_collector['Detected'] == 0:
+
+                            if test_collector['DiasAposInicioCiclo'] == -1:
+                                test_collectors.loc[test_collector.id, 'color'] = 'red'    
+                                false_positive += 1
+                            else:
+                                test_collectors.loc[test_collector.id, 'color'] = 'green'
+
+                                true_positive += 1
+
+                                days_error.append(test_collector['DiasAposInicioCiclo'] - base_collector['DiasAposInicioCiclo'])
+
+                            test_collectors.loc[test_collector.id, 'Detected'] = 1
+                        
+                        base_collectors.loc[current_collector_index, 'Detected'] = 1
+
+                        if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
+                            print('Error')
+                            exit()
+
+                        infection_circles.append(infection_circle)
+                        
+                        count += 1
+
+                        if count == len(first_k_appearances) or len(infection_circles) == len(base_collectors):
+                            break
+                    else:
+                        break
+                else:
+                    count += 1
+            else:
+                break
+
+        for infection_circle in infection_circles:
+
+            for collector in test_collectors.itertuples():
+
+                if collector.Detected == 0:
+
+                    if infection_circle.circle.contains(Point(collector.LongitudeDecimal, collector.LatitudeDecimal)):
+
+                        test_collectors.loc[collector.Index, 'Detected'] = 1
+
+                        base_collector = base_collectors.query('id == ' + str(collector.id))
+                        base_collector_index = base_collector.index[0]
+                        base_collector = base_collectors.loc[base_collector_index]
+
+                        if base_collector.id == collector.id:
+                            pass
+                        else:
+                            print('Error')
+                            print(base_collector.id, collector.id)
+                            exit()
+                        
+                        if collector.Situacao == 'Com esporos': # True positive
+
+                            test_collectors.loc[collector.Index, 'color'] = 'green'
+                            true_positive += 1
+                            days_error.append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
+                        else:
+                            test_collectors.loc[collector.Index, 'color'] = 'red'
+                            false_positive += 1
+                        
+                        if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
+                            print('Error, hit + miss != len(test_collectors.query(\'Detected == 1\'))')
+                            exit()
+
+                        new_infection_circle = Infection_Circle(
+                            Point(collector.LongitudeDecimal, collector.LatitudeDecimal),
+                            1, 
+                            start_day + day
+                        )
+
+                        base_collectors.loc[base_collector_index, 'Detected'] = 1
+
+                        infection_circles.append(new_infection_circle)
+
+                        if base_collectors.loc[base_collector_index,'id'] != base_collector.id:
+                            print('Error')
+                            exit()
+        
+        for infection_circle in infection_circles:
+                
+                infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
+
+    # All the collectors that were not detected but had spores, change their color to yellow
+    for collector in test_collectors.itertuples():
+                
+        if collector.Detected == 0:
+
+            if collector.Situacao == 'Com esporos':
+
+                test_collectors.loc[collector.Index, 'color'] = 'yellow'
+                test_collectors.loc[collector.Index, 'format_shape'] = '*'
+                
+    return true_positive, false_positive, days_error
