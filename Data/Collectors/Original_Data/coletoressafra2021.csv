@@ -1,0 +1,250 @@
+Macro,Regiao,Cidade,Produtor-Instituicao,Cultivar,Situacao,Primeiro_Esporo,Estadio Fenologico,LongitudeDecimal,LatitudeDecimal,Dias_apos_O0
+Norte,Londrina,Rolandia,Renato / IDR-Parana,BMX Potencia RR,Com esporos,11/12/20,V2,-51.4721866823958,-23.1838722513043,0
+Norte,Londrina,Ibipora,Zelindo Fernandes,BMX Potencia RR,Com esporos,11/12/20,V1,-50.9688991560185,-23.1808556429006,0
+Norte,Londrina,Tamarana,Rogerio Martins da Silva,,Com esporos,11/12/20,V8,-51.048526880485,-23.7290592665174,0
+Oeste,Cascavel,Catanduvas,Maria de Lourdes Loureiro Bordim,DM53i54,Com esporos,15/12/20,R5.1,-53.1112956149411,-25.0979941354739,4
+Centro Sul,Ponta Grossa,Arapoti,Evandro Pontes de Oliveira,NA 5909 RG,Com esporos,17/12/20,R1,-49.8919884505616,-24.0914235035692,6
+Oeste,Cascavel,Ceu Azul,Jose Paulo Zanoni,59I60 RSF IPRO,Com esporos,18/12/20,R3,-53.9347999061987,-25.1456374657525,7
+Centro Sul,Ponta Grossa,Senges,Lucio Kasmierczak,M5917 IPRO,Com esporos,18/12/20,R2,-49.4273050390439,-24.1113689312157,7
+Centro,Laranjeiras do Sul,Quedas do Iguacu,Celestino Bunkovski/IDR-Parana,50I52 RSF IPRO,Com esporos,22/12/20,R3,-52.9779785826274,-25.4093528076126,11
+Oeste,Cascavel,Boa Vista da Aparecida,ILISEU BERTI,5958 RSF IPRO,Com esporos,23/12/20,R5.1,-53.4486589349029,-25.4404232850779,12
+Oeste,Cascavel,Tres Barras do Parana,Edson Refati,55I57 RSF IPRO,Com esporos,23/12/20,R5.1,-53.2100650118142,-25.4521161271276,12
+Oeste,Cascavel,Cascavel,Rogerio Baraba / IDR-Parana,58I60 RSF IPRO,Com esporos,23/12/20,R5.1,-53.3444703417379,-25.1511472359322,12
+Sudoeste,Francisco Beltrao,Capanema,Jair Kipper,58I60 RSF IPRO,Com esporos,23/12/20,R4,-53.8519668590125,-25.679307901009,12
+Centro,Laranjeiras do Sul,Laranjeiras do Sul,Luiz Otavio Mendes Ferreira,55I57 RSF IPRO,Com esporos,28/12/20,R5.1,-52.3420813544239,-25.3407727679674,17
+Sudoeste,Pato Branco,Mariopolis,Roni Marcarini,95Y52,Com esporos,28/12/20,R5.1,-52.5606736955997,-26.2974005256775,17
+Oeste,Cascavel,Vera Cruz do Oeste,Marcelo Bianchini,59I60 RSF IPRO,Com esporos,29/12/20,R3,-53.9094127438477,-25.0007070458637,18
+Oeste,Cascavel,Vera Cruz do Oeste,JOSE ODAIR HESPANHOL MALANOTE,BS 2606 IPRO,Com esporos,29/12/20,R3,-53.921039733043,-25.0338478413547,18
+Oeste,Cascavel,Vera Cruz do Oeste,NELSON DIAS,58I60 RSF IPRO,Com esporos,29/12/20,R3,-53.9501083963499,-24.9940938375596,18
+Oeste,Cascavel,Vera Cruz do Oeste,Ivan Coltro,NA 5909 RG,Com esporos,29/12/20,R3,-53.9216849191044,-24.9987879465687,18
+Oeste,Cascavel,Vera Cruz do Oeste,Laercio Kliemann,FTR 2155 RR,Com esporos,29/12/20,R4,-54.0073979282265,-24.9695587357694,18
+Centro Sul,Irati,Guamiranga,MURILO JOaO CHIARADIA,95R95 IPRO,Com esporos,30/12/20,R3,-50.8468228456257,-25.1361287942026,19
+Centro Sul,Uniao da Vitoria,Paula Freitas,Jose Severiano Procaylo,BMX ATIVA RR,Com esporos,30/12/20,R3,-50.8225951526724,-26.121351933535,19
+Oeste,Cascavel,Serranopolis do Iguacu,Diego Daronch,59I60 RSF IPRO,Com esporos,31/12/20,R5.1,-54.0084774397287,-25.4128964874009,20
+Centro Sul,Uniao da Vitoria,Paulo Frontin,Urbano Reisdorfer,TMG 7061 IPRO,Com esporos,31/12/20,V9,-50.8043355493585,-26.0221005076796,20
+Centro Sul,Uniao da Vitoria,Paulo Frontin,Adriano Duma / IDR-Parana,BS 2606 IPRO,Com esporos,31/12/20,R1,-50.7550100871054,-26.0243911238504,20
+Sudoeste,Francisco Beltrao,Capanema,Lauri Ferrari,CZ26B42 IPRO,Com esporos,03/01/21,R5.3,-53.747395899673,-25.6122481260618,23
+Oeste,Toledo,Terra Roxa,Claudio Dalazem,64I61 RSF IPRO,Com esporos,04/01/21,R4,-54.0222673035455,-24.2040272042407,24
+Centro,Laranjeiras do Sul,Laranjeiras do Sul,Maico Cesar Favaretto,55I57 RSF IPRO,Com esporos,04/01/21,R3,-52.4022697990914,-25.4395659672639,24
+Oeste,Cascavel,Ceu Azul,Edmar Dallastra,5958 RSF IPRO,Com esporos,04/01/21,R4,-53.7969118625984,-25.0990904218884,24
+Metropolitana,Curitiba,Lapa,Emerson Klein,TMG 7061 IPRO,Com esporos,04/01/21,R1,-49.833720577036,-25.6482637767012,24
+Norte,Londrina,Cambe,Roberto Schulz/IDR-Parana,NA 5909 RG,Com esporos,04/01/21,R4,-51.2734266207502,-23.3188636965985,24
+Centro,Laranjeiras do Sul,Espigao Alto do Iguacu,Dirceu Passaia/IDR-Parana,58I60 RSF IPRO,Com esporos,04/01/21,R4,-52.7544585818484,-25.3876171987681,24
+Centro,Laranjeiras do Sul,Porto Barreiro,Fabio Marquardt,50I52 RSF IPRO,Com esporos,04/01/21,R5.4,-52.4846991678855,-25.6373289887746,24
+Centro,Laranjeiras do Sul,Nova Laranjeiras,Edson Paulo Dalcortivo,57HO123 TP IPRO,Com esporos,04/01/21,R3,-52.5191915074533,-25.3265115871791,24
+Centro,Laranjeiras do Sul,Rio Bonito do Iguacu,Tiailis Luiz Rodio,55I57 RSF IPRO,Com esporos,04/01/21,R3,-52.5263655002292,-25.5600863824263,24
+Oeste,Toledo,Guaira,Zinaldo da Rocha,95R95 IPRO,Com esporos,04/01/21,R3,-54.1997961071058,-24.1588065271179,24
+Oeste,Cascavel,Catanduvas,Voldinei Schliclkmann Oenning,DMario 58i,Com esporos,05/01/21,R5.1,-53.1676816139735,-25.2000855274817,25
+Oeste,Cascavel,Vera Cruz do Oeste,Silvano Batista Masero,BS 2606 IPRO,Com esporos,05/01/21,R4,-53.8499253583104,-25.0501010310576,25
+Oeste,Cascavel,Ceu Azul,Enio Kafer,58I60 RSF IPRO,Com esporos,05/01/21,R5.1,-53.8701511500271,-25.1348948071422,25
+Sudoeste,Pato Branco,Vitorino,Jocemar Martinelo,95R51,Com esporos,05/01/21,R5.4,-52.7716060745377,-26.2984799694617,25
+Sudoeste,Pato Branco,Itapejara D Oeste,Gilson Dariva,58I60 RSF IPRO,Com esporos,06/01/21,R4,-52.8091160153006,-25.9757147308991,26
+Sudoeste,Francisco Beltrao,Realeza,Coronelio Siedlecki,95R90 IPRO,Com esporos,06/01/21,R5.2,-53.5378844570765,-25.7222952902898,26
+Norte,Ivaipora,Cruzmaltina,Oswaldo Paulino da Costa Junior,95R95 IPRO,Com esporos,06/01/21,R3,-51.435727217176,-23.9402787026938,26
+Sudoeste,Dois Vizinhos,Sao Jorge D Oeste,Valdir Agostini,BRS 1003 IPRO,Com esporos,06/01/21,R5.1,-52.8523457636438,-25.679457049886,26
+Sudoeste,Dois Vizinhos,Nova Prata do Iguacu,Valmor Dal Bello,CZ15B70 IPRO,Com esporos,06/01/21,R5.1,-53.4297376707601,-25.5749804106177,26
+Sudoeste,Dois Vizinhos,Boa Esperanca do Iguacu,Fernando Capellesso,57HO123 TP IPRO,Com esporos,06/01/21,R5.1,-53.189012484428,-25.6445464177054,26
+Centro Sul,Irati,Guamiranga,ADRIANO MARIANI/GUAMIRANGA,55I57 RSF IPRO,Com esporos,07/01/21,R4,-50.83796,-25.21788,27
+Oeste,Toledo,Quatro Pontes,Gilmar Bergmaier,BS 2606 IPRO,Com esporos,07/01/21,V6,-53.9509241728984,-24.5724980712686,27
+Sudoeste,Francisco Beltrao,Capanema,Rudimar Erthal,58I60 RSF IPRO,Com esporos,07/01/21,R5.3,-53.8290956911989,-25.5835552074793,27
+Sudoeste,Francisco Beltrao,Francisco Beltrao,Altair Feltrowich,50I52 RSF IPRO,Com esporos,07/01/21,R5.3,-53.2194472968749,-26.0390481280887,27
+Sudoeste,Pato Branco,Clevelandia,Ricardo Camara Silva,55I57 RSF IPRO,Com esporos,07/01/21,R5.1,-52.4163751318497,-26.3200680791479,27
+Sudoeste,Pato Branco,Pato Branco,Polo de Pesquisa IDR - Parana,BRS 1061 IPRO,Com esporos,08/01/21,R5.2,-52.6457041195047,-26.1239202320286,28
+Sudoeste,Francisco Beltrao,Renascenca,Volmar Antonetti,55I57 RSF IPRO,Com esporos,08/01/21,R5.3,-52.874681663962,-26.1678004617399,28
+Sudoeste,Francisco Beltrao,Perola D Oeste,Jair Mombach,95R51,Com esporos,08/01/21,R5.3,-53.7668236704139,-25.796089567828,28
+Oeste,Toledo,Palotina,UFPR_Campus Palotina,BS 2606 IPRO,Com esporos,08/01/21,R5.2,-53.8610474413187,-24.3460358191121,28
+Sudoeste,Pato Branco,Pato Branco,Clemente Carnieleto,55I57 RSF IPRO,Com esporos,08/01/21,R5.1,-52.7226079213422,-26.1915375515784,28
+Oeste,Cascavel,Medianeira,Alexandre Schneider,M5947 IPRO,Com esporos,08/01/21,R5.2,-54.0483070063589,-25.3111377317712,28
+Oeste,Cascavel,Boa Vista da Aparecida,Joldemir Fraportti ,55I57 RSF IPRO,Com esporos,08/01/21,R5.3,-53.3475360835584,-25.5139919616157,28
+Norte,Londrina,Londrina,Claudio Aparecido Alves,M6410 IPRO,Com esporos,08/01/21,R2,-50.9639482217623,-23.4961534671541,28
+Norte,Londrina,Primeiro de Maio,Osvaldecir Aparecido Balestri/IDR-PR,CZ26B42 IPRO,Com esporos,08/01/21,R4,-51.0635287728205,-22.8016576715906,28
+Norte,Londrina,Primeiro de Maio,Gabriel Massao Amauki / IDR-PR,CZ26B42 IPRO,Com esporos,08/01/21,R4,-51.0349349033894,-22.8166352789103,28
+Oeste,Toledo,Santa Helena,UTFPR_Campus Sta Helena,BS 2606 IPRO,Com esporos,08/01/21,R3,-54.3375209364482,-24.8487633533474,28
+Sudoeste,Pato Branco,Pato Branco,UTFPR - Campus Pato Branco,BS 1511 IPRO,Com esporos,10/01/21,R4,-52.6894645395606,-26.1759885837038,30
+Oeste,Campo Mourao,Ubirata,Marcos Hideo Motyama,M5947 IPRO,Com esporos,11/01/21,R5.1,-52.9788107720013,-24.4735515946536,31
+Centro,Laranjeiras do Sul,Quedas do Iguacu,Jose Neekel dos Santos/IDR-Parana,55I57 RSF IPRO,Com esporos,11/01/21,R5.5,-52.8715108971574,-25.4662121204905,31
+Sudoeste,Francisco Beltrao,Flor da Serra do Sul,Rodrigo Testa,55I57 RSF IPRO,Com esporos,13/01/21,R3,-53.2777636475658,-26.2332488854339,33
+Sudoeste,Dois Vizinhos,Dois Vizinhos,Laurindo Betiolo,58I60 RSF IPRO,Com esporos,13/01/21,R5.2,-52.977540517799,-25.7020234683244,33
+Centro Sul,Irati,Teixeira Soares,JOaO PAULO BOBATO/IDR PARANa,55I57 RSF IPRO,Com esporos,13/01/21,R5.2,-50.5331711057062,-25.3152272033133,33
+Sudoeste,Francisco Beltrao,Capanema,Paulo Cesar Zuliane,58I60 RSF IPRO,Com esporos,14/01/21,R5.5,-53.8664282885782,-25.6073982029076,34
+Centro Sul,Ponta Grossa,Arapoti,Giovani Arantes Siqueira,NS 6209,Com esporos,14/01/21,R5.1,-49.9584261730443,-24.092071207344,34
+Oeste,Toledo,Terra Roxa,Roberto Akira Imazato,NK 6201 IPRO,Com esporos,14/01/21,R4,-54.0757758326505,-24.3151228895597,34
+Norte,Londrina,Bela Vista do Paraiso,Joao Carlos dos Santoes,66I68 RSF IPRO,Com esporos,14/01/21,R3,-51.2707289518072,-22.9450825210977,34
+Centro Sul,Ponta Grossa,Reserva,Silvio M,TMG 7062 IPRO,Com esporos,15/01/21,R3,-50.8852634205975,-24.7861441364563,35
+Norte,Londrina,Rolandia,Sergio / IDR-Parana,64HO114 IPRO,Com esporos,15/01/21,R2,-51.325929615091,-23.2220646504974,35
+Sudoeste,Pato Branco,Coronel Vivida,Vinicius D. Bocchi,55I57 RSF IPRO,Com esporos,15/01/21,R5.2,-52.5758924082988,-25.9355249376619,35
+Sudoeste,Pato Branco,Mangueirinha,Laercio Dalla Vecchia,55I57 RSF IPRO,Com esporos,15/01/21,R5.1,-52.27390067652,-26.0412037555013,35
+Sudoeste,Pato Branco,Chopinzinho,Ilseu Pereti,55I57 RSF IPRO,Com esporos,15/01/21,R5.1,-52.3947117528246,-25.8805134717081,35
+Oeste,Toledo,Sao Jose das Palmeiras,Renato Francener,M5947 IPRO,Com esporos,18/01/21,R5.1,-54.0824326565103,-24.8282055764161,38
+Oeste,Campo Mourao,Ubirata,Nivaldo da Silva Lessa,58HO110 MM IPRO,Com esporos,18/01/21,R5.3,-53.035574299465,-24.4904018203442,38
+Centro,Laranjeiras do Sul,Quedas do Iguacu,Vitorio Soboleski/IDR-Parana,55I57 RSF IPRO,Com esporos,18/01/21,R5.3,-52.9550277485684,-25.4696277027504,38
+Centro,Guarapuava,Guarapuava,Rodrigo Augusto Queiros/ IDR Parana,55I57 RSF IPRO,Com esporos,18/01/21,R2,-51.8263469781974,-25.4660047490146,38
+Centro,Guarapuava,Guarapuava,Moacir Kenji/ IDR Parana,Don Mario 5.9i,Com esporos,18/01/21,V9,-51.575734433884,-25.4195038919995,38
+Centro,Guarapuava,Guarapuava,Luis Henrique/ IDR- Parana,TMG 7062 IPRO,Com esporos,18/01/21,R1,-51.6788870862978,-25.3641960635942,38
+Centro,Guarapuava,Guarapuava,Gilson Schimim,55I57 RSF IPRO,Com esporos,18/01/21,R2,-51.5878049976554,-25.3495072525531,38
+Oeste,Toledo,Entre Rios do Oeste,Luis Paulo Pasa,M5947 IPRO,Com esporos,19/01/21,R4,-54.2182141063874,-24.7383858118498,39
+Norte,Cornelio Procopio,Jataizinho,Valdir Pelizer,BMX Potencia RR,Com esporos,19/01/21,R5.3,-50.9479270887538,-23.3162210403249,39
+Norte,Cornelio Procopio,Assai,Marcio N. Nakamura,BMX Potencia RR,Com esporos,19/01/21,R5.3,-50.7778463836255,-23.3121157847327,39
+Norte,Londrina,Ibipora,Igor Cesar Gallao Casagrande,65I65 RSF IPRO,Com esporos,19/01/21,R4,-51.0794474120126,-23.1975049694189,39
+Centro,Guarapuava,Guarapuava,Marcelo Jorge Pazinato,55I57 RSF IPRO,Com esporos,19/01/21,R2,-51.4278722981559,-25.2951801845899,39
+Sudoeste,Francisco Beltrao,Planalto,Ataides Gilmar Welter,58I60 RSF IPRO,Com esporos,19/01/21,R5.3,-53.7243450749858,-25.7553016290323,39
+Sudoeste,Pato Branco,Bom Sucesso do Sul,Alvadir Pereira,95R51,Com esporos,19/01/21,R5.3,-52.8396632606887,-26.0568880907857,39
+Centro,Guarapuava,Guarapuava,Fabio Placidio Moreira,TMG 7062 IPRO,Com esporos,19/01/21,Vn,-51.2744552539668,-25.3996953719625,39
+Centro,Guarapuava,Goioxim,Mario Sidnei Gomes,55I57 RSF IPRO,Com esporos,19/01/21,R5.2,-51.9926546355338,-25.2109474695044,39
+Centro Sul,Ponta Grossa,Ipiranga,RICARDO MARCELO BOBATO NETO/IDR PARANa,55I57 RSF IPRO,Com esporos,20/01/21,R5.3,-50.7420444190899,-24.9490692119477,40
+Centro Sul,Ponta Grossa,Reserva,Andriel Hanchuck,FTR 2557 RR,Com esporos,20/01/21,R2,-50.7328307017334,-24.68671326336,40
+Centro,Guarapuava,Pitanga,Jean Carlos Laconski do Carmo,BS 2606 IPRO,Com esporos,20/01/21,R5.3,-51.9678625517747,-24.6597919078267,40
+Oeste,Toledo,Toledo,Delmar Bricius,BS 2606 IPRO,Com esporos,20/01/21,R5.2,-53.8548520202989,-24.6940113034743,40
+Oeste,Toledo,Toledo,Valdir Seibert,M5705 IPRO,Com esporos,20/01/21,R2,-53.6414876007305,-24.6678487463258,40
+Oeste,Toledo,Ouro Verde do Oeste,Paulo,M5947 IPRO,Com esporos,20/01/21,R4,-53.9001565492881,-24.8074831178284,40
+Sudoeste,Francisco Beltrao,Capanema,Elemar Brietzki,57HO123 TP IPRO,Com esporos,20/01/21,R6,-53.7559128642639,-25.6320843118308,40
+Norte,Londrina,Alvorada do Sul,Jose Maria Romero,64I61 RSF IPRO,Com esporos,21/01/21,R2,-51.2434037647452,-22.7947364482652,41
+Oeste,Toledo,Santa Helena,Augustinho dos Santos,96Y90,Com esporos,21/01/21,R5.2,-54.2496366966661,-24.9369728406906,41
+Oeste,Toledo,Santa Helena,Roberto Lira,96Y90,Com esporos,21/01/21,R5.2,-54.2425365700988,-24.8119703372476,41
+Oeste,Toledo,Santa Helena,Jaime Jose Swaluk,96Y90,Com esporos,21/01/21,R5.2,-54.3581670036228,-24.9790534275426,41
+Sudoeste,Dois Vizinhos,Cruzeiro do Iguacu,Dilmar Turmina,55I57 RSF IPRO,Com esporos,21/01/21,R5.3,-53.1395096157153,-25.5963935396651,41
+Sudoeste,Francisco Beltrao,Salgado Filho,Elio Jose Kruczkevicz,57HO123 TP IPRO,Com esporos,21/01/21,R5.4,-53.3462904991597,-26.2012535621955,41
+Sudoeste,Francisco Beltrao,Francisco Beltrao,Samuel Vandressen,55I57 RSF IPRO,Com esporos,21/01/21,R5.1,-53.0108754191196,-25.9555939987141,41
+Sudoeste,Francisco Beltrao,Renascenca,Lisney Venzon,TMG 7061 IPRO,Com esporos,21/01/21,R5.1,-52.9469068952061,-26.1583476871539,41
+Sudoeste,Francisco Beltrao,Francisco Beltrao,Leoclinio Brufatti,95R51,Com esporos,21/01/21,R6,-52.9505285330448,-26.0463519564447,41
+Sudoeste,Francisco Beltrao,Francisco Beltrao,Alciovani Gasparetto,TMG 7262 RR,Com esporos,21/01/21,R5.4,-53.130178723431,-26.045781046611,41
+Sudoeste,Francisco Beltrao,Marmeleiro,VALDIR SEVERINO PILZ,TMG 7262 RR,Com esporos,21/01/21,R5.1,-53.0664886409683,-26.2845337803887,41
+Sudoeste,Francisco Beltrao,Eneas Marques,Elisandro Lanfredi,95R51,Com esporos,21/01/21,R5.5,-53.1305704185251,-25.9218481705645,41
+Sudoeste,Pato Branco,Pato Branco,Faculdade Mater Dei,55I57 RSF IPRO,Com esporos,21/01/21,R4,-52.5457607488498,-26.2195100377863,41
+Sudoeste,Francisco Beltrao,Marmeleiro,Jandir Gadens Ghisi,NA 5909 RG,Com esporos,21/01/21,R5.1,-53.152275806397,-26.2357615128429,41
+Centro Sul,Uniao da Vitoria,Sao Mateus do Sul,Leonardo Kaczorowski,55I57 RSF IPRO,Com esporos,22/01/21,R6,-50.308471011568,-25.7972956452264,42
+Norte,Londrina,Prado Ferreira,Rudney Chiquetti,TEC 6702 IPRO,Com esporos,22/01/21,R4,-51.4358795058996,-23.0816046917322,42
+Sudoeste,Francisco Beltrao,Pranchita,Genilei Tristacci,96Y90,Com esporos,22/01/21,R5.4,-53.7099812479707,-25.9731591410285,42
+Sudoeste,Francisco Beltrao,Pranchita,Dario Jose Magnani,55I57 RSF IPRO,Com esporos,22/01/21,R5.5,-53.7187295700673,-25.9572397571497,42
+Centro Sul,Uniao da Vitoria,Cruz Machado,REMI SIEPKO,55I57 RSF IPRO,Com esporos,25/01/21,R5.4,-51.3298382645884,-25.9231698979169,45
+Sudoeste,Francisco Beltrao,Capanema,Tailor Marcos Dalla Vecchia ,57HO121 SC RR,Com esporos,26/01/21,R4,-53.7142257225509,-25.626422211214,46
+Norte,Londrina,Alvorada do Sul,Jose da Silva Marques,7166 RSF IPRO,Com esporos,26/01/21,R5.1,-51.2837956614814,-22.7178204698853,46
+Norte,Londrina,Alvorada do Sul,Alberico P. Santoro,NS 6906 IPRO,Com esporos,26/01/21,R3,-51.255023836329,-22.8504284164353,46
+Norte,Londrina,Alvorada do Sul,Jose Mansano,64I61 RSF IPRO,Com esporos,26/01/21,R3,-51.2022885369485,-22.8678124759859,46
+Sudoeste,Francisco Beltrao,Planalto,Jose Gluszewicz ,6863 RSF,Com esporos,26/01/21,R5.1,-53.6666417243669,-25.7487273066788,46
+Sudoeste,Francisco Beltrao,Realeza,Lorenco Battistela ,95R90 IPRO,Com esporos,26/01/21,R5.4,-53.4948185812558,-25.7463234113627,46
+Sudoeste,Francisco Beltrao,Eneas Marques,Wesley Faust,TMG 7262 RR,Com esporos,27/01/21,R5.4,-53.1551182500024,-25.959890557226,47
+Oeste,Toledo,Palotina,Agricola Santo Grao,M6410 IPRO,Com esporos,27/01/21,R5.2,-53.930509314992,-24.3558714864785,47
+Sudoeste,Francisco Beltrao,Flor da Serra do Sul,Heloisa Farias Cavalli,55I57 RSF IPRO,Com esporos,27/01/21,R5.2,-53.2036743646319,-26.2436195772123,47
+Oeste,Cascavel,Boa Vista da Aparecida,NELSON RODRIGUES/CFR,58I60 RSF IPRO,Com esporos,28/01/21,R5.4,-53.3805178122853,-25.4912930382496,48
+Sudoeste,Francisco Beltrao,Bela Vista da Caroba,ELIO PAOLAZZI,BRS 1001 IPRO,Com esporos,28/01/21,R5.4,-53.6631328032662,-25.8911991718645,48
+Norte,Apucarana,Sabaudia,Alcides Piveta/IDR-Parana,66I68 RSF IPRO,Com esporos,29/01/21,R5.3,-51.5776749182267,-23.3476559607847,49
+Norte,Londrina,Florestopolis,Joao Luiz Munhoz/IDR-PR,NS 6700 IPRO,Com esporos,29/01/21,R4,-51.3551010229219,-22.8482944425514,49
+Norte,Londrina,Bela Vista do Paraiso,Milton Benedito Zaratini,96R10 IPRO,Com esporos,29/01/21,R2,-51.1906283638187,-22.9646118729847,49
+Sudoeste,Dois Vizinhos,Dois Vizinhos,Roque Link,55I57 RSF IPRO,Com esporos,29/01/21,R5.2,-53.0954206725053,-25.8571462779475,49
+Sudoeste,Francisco Beltrao,Santa Izabel do Oeste,Avantiseeds,AV BUENA RR,Com esporos,29/01/21,R4,-53.5257746506133,-25.7860936259707,49
+Sudoeste,Francisco Beltrao,Santa Izabel do Oeste,Adair Narcizo Zanetti,58I60 RSF IPRO,Com esporos,29/01/21,R5.4,-53.4219633985815,-25.8429309155596,49
+Sudoeste,Dois Vizinhos,Salto do Lontra,Domingos Verdi,55I57 RSF IPRO,Com esporos,01/02/21,R5.4,-53.3327392439801,-25.8114042771539,52
+Oeste,Cascavel,Cascavel,Dario Cesar Stein,58I60 RSF IPRO,Com esporos,01/02/21,R5.4,-53.179615910834,-24.9841432200952,52
+Norte,Cornelio Procopio,Santo Antonio do Paraiso,Jovair Goncalves Ribeiro,NA 5909 RG,Com esporos,02/02/21,R5.4,-50.6500290749609,-23.574972507954,53
+Norte,Londrina,Jaguapita,Fabio / IDR-Parana,BMX Potencia RR,Com esporos,02/02/21,R5.3,-51.5810506712496,-23.0948133917321,53
+Norte,Londrina,Florestopolis,Jandir Sauer,6563 RSF IPRO,Com esporos,02/02/21,R5.4,-51.4750106774848,-22.8831849285029,53
+Noroeste,Maringa,Floresta,Luis Yoshiyuki Yazaki,96Y90,Com esporos,02/02/21,R5.4,-52.0994182666112,-23.6453746339082,53
+Oeste,Toledo,Marechal Candido Rondon,Roselene Zimermann Laske,BS 2606 IPRO,Com esporos,02/02/21,R5.4,-54.1103516908381,-24.5949023492085,53
+Sudoeste,Francisco Beltrao,Marmeleiro,CELSO DALLA COSTA ,95R51,Com esporos,03/02/21,R5.4,-53.099900045868,-26.1709005086211,54
+Norte,Cornelio Procopio,Jataizinho,Marcio N. Nakamura,BMX Potencia RR,Com esporos,03/02/21,R5.3,-50.8749673493882,-23.3214641645745,54
+Norte,Ivaipora,Sao Joao do Ivai,Antonio de Souza,BS 2606 IPRO,Com esporos,03/02/21,R5.5,-51.8007827714107,-24.0210613619365,54
+Oeste,Toledo,Palotina,Roberto Bedin,BS 2606 IPRO,Com esporos,03/02/21,R6,-53.7525629060585,-24.2030487711196,54
+Oeste,Toledo,Palotina,Olavo Emilio Lohmann,64I61 RSF IPRO,Com esporos,03/02/21,R5.2,-53.9086288034205,-24.2219137753937,54
+Oeste,Toledo,Palotina,Evandro Luiz Pivetta,BS 2606 IPRO,Com esporos,03/02/21,R5.3,-53.8059368824251,-24.1987533295927,54
+Sudoeste,Dois Vizinhos,Salto do Lontra,Idalecio Bernardi,58I60 RSF IPRO,Com esporos,03/02/21,R5.5,-53.2229129893629,-25.7493401159191,54
+Sudoeste,Pato Branco,Pato Branco,Romildo Vasata,95R51,Com esporos,03/02/21,R5.4,-52.585142915191,-26.2584859251008,54
+Sudoeste,Francisco Beltrao,Santa Izabel do Oeste,Paulo Guilherme Zancanaro,57HO123 TP IPRO,Com esporos,03/02/21,R5.5,-53.389490808697,-25.8548948977534,54
+Sudoeste,Francisco Beltrao,Perola D Oeste,Andre Balduino Fassini,BRS 1003 IPRO,Com esporos,03/02/21,R5.2,-53.7518993036709,-25.8352104414759,54
+Oeste,Toledo,Marechal Candido Rondon,UNIOESTE,BS 2606 IPRO,Com esporos,04/02/21,R5.1,-54.0187157743313,-24.5332428354529,55
+Oeste,Campo Mourao,Peabiru,Herbert Drager,NA 5909 RG,Com esporos,05/02/21,R5.2,-52.3950667694276,-23.909755194424,56
+Metropolitana,Curitiba,Araucaria,Elio Zoreck,NS 6209,Com esporos,05/02/21,R3,-49.5631561292237,-25.563321966987,56
+Oeste,Cascavel,Braganey,Irineu de Assis / IDR-Parana,55I57 RSF IPRO,Com esporos,05/02/21,R5.5,-53.2056726527953,-24.8243899326012,56
+Oeste,Cascavel,Braganey,Jacir Centenaro / IDR-Parana,Don Mario 5.9i,Com esporos,05/02/21,R5.5,-53.1619923465721,-24.8647383477245,56
+Oeste,Toledo,Guaira,Eloir Luiz Lovera,M6410 IPRO,Com esporos,08/02/21,R5.4,-54.1982847987998,-24.25354850446,59
+Norte,Londrina,Sertanopolis,Waldir Osti / IDR - PR,BMX Potencia RR,Com esporos,09/02/21,R5.2,-51.0830640075257,-23.0402874660048,60
+Oeste,Toledo,Maripa,Alexsandro Klitzke,INT 5900,Com esporos,09/02/21,R5.4,-53.833109689261,-24.3812869644551,60
+Oeste,Campo Mourao,Peabiru,Marcos Sommariva,BRS 388 RR,Com esporos,09/02/21,R5.4,-52.3367865626933,-23.9622085638183,60
+Norte,Cornelio Procopio,Andira,Luis Gustavo Dalossi Guiciardi,BMX Potencia RR,Com esporos,09/02/21,R5.4,-50.3085243278488,-22.9936511443612,60
+Norte,Ivaipora,Ivaipora,Mauricio Chambo,BS 2606 IPRO,Com esporos,09/02/21,R5.4,-51.7072520250646,-24.2801428998563,60
+Norte,Londrina,Bela Vista do Paraiso,Genesio Bachega,66I68 RSF IPRO,Com esporos,09/02/21,R4,-51.2189482782412,-22.976951107121,60
+Norte,Londrina,Bela Vista do Paraiso,Florentino Salomao,66I68 RSF IPRO,Com esporos,09/02/21,R4,-51.2891898965693,-23.0078320370014,60
+Oeste,Campo Mourao,Engenheiro Beltrao,Arnaldo Francisco Da Silva,96Y90,Com esporos,10/02/21,R5.4,-52.2995418641944,-23.833495826876,61
+Oeste,Cascavel,Santa Tereza do Oeste,Marco Antonio Pessoto / IDR-PARANa,M5705 IPRO,Com esporos,10/02/21,R6,-53.6266725590974,-25.1568143528601,61
+Oeste,Cascavel,Santa Tereza do Oeste,Joao Carlos Bonatto / IDR-Parana,TMG 7058 IPRO,Com esporos,10/02/21,R5.5,-53.5843477094608,-24.9692420936481,61
+Noroeste,Maringa,Paicandu,Luiz Bolonhezi,7166 RSF IPRO,Com esporos,10/02/21,R5.5,-52.0733362894632,-23.4760862613304,61
+Oeste,Toledo,Tupassi,Diamantino Otelho Mariussi,58I60 RSF IPRO,Com esporos,10/02/21,R5.2,-53.5321371741036,-24.6407423608896,61
+Sudoeste,Francisco Beltrao,Realeza,Valdecir Terebinto ,58I60 RSF IPRO,Com esporos,10/02/21,R6,-53.5357346632519,-25.6608204607086,61
+Oeste,Toledo,Pato Bragado,Gunter Bruno Scheuermann,M5947 IPRO,Com esporos,10/02/21,R5.4,-54.2472026266337,-24.6104193385282,61
+Oeste,Campo Mourao,Farol,Roberto Bukowski,96Y90,Com esporos,11/02/21,R5.4,-52.6396367596457,-24.1118660523376,62
+Oeste,Campo Mourao,Engenheiro Beltrao,Edson Lindomar Draeger,66I68 RSF IPRO,Com esporos,11/02/21,R5.2,-52.2101664815612,-23.734266526407,62
+Oeste,Toledo,Nova Santa Rosa,Daltri Jair Buettner,NA 5909 RG,Com esporos,11/02/21,R6,-53.8741015558043,-24.4892114981585,62
+Oeste,Toledo,Formosa do Oeste,Joao Luiz de Souza,BS 2606 IPRO,Com esporos,11/02/21,R7,-53.3031636302185,-24.2639328540125,62
+Sudoeste,Francisco Beltrao,Realeza,Rodrigo Caselani,58I60 RSF IPRO,Com esporos,11/02/21,R7,-53.5076177350672,-25.6771721089938,62
+Centro Sul,Uniao da Vitoria,Bituruna,Valmor Sebben,55I57 RSF IPRO,Com esporos,12/02/21,R5.1,-51.4041980135207,-26.1583941443842,63
+Norte,Londrina,Londrina,Nivaldo Spirandelli,66I68 RSF IPRO,Com esporos,12/02/21,R5.4,-51.2424187700171,-23.3552906370146,63
+Norte,Londrina,Florestopolis,Marcos Balistero,NS 6700 IPRO,Com esporos,12/02/21,R5.2,-51.4534022663837,-22.8731577142922,63
+Centro Sul,Uniao da Vitoria,Bituruna,Sergio Roque Rubbo,M5838 IPRO,Com esporos,12/02/21,R4,-51.5078104028175,-26.1873665497248,63
+Noroeste,Maringa,Ourizona,Antonio Picoli Filho,96Y90,Com esporos,15/02/21,R5.5,-52.1717254814886,-23.3835710857905,66
+Noroeste,Maringa,Ourizona,Ademir Antonio Rozada,64I61 RSF IPRO,Com esporos,15/02/21,R5.5,-52.2177162269377,-23.4653165407173,66
+Oeste,Campo Mourao,Engenheiro Beltrao,Eloi Pacifico da Silveira,C2618 IPRO,Com esporos,16/02/21,R6,-52.239171095764,-23.651744408636,67
+Norte,Cornelio Procopio,Congonhinhas,Edvaner Consalter,M6410 IPRO,Com esporos,17/02/21,R4,-50.5232813729595,-23.6125721303849,68
+Norte,Santo Antonio da Platina,Santo Antonio da Platina,Walder de Freitas Aguiar,65I65 RSF IPRO,Com esporos,17/02/21,R5.4,-50.1589346909116,-23.1692002668294,68
+Norte,Cornelio Procopio,Santo Antonio do Paraiso,Francisco Dias Neto,M5410 IPRO,Com esporos,17/02/21,R5.2,-50.6808836693705,-23.5647868130645,68
+Norte,Cornelio Procopio,Assai,Sergio Roberto,,Com esporos,17/02/21,R5.5,-50.9009802354085,-23.3809472303219,68
+Norte,Cornelio Procopio,Santo Antonio do Paraiso,Ricardo Bahige Merheb,,Com esporos,17/02/21,R5.4,-50.6925779557004,-23.529320785311,68
+Oeste,Cascavel,Serranopolis do Iguacu,Artemio Angheben,BS 2606 IPRO,Com esporos,17/02/21,R7,-54.1105281653762,-25.4441930591759,68
+Oeste,Toledo,Palotina,Jean Carlos Bortoloso Trentini,M5947 IPRO,Com esporos,17/02/21,R5.5,-53.8032181640008,-24.3255473051622,68
+Oeste,Toledo,Iracema do Oeste,Santo Pires Brito,BS 2606 IPRO,Com esporos,17/02/21,R6,-53.3687832287669,-24.4418705551506,68
+Oeste,Campo Mourao,Mambore,Antonio Targa,65I65 RSF IPRO,Com esporos,17/02/21,R7,-52.5989015536778,-24.3006301780777,68
+Oeste,Toledo,Assis Chateaubriand,Juvencio Felismino Paiva,M6410 IPRO,Com esporos,17/02/21,R6,-53.5453993218027,-24.2897289209169,68
+Noroeste,Maringa,Doutor Camargo,Angelo Oreste Calvi,BMX Potencia RR,Com esporos,18/02/21,R6,-52.225211787538,-23.5823502959425,69
+Norte,Londrina,Sertanopolis,Agnaldo Rossato / IDR-PR,96Y90,Com esporos,18/02/21,R5.3,-51.0475799631896,-23.0297059350887,69
+Oeste,Campo Mourao,Campo Mourao,Natalia Sezanenko Mailkut,58I60 RSF IPRO,Com esporos,18/02/21,R7,-52.2970296540254,-24.0175197849461,69
+Oeste,Campo Mourao,Campo Mourao,Everaldo Garaluz,NA 5909 RG,Com esporos,18/02/21,R5.5,-52.5025313522098,-24.0919922389274,69
+Oeste,Campo Mourao,Farol,Osmar Vicente,96Y90,Com esporos,18/02/21,R6,-52.6739014102968,-24.1277837602109,69
+Sudoeste,Francisco Beltrao,Realeza,Valmir da Rocha,58I60 RSF IPRO,Com esporos,18/02/21,R7,-53.5124545183255,-25.7599542280738,69
+Noroeste,Maringa,Sarandi,Otavio Jose dos Reis,64I61 RSF IPRO,Com esporos,18/02/21,R5.5,-51.8366223239923,-23.4166767970559,69
+Noroeste,Maringa,Itambe,Antenor Janhaki,6968 RSF,Com esporos,23/02/21,R5.5,-51.9948807523452,-23.6871299338837,74
+Noroeste,Maringa,Marialva,Joao Carlos Bichoffi,66I68 RSF IPRO,Com esporos,24/02/21,R6,-51.7987881303672,-23.5263463400885,75
+Norte,Cornelio Procopio,Cornelio Procopio,Carlos Alberto Bongiovani,BMX Potencia RR,Com esporos,24/02/21,R5.3,-50.6748296171355,-23.1019613161929,75
+Norte,Ivaipora,Faxinal,Mauricio Pontalti Cortez,64HO114 IPRO,Com esporos,26/02/21,R6,-51.3244811385529,-23.9821293416684,77
+Oeste,Toledo,Iracema do Oeste,Jean Carlos Tonelli,BS 2606 IPRO,Com esporos,09/03/21,R6,-53.3436208651025,-24.4061827024223,88
+Norte,Cornelio Procopio,Sertaneja,Takeu Yoshiy,M6410 IPRO,Com esporos,10/03/21,R5.5,-50.807523926463,-23.0362265241664,89
+Oeste,Toledo,Assis Chateaubriand,Marcos Rogerio Packer,M6410 IPRO,Com esporos,11/03/21,R7,-53.5405052809442,-24.4366903600862,90
+Metropolitana,Curitiba,Contenda,Bruno Riba,BS 1511 IPRO,Encerrado sem esporos,,,-49.4938868570751,-25.7553711482102,-1
+Noroeste,Cianorte,Jussara,Jose Ribeiro,BMX Potencia RR,Encerrado sem esporos,,,-52.455799607548,-23.6301111605759,-1
+Noroeste,Maringa,Floresta,MILTON KAZUTOSHI ITO,BMX Potencia RR,Encerrado sem esporos,,,-52.0947014210854,-23.6263694197365,-1
+Noroeste,Maringa,Sao Jorge do Ivai,Edmar Gomes,,Encerrado sem esporos,,,-52.2218386585475,-23.3449386697893,-1
+Noroeste,Maringa,Sao Jorge do Ivai,Mauro da Silva Zanetti,BMX Potencia RR,Encerrado sem esporos,,,-52.3228628916439,-23.5027254380847,-1
+Noroeste,Maringa,Munhoz de Mello,Neudy Rodrigues,M6410 IPRO,Encerrado sem esporos,,,-51.7788498474234,-23.1550047132534,-1
+Noroeste,Maringa,Maringa,Evaldo Alfredo Bartman,AS 3680 IPRO,Encerrado sem esporos,,,-51.8440658780337,-23.4035941119108,-1
+Noroeste,Maringa,Mandaguacu,Nelson Bofetti,6968 RSF,Encerrado sem esporos,,,-52.1513397065467,-23.3524003458905,-1
+Noroeste,Maringa,Mandaguacu,Antonio Marcos Volpato,NS 6906 IPRO,Encerrado sem esporos,,,-52.0954692902451,-23.3232217838459,-1
+Noroeste,Maringa,Lobato,Claudinei Pereira da Silva,CZ26B42 IPRO,Encerrado sem esporos,,,-51.9857669923517,-22.9278718173534,-1
+Noroeste,Maringa,Lobato,Claudiomar Thomazella,M6410 IPRO,Encerrado sem esporos,,,-51.9535776574652,-23.0003473746403,-1
+Noroeste,Maringa,Ivatuba,Joao Claudemir Mori,BMX Potencia RR,Encerrado sem esporos,,,-52.2257844768497,-23.6133955409743,-1
+Noroeste,Maringa,Iguaracu,Roberto Carlos Scarpin,M6210 IPRO,Encerrado sem esporos,,,-51.7886766388994,-23.2332687425022,-1
+Noroeste,Maringa,Florai,Valderi Floresntino da Silva,96Y90,Encerrado sem esporos,,,-52.2700938230831,-23.3072995537452,-1
+Noroeste,Maringa,Florai,Caetano Jose Rossi,CZ26B42 IPRO,Encerrado sem esporos,,,-52.3348774140542,-23.365203263036,-1
+Noroeste,Maringa,Atalaia,Eliseu Cesar Bosso,BMX Potencia RR,Encerrado sem esporos,,,-52.0333353530708,-23.1428651692867,-1
+Noroeste,Maringa,Astorga,Marcos Franco Baeza,M6410 IPRO,Encerrado sem esporos,,,-51.6153599022811,-23.2630472627529,-1
+Noroeste,Maringa,angulo,Marcio Biancchini,CZ26B42 IPRO,Encerrado sem esporos,,,-51.910062998736,-23.2020109088615,-1
+Noroeste,Maringa,Marialva,Nerio Batista de Souza,AS 3680 IPRO,Encerrado sem esporos,,,-51.893937842856,-23.5793619868617,-1
+Norte,Cornelio Procopio,Santa Mariana,Lindomar Jose Massan,,Encerrado sem esporos,,,-50.5728206924774,-23.0318283882494,-1
+Norte,Cornelio Procopio,Santa Mariana,Nelson Sambe,BMX Potencia RR,Encerrado sem esporos,,,-50.4814907557652,-23.1556519405839,-1
+Norte,Cornelio Procopio,Cornelio Procopio,Antonio Roberto Pagotti,64I61 RSF IPRO,Encerrado sem esporos,,,-50.7012456117403,-23.2729297042765,-1
+Norte,Santo Antonio da Platina,Barra do Jacare,Andre Marcos Dutra,BMX Potencia RR,Encerrado sem esporos,,,-50.200462812238,-23.1134591550626,-1
+Oeste,Campo Mourao,Rancho Alegre D Oeste,Jose Ferreira dos Santos,M6410 IPRO,Encerrado sem esporos,,,-52.966630427776,-24.2947335989392,-1
+Oeste,Campo Mourao,Boa esperanca,Ivonei Bruno Metzger,BS 2606 IPRO,Encerrado sem esporos,,,-52.7642149244659,-24.2140975405455,-1
+Oeste,Campo Mourao,Luiziana,Jose Henrique,58I60 RSF IPRO,Encerrado sem esporos,,,-52.2717061481191,-24.2634374727096,-1
+Oeste,Campo Mourao,Campina da Lagoa,Carlindo Baquiao,BS 2606 IPRO,Encerrado sem esporos,,,-52.7262187283855,-24.5108512150236,-1
+Oeste,Cascavel,Braganey,Fabio Bissi / IDR-Parana,5958 RSF IPRO,Encerrado sem esporos,,,-53.0997719911458,-24.7665782802181,-1
+Oeste,Cascavel,Corbelia,Jairo Baller / IDR-Parana,58I60 RSF IPRO,Encerrado sem esporos,,,-53.3344576236664,-24.7217345697768,-1
+Oeste,Cascavel,Cascavel,Otavio Balbinot/IDR-Parana,DM53i54,Encerrado sem esporos,,,-53.49915176026,-25.0676585155219,-1
+Oeste,Cascavel,Cascavel,Selino Justino dos Santos / IDR-Parana,5958 RSF IPRO,Encerrado sem esporos,,,-53.4818362282788,-25.1268586852022,-1
+Oeste,Toledo,Assis Chateaubriand,Sandro Rogerio Tagliari,BS 2606 IPRO,Encerrado sem esporos,,,-53.4819603586242,-24.4773417380185,-1
+Oeste,Toledo,Jesuitas,Wesley Delfino,BS 2606 IPRO,Encerrado sem esporos,,,-53.4303968866542,-24.296956664736,-1
+Sudoeste,Dois Vizinhos,Sao Jorge D Oeste,Pedro Coelho do Rosario,95R90 IPRO,Encerrado sem esporos,,,-52.8805464353533,-25.7357507115975,-1
+Sudoeste,Dois Vizinhos,Cruzeiro do Iguacu,Orlando Bez,55I57 RSF IPRO,Encerrado sem esporos,,,-53.1168129368554,-25.6415041806558,-1
+Sudoeste,Dois Vizinhos,Nova Prata do Iguacu,Blevio Miguel,5958 RSF IPRO,Encerrado sem esporos,,,-53.380953115432,-25.6806670587418,-1
+Sudoeste,Dois Vizinhos,Nova Esperanca do Sudoeste,Valdemiro Antunes Zeferino,NS 6909 IPRO,Encerrado sem esporos,,,-53.2939248087676,-25.8700113549455,-1
+Sudoeste,Francisco Beltrao,Santa Izabel do Oeste,Cassiano Tubiana de Costa,95R51,Encerrado sem esporos,,,-53.4324165748692,-25.8897310229993,-1
+Sudoeste,Francisco Beltrao,Realeza,Jarbas Prolo,95R90 IPRO,Encerrado sem esporos,,,-53.5719495113377,-25.6774775532787,-1
+Sudoeste,Francisco Beltrao,Marmeleiro,CICERO BARBIERI,95R51,Encerrado sem esporos,,,-53.123722515996,-26.2070964137202,-1
+Sudoeste,Pato Branco,Pato Branco,Sidiclei Caldato,95R51,Encerrado sem esporos,,,-52.7291878800413,-26.0411560651989,-1

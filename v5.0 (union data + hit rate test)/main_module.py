@@ -252,4 +252,4 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
 if __name__ == '__main__':
     # main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')
-    main(9310.188000000004, 137, '/Test_Data/coletoressafra2021_31_23', '/Test_Data/coletoressafra2122_31_23', 'test', 'CGT', 4)
+    main(9310.188000000004, 137, '/Test_Data/coletoressafra2021_31_23', '/Test_Data/coletoressafra2122_31_23', 'parameter_search', 'TG', 4, 12938)
