@@ -67,7 +67,7 @@ def read_basic_info(train_file, test_file):
 
     return trained_collectors_geo_df, test_collectors_geo_df
 
-def main(base, number_of_days, train_file, test_file, operation_mode, growth_type, number_of_starting_points=1):
+def main(base, number_of_days, train_file, test_file, operation_mode, growth_type, number_of_starting_points, radius):
 
     global _map
 
@@ -184,6 +184,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             TEST_PARAMS['growth_function_distance'].__name__,
             TEST_PARAMS['growth_function_days'].__name__,
             base,
+            radius,
             train_file if train_file is not None else 'None',
             test_file,
             true_positive_penalty,
@@ -191,7 +192,6 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             false_positive_penalty,
             false_negative_penalty,
         ]
-
         if growth_type == 'CGT':
             results_metrics.append(number_of_starting_points)
 
@@ -228,13 +228,27 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         error_std = np.std(days_error)
         
-        metrics.append(
-            [TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, number_of_days, true_positive, false_negative, 
-            error_mean, error_max, error_min, error_std,
-            len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))]
-        )
+        temp_metrics = [
+            growth_type,
+            TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, radius, number_of_days, true_positive, false_negative, 
+            error_mean, error_std, error_max, error_min,
+            len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))
+        ]
 
-        return metrics
+        if growth_type == 'CGT':
+            temp_metrics.append(number_of_starting_points)
+
+        # metrics.append(
+        #     growth_type,
+        #     [TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, radius, number_of_days, true_positive, false_negative, 
+        #     error_mean, error_std, error_max, error_min,
+        #     len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))]
+        # )
+
+        # if growth_type == 'CGT':
+        #     metrics.append(number_of_starting_points)
+
+        return temp_metrics
 
 if __name__ == '__main__':
     # main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')
