@@ -77,9 +77,9 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         'growth_function_days' : gf.logaritmic_growth_days,
         'base' : base,
         'animation' : False,
-        'Fake_Collectors' : False,
-        'raio_de_abrangencia_imediata' : 0.05,
-        'raio_de_possivel_contaminacao' : 0.5,
+        'raio_de_abrangencia_imediata' : 0.05*10,
+        'raio_de_possivel_contaminacao' : 0.5*10,
+        'fator_producao_carrapichos' : 0.05*10,
         'train_file' : train_file,
         'test_file' : test_file,
     }
@@ -121,10 +121,6 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
             # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Topology Test 
 
-            TEST_PARAMS['fator_producao_carrapichos'] = 0.1
-
-            old_geometries = []
-
             trained_collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
 
             trained_collectors_instance.geo_df = test_collectors_geo_df
@@ -133,33 +129,6 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
             true_positive_penalty, burrs, method_used = \
                 gt.topology_growth_no_touch(trained_collectors_instance, TEST_PARAMS)
-
-            # TODO Daqui para baixo, seria mandar o trained_collectors_instance para a funcao de crescimento
-
-            # # If the parameter is set to true, the buffers are generated in a weird way, that is incorrect
-            # buffers = cria_buffers.geraBuffersCarrapichos(trained_collectors_instance.topologiaCrescimentoDict.values(), 0.005, False)
-            # _map.plot()
-
-            # for key, growth_topology in trained_collectors_instance.topologiaCrescimentoDict.items():
-
-            #     for segment in growth_topology.getSegments():
-
-            #         seg = segment.seg
-            #         plt.plot(*seg.xy, color='black', linewidth=0.5)
-
-            # for _ in range(len(trained_collectors_instance.geo_df)):
-
-            #     center_point = trained_collectors_instance.geo_df.iloc[_].geometry
-            #     plt.scatter(center_point.x, center_point.y, color=trained_collectors_instance.geo_df.iloc[_].color, s=5)
-            #     plt.annotate(_, (center_point.x, center_point.y), fontsize=5)
-
-            # for _ in range(len(buffers)):
-            #     plt.plot(*buffers[_].exterior.xy, color='yellow', linewidth=0.5)
-
-            # plt.show()
-
-            
-
 
         false_positive_penalty = utils.calculate_false_positives_penalty(test_collectors_geo_df, start_day + TEST_PARAMS['number_of_days'] - 1)
 
@@ -205,17 +174,25 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         if growth_type == 'CGNT':
 
-            true_positive, false_negative, days_error = t.learning_based(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
+            true_positive, false_negative, days_error = t.learning_based_CGNT_MG(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
 
         elif growth_type == 'CGT':
 
-            pass
-
-            true_positive, false_negative, days_error = t.normal_testing(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, number_of_starting_points)
+            true_positive, false_negative, days_error = t.normal_testing_CGT(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, number_of_starting_points)
 
         elif growth_type == 'MG':
 
-            true_positive, false_negative, days_error = t.learning_based(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
+            true_positive, false_negative, days_error = t.learning_based_CGNT_MG(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
+
+        elif growth_type == 'TG':
+
+            trained_collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
+
+            trained_collectors_instance.geo_df = trained_collectors_geo_df
+            trained_collectors_instance.criaGrafo(trained_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
+            trained_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
+
+            true_positive, false_negative, days_error = t.topology_test_TG(trained_collectors_instance, test_collectors_geo_df, TEST_PARAMS)
 
         else:
 
@@ -256,4 +233,4 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
 if __name__ == '__main__':
     # main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')
-    main(86679601.69000001, 137, None, '/Test_Data/coletoressafra2122_31_23', 'parameter_search', 'TG', 4, 12938)
+    main(86679601.69000001, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', 'test', 'TG', 4, 12938)
