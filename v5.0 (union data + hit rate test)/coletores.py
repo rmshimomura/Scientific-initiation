@@ -39,9 +39,9 @@ def calcularDistanciaEntreColetores(geo_df):
 
 def deltaTempo(gdf,i,j,tooLarge=1000):
     row_i = gdf.loc[i]
-    dia_i = row_i['MediaDiasAposInicioCiclo'] 
+    dia_i = row_i['DiasAposInicioCiclo'] 
     row_j = gdf.loc[j]
-    dia_j = row_j['MediaDiasAposInicioCiclo']
+    dia_j = row_j['DiasAposInicioCiclo']
 
     if dia_i == -1 or dia_j == -1:
         return tooLarge

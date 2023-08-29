@@ -121,12 +121,18 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
             # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Topology Test 
 
+            TEST_PARAMS['fator_producao_carrapichos'] = 0.1
+
             old_geometries = []
 
             trained_collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
-            trained_collectors_instance.geo_df = trained_collectors_geo_df
-            trained_collectors_instance.criaGrafo(trained_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
+
+            trained_collectors_instance.geo_df = test_collectors_geo_df
+            trained_collectors_instance.criaGrafo(test_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
             trained_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
+
+            true_positive_penalty, burrs, method_used = \
+                gt.topology_growth_no_touch(trained_collectors_instance, TEST_PARAMS)
 
             # TODO Daqui para baixo, seria mandar o trained_collectors_instance para a funcao de crescimento
 
@@ -151,12 +157,6 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             #     plt.plot(*buffers[_].exterior.xy, color='yellow', linewidth=0.5)
 
             # plt.show()
-
-            exit()
-
-            # first_apperances  = trained_collectors_geo_df[trained_collectors_geo_df['DiasAposInicioCiclo'] == trained_collectors_geo_df['DiasAposInicioCiclo'].min()]
-
-            # gt.topology_growth(_map, trained_collectors_instance, old_geometries, TEST_PARAMS, plt)
 
             
 
@@ -194,6 +194,10 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         ]
         if growth_type == 'CGT':
             results_metrics.append(number_of_starting_points)
+        if growth_type == 'TG':
+            results_metrics.append(TEST_PARAMS['raio_de_abrangencia_imediata'])
+            results_metrics.append(TEST_PARAMS['raio_de_possivel_contaminacao'])
+            results_metrics.append(TEST_PARAMS['fator_producao_carrapichos'])
 
         return results_metrics
 
@@ -252,4 +256,4 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
 if __name__ == '__main__':
     # main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')
-    main(9310.188000000004, 137, '/Test_Data/coletoressafra2021_31_23', '/Test_Data/coletoressafra2122_31_23', 'parameter_search', 'TG', 4, 12938)
+    main(86679601.69000001, 137, None, '/Test_Data/coletoressafra2122_31_23', 'parameter_search', 'TG', 4, 12938)

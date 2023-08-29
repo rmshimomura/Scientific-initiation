@@ -353,38 +353,110 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
 
     return true_positive_total_error, infection_circles, 'Mixed Growth'
 
-def topology_growth_no_touch(_map: gpd.GeoDataFrame, collectors_instance: coletores.Coletores, old_geometries: list, TEST_PARAMS: dict, plt):
+def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PARAMS: dict):
 
-    start_day = collectors_instance.geo_df['Primeiro_Esporo'].iloc[0]
+    global true_positive_total_error, true_positives
 
-    # active_collectors = collectors_instance.geo_df[collectors_instance.geo_df['DiasAposInicioCiclo'] == collectors_instance.geo_df['DiasAposInicioCiclo'].min()]
+    _collectors_instance.geo_df.sort_values(by=['DiasAposInicioCiclo'], inplace=True)
+    true_positive_total_error = 0
+    true_positives = 0
+    positive_collectors = _collectors_instance.geo_df.query('DiasAposInicioCiclo != -1')
+    first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
+    burrs = dict()
+    start_day = positive_collectors['DiasAposInicioCiclo'].iloc[0]
+    buffer_production_function = cria_buffers.funcProduzCarrapichos(TEST_PARAMS['fator_producao_carrapichos'],False,0.00001)
 
-    active_collectors = collectors_instance.geo_df[0:20]
+    growth_topology_dict = _collectors_instance.topologiaCrescimentoDict
+    
+    for i in range(len(first_appearances)):
 
-    growth_topology_dict = collectors_instance.topologiaCrescimentoDict
+        burr = growth_topology_dict[first_appearances.index[i]]
+
+        burrs[first_appearances.index[i]] = burr
+
+        _collectors_instance.geo_df.loc[first_appearances.index[i], 'Detected'] = 1
+        _collectors_instance.geo_df.loc[first_appearances.index[i], 'circle_created'] = 1
+        _collectors_instance.geo_df.loc[first_appearances.index[i], 'color'] = 'green'
+        _collectors_instance.geo_df.loc[first_appearances.index[i], 'discovery_day'] = start_day
+        _collectors_instance.geo_df.loc[first_appearances.index[i], 'life_time'] = 1
+
+
+    count = len(first_appearances)
 
     for day in range(TEST_PARAMS['number_of_days']):
 
-        buffers_to_generate = []
+        while True:
 
-        for i in range(len(active_collectors)):
+            if count < len(positive_collectors):
 
-            buffers_to_generate.append(growth_topology_dict[active_collectors.iloc[i].id])
+                current_collector_index = positive_collectors.index[count]
 
-        buffers = cria_buffers.geraBuffersCarrapichos(buffers_to_generate, 0.005, False)
+                if _collectors_instance.geo_df.loc[current_collector_index, 'circle_created'] == 0:
 
-        for _ in range(len(active_collectors)):
+                    if start_day + day >= _collectors_instance.geo_df.loc[current_collector_index, 'DiasAposInicioCiclo']:
 
-            center_point = active_collectors.iloc[_].geometry
-            plt.scatter(center_point.x, center_point.y, color=active_collectors.iloc[_].color, s=10)
-            plt.annotate(_, (center_point.x, center_point.y), fontsize=10)
+                        burr = growth_topology_dict[current_collector_index]
 
-        for i in range(len(active_collectors)):
+                        burrs[current_collector_index] = burr
 
-            plt.plot(*buffers[i].exterior.xy, color='yellow', linewidth=1)
+                        _collectors_instance.geo_df.loc[current_collector_index, 'Detected'] = 1
+                        _collectors_instance.geo_df.loc[current_collector_index, 'circle_created'] = 1
+                        _collectors_instance.geo_df.loc[current_collector_index, 'color'] = 'green'
+                        _collectors_instance.geo_df.loc[current_collector_index, 'discovery_day'] = start_day + day
+                        _collectors_instance.geo_df.loc[current_collector_index, 'life_time'] = 1
 
-        break 
+                        count += 1
 
-    # global true_positive_total_error
+                        if len(burrs) == len(_collectors_instance.geo_df):
+                            break
+                        if count == len(_collectors_instance.geo_df):
+                            break
+                    else:
+                        break
+                else:
+                    count += 1
+            else:
+                break
 
-    # true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
+        current_day_burrs = cria_buffers.criaBuffers(burrs, buffer_production_function)
+        
+        for burr in current_day_burrs:
+
+            for collector in _collectors_instance.geo_df.itertuples():
+
+                if collector.Detected == 0:
+
+                    collector_point = Point(collector.LongitudeDecimal, collector.LatitudeDecimal)
+
+                    if collector_point.within(burr):
+
+                        _collectors_instance.geo_df.loc[collector.Index, 'Detected'] = 1
+                        _collectors_instance.geo_df.loc[collector.Index, 'discovery_day'] = start_day + day
+
+                        if collector.Situacao == 'Com esporos':
+
+                            _collectors_instance.geo_df.loc[collector.Index, 'color'] = 'green'
+
+                        else:
+
+                            _collectors_instance.geo_df.loc[collector.Index, 'color'] = 'red'
+
+                        check_day(_collectors_instance.geo_df, collector, start_day + day)
+
+        for burr in burrs.values():
+
+            key = list(burrs.keys())[list(burrs.values()).index(burr)]
+
+            life_time = _collectors_instance.geo_df.loc[key, 'life_time']
+
+            proportionSeg = 1 + TEST_PARAMS['growth_function_distance'](life_time, TEST_PARAMS['base'])
+
+            proportionLarg = 1 + TEST_PARAMS['growth_function_distance'](life_time, TEST_PARAMS['base'])/2
+
+            burr.growTopology(proportionSeg, proportionLarg)
+
+            _collectors_instance.geo_df.loc[key, 'life_time'] += 1
+
+    true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
+
+    return true_positive_total_error, burrs, 'Topology Growth no touch'
