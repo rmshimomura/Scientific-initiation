@@ -34,10 +34,6 @@ def clean_up(collectors_geo_data_frame: gpd.GeoDataFrame)-> gpd.GeoDataFrame:
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Longitude Decimal': 'LongitudeDecimal'})
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Latitude Decimal': 'LatitudeDecimal'})
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Primeiro_Esporo': 'Primeiro_Esporo'})
-
-    # Check if the column 'fake' exists
-    if 'fake' in collectors_geo_data_frame.columns:
-        collectors_geo_data_frame = collectors_geo_data_frame.drop(columns=['fake'])
     
     if 'Cultivar' in collectors_geo_data_frame.columns:
         collectors_geo_data_frame = collectors_geo_data_frame.drop(columns=['Cultivar'])
@@ -48,21 +44,6 @@ def clean_up(collectors_geo_data_frame: gpd.GeoDataFrame)-> gpd.GeoDataFrame:
     collectors_geo_data_frame['Detected'] = 0
 
     return collectors_geo_data_frame
-
-def show_detected_collectors_city_names(_collectors: pd.DataFrame, plt: plt)-> None:
-    for i in range(len(_collectors)):
-        # Show only cities with collectors with spores
-        if _collectors.loc[i, 'Situacao'] == 'Com esporos': 
-            plt.gca().annotate(_collectors['Cidade'][i], (_collectors['LongitudeDecimal'][i], _collectors['LatitudeDecimal'][i]), fontsize=7)
-
-def count_valid_collectors(_collectors: pd.DataFrame)-> int:
-    number_of_valid_collectors = 0
-
-    for i in range(0, len(_collectors)):
-        if pd.notnull(_collectors['Primeiro_Esporo'].iloc[i]):
-            number_of_valid_collectors += 1
-
-    return number_of_valid_collectors
 
 def calculate_false_positives_penalty(_collectors: pd.DataFrame, final_day: datetime.timedelta)-> int:
     
