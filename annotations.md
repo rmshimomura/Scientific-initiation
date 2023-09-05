@@ -84,3 +84,34 @@ Mesma coisa:
 >> print(_collectors.iloc[count])
 
 >> print(_collectors.loc[_collectors.index[count]])
+
+
+Sobre os coletores carrapichos, se cria_buffers.criaCarrapicho(growth_topology, 0.2, False, 0) vira circulo.
+
+USANDO 0.05
+Inicio teste
+Train file used: /Trained_Data/all_together/geometric_mean_31_23
+Test file used: /Test_Data/coletoressafra2021_31_23
+Base used: 86679601.69000001
+Radius used: 30
+Number of days used: 137
+True positive: 126
+False positive: 40
+Error mean: 7.898220655689253
+Error std: 16.414976445943108
+Error max: 66.2601009909181
+Error min: -24.49913494550748
+
+USANDO 0.1
+Inicio teste
+Train file used: /Trained_Data/all_together/geometric_mean_31_23
+Test file used: /Test_Data/coletoressafra2021_31_23
+Base used: 86679601.69000001
+Radius used: 30
+Number of days used: 137
+True positive: 126
+False positive: 40
+Error mean: 7.898220655689253
+Error std: 16.414976445943108
+Error max: 66.2601009909181
+Error min: -24.49913494550748
