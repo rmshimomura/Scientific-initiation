@@ -51,17 +51,17 @@ if __name__ == "__main__":
 
             # CGNT and MG TESTING
 
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
+            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
+            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
+            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
 
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
+            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
+            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
+            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
 
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]]
+            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
+            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]],
+            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)]]
 
             # CGT TESTING
 
@@ -73,6 +73,18 @@ if __name__ == "__main__":
 
             # [base, number_of_days, '/Test_Data/coletoressafra2223_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
             # [base, number_of_days, '/Test_Data/coletoressafra2223_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
+
+            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04],
+            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04],
+            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04],
+
+            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04],
+            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04],
+            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04],
+
+            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04],
+            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04],
+            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.009, 1.04]
         ]
 
         if len(args_list) == 0:
@@ -100,13 +112,20 @@ if __name__ == "__main__":
 
     if operation_mode == 'test':
 
+        if not os.path.exists('G:/' + root_folder + f'/IC/Codes/Results/Growth_tests/{growth_type}.csv'):
 
-        info = open('G:/' + root_folder + f'/IC/Codes/Results/Growth_tests/{growth_type}.csv', 'w', encoding='utf-8')
+            info = open('G:/' + root_folder + f'/IC/Codes/Results/Growth_tests/{growth_type}.csv', 'w', encoding='utf-8')
 
-        if growth_type == 'CGT':
-            info.write('growth_type,train_file,test_file,base,radius,number_of_days,true_positive,false_positive,days_error_mean_total,days_error_std_total,days_error_max_total,days_error_min_total,real_with_spores,real_without_spores,detected_with_spores,not_detected_with_spores,number_of_starting_points\n')
-        else:
-            info.write('growth_type,train_file,test_file,base,radius,number_of_days,true_positive,false_positive,days_error_mean_total,days_error_std_total,days_error_max_total,days_error_min_total,real_with_spores,real_without_spores,detected_with_spores,not_detected_with_spores\n')
+            if growth_type == 'CGT':
+                info.write('growth_type,train_file,test_file,base,radius,number_of_days,true_positive,false_positive,days_error_mean_total,days_error_std_total,days_error_max_total,days_error_min_total,real_with_spores,real_without_spores,detected_with_spores,not_detected_with_spores,number_of_starting_points\n')
+            elif growth_type == 'TG':
+                info.write('growth_type,train_file,test_file,base,radius,number_of_days,true_positive,false_positive,days_error_mean_total,days_error_std_total,days_error_max_total,days_error_min_total,real_with_spores,real_without_spores,detected_with_spores,not_detected_with_spores,proportion_seg,proportion_larg\n')
+            else:
+                info.write('growth_type,train_file,test_file,base,radius,number_of_days,true_positive,false_positive,days_error_mean_total,days_error_std_total,days_error_max_total,days_error_min_total,real_with_spores,real_without_spores,detected_with_spores,not_detected_with_spores\n')
+
+            info.close()
+        
+        info = open('G:/' + root_folder + f'/IC/Codes/Results/Growth_tests/{growth_type}.csv', 'a', encoding='utf-8')
 
         for _ in metrics:
             info.write(str(_).replace('[', '').replace(']', '').replace('\'', '') + '\n')
@@ -121,7 +140,7 @@ if __name__ == "__main__":
             if growth_type == 'CGT':
                 f.write(f"{'Method,Number of Days,Distance function,Days function,Base,Radius,Train file used,Test file used,TPP,TNP,FPP,FNP,number_of_starting_points'}\n")
             elif growth_type == 'TG':
-                f.write(f"{'Method,Number of Days,Distance function,Days function,Base,Radius,Train file used,Test file used,TPP,TNP,FPP,FNP,rai,rpc,fpc'}\n")
+                f.write(f"{'Method,Number of Days,Distance function,Days function,Base,Radius,Train file used,Test file used,TPP,TNP,FPP,FNP,rai,rpc,proportionSeg,proportionLarg'}\n")
             else:
                 f.write(f"{'Method,Number of Days,Distance function,Days function,Base,Radius,Train file used,Test file used,TPP,TNP,FPP,FNP'}\n")
             f.close()

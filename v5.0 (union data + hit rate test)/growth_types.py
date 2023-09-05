@@ -362,17 +362,16 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
     true_positives = 0
     positive_collectors = _collectors_instance.geo_df.query('DiasAposInicioCiclo != -1')
     first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
-    burrs = dict()
+    current_day_growth_topologies = dict()
     start_day = positive_collectors['DiasAposInicioCiclo'].iloc[0]
-    buffer_production_function = cria_buffers.funcProduzCarrapichos(TEST_PARAMS['fator_producao_carrapichos'],False,0.00001)
-
+    
     growth_topology_dict = _collectors_instance.topologiaCrescimentoDict
     
     for i in range(len(first_appearances)):
 
-        burr = growth_topology_dict[first_appearances.index[i]]
+        growth_topology = growth_topology_dict[first_appearances.index[i]]
 
-        burrs[first_appearances.index[i]] = burr
+        current_day_growth_topologies[first_appearances.index[i]] = growth_topology
 
         _collectors_instance.geo_df.loc[first_appearances.index[i], 'Detected'] = 1
         _collectors_instance.geo_df.loc[first_appearances.index[i], 'circle_created'] = 1
@@ -395,9 +394,9 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
 
                     if start_day + day >= _collectors_instance.geo_df.loc[current_collector_index, 'DiasAposInicioCiclo']:
 
-                        burr = growth_topology_dict[current_collector_index]
+                        growth_topology = growth_topology_dict[current_collector_index]
 
-                        burrs[current_collector_index] = burr
+                        current_day_growth_topologies[current_collector_index] = growth_topology
 
                         _collectors_instance.geo_df.loc[current_collector_index, 'Detected'] = 1
                         _collectors_instance.geo_df.loc[current_collector_index, 'circle_created'] = 1
@@ -407,7 +406,7 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
 
                         count += 1
 
-                        if len(burrs) == len(_collectors_instance.geo_df):
+                        if len(current_day_growth_topologies) == len(_collectors_instance.geo_df):
                             break
                         if count == len(_collectors_instance.geo_df):
                             break
@@ -418,9 +417,30 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
             else:
                 break
 
-        current_day_burrs = cria_buffers.criaBuffers(burrs, buffer_production_function)
+        # All topologies
+        pairs = current_day_growth_topologies.items()
+        # All burrs
+        burrs = []
+        appended_indexes = []
+
+        for pair in pairs:
+
+            key = pair[0]
+            growth_topology = pair[1]
+            life_time = _collectors_instance.geo_df.loc[key, 'life_time']
+            life_time += 1
+
+            if len(growth_topology.getSegments()) == 0:
+                continue
+
+            burr = cria_buffers.criaCarrapicho(growth_topology, 0.1, False, 0)
+            burrs.append(burr)
+            appended_indexes.append(key)
         
-        for burr in current_day_burrs:
+        # burrs = gpd.GeoSeries(burrs, index=current_day_growth_topologies.keys())
+        burrs = gpd.GeoSeries(burrs, index=appended_indexes)
+
+        for burr in burrs:
 
             for collector in _collectors_instance.geo_df.itertuples():
 
@@ -443,20 +463,20 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
 
                         check_day(_collectors_instance.geo_df, collector, start_day + day)
 
-        for burr in burrs.values():
+        for index, growth_topology in current_day_growth_topologies.items():
 
-            key = list(burrs.keys())[list(burrs.values()).index(burr)]
+            key = index
 
             life_time = _collectors_instance.geo_df.loc[key, 'life_time']
 
-            proportionSeg = 1 + TEST_PARAMS['growth_function_distance'](life_time, TEST_PARAMS['base'])
+            proportionSeg = 1.005
 
-            proportionLarg = 1 + TEST_PARAMS['growth_function_distance'](life_time, TEST_PARAMS['base'])/2
+            proportionLarg = 1.002
 
-            burr.growTopology(proportionSeg, proportionLarg)
+            growth_topology.growTopology(proportionSeg, proportionLarg)
 
             _collectors_instance.geo_df.loc[key, 'life_time'] += 1
 
     true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
 
-    return true_positive_total_error, burrs, 'Topology Growth no touch'
+    return true_positive_total_error, current_day_growth_topologies, 'Topology Growth no touch'

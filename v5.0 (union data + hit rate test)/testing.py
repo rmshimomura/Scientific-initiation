@@ -2,6 +2,7 @@ import pandas as pd
 from infection_circle import Infection_Circle
 from shapely.geometry import Point
 import coletores, cria_buffers
+import geopandas as gpd
 
 def learning_based_CGNT_MG(trained_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict, mode):
 
@@ -329,11 +330,14 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
     positive_collectors = trained_collectors.geo_df.query('MediaDiasAposInicioCiclo != -1')
     first_appearances = positive_collectors[positive_collectors['MediaDiasAposInicioCiclo'] == positive_collectors['MediaDiasAposInicioCiclo'].min()]
     start_day = positive_collectors['MediaDiasAposInicioCiclo'].iloc[0]
-    burrs = dict()
+    current_day_growth_topologies = dict()
     growth_topology_dict = trained_collectors.topologiaCrescimentoDict
     days_error = []
-    buffer_production_function = cria_buffers.funcProduzCarrapichos(TEST_PARAMS['fator_producao_carrapichos'],False,0.00001)
 
+    last_result = []
+
+    proportionSeg = TEST_PARAMS['proportionSeg']
+    proportionLarg = TEST_PARAMS['proportionLarg']
 
     true_positive = 0
     false_positive = 0
@@ -341,7 +345,7 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
 
     for k in range(len(first_appearances)):
 
-        burr = growth_topology_dict[first_appearances.index[k]]
+        growth_topology = growth_topology_dict[first_appearances.index[k]]
             
         trained_collector = trained_collectors.geo_df.loc[first_appearances.index[k]]
 
@@ -367,7 +371,7 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
         trained_collectors.geo_df.loc[first_appearances.index[k], 'discovery_day'] = start_day
         trained_collectors.geo_df.loc[first_appearances.index[k], 'life_time'] = 1
 
-        burrs[first_appearances.index[k]] = burr
+        current_day_growth_topologies[first_appearances.index[k]] = growth_topology
     
     count = len(first_appearances)
 
@@ -383,7 +387,9 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
 
                     if start_day + day >= trained_collectors.geo_df.loc[current_collector_index, 'MediaDiasAposInicioCiclo']:
 
-                        burr = growth_topology_dict[current_collector_index]
+                        growth_topology = growth_topology_dict[current_collector_index]
+
+                        current_day_growth_topologies[current_collector_index] = growth_topology
                         
                         trained_collector = trained_collectors.geo_df.loc[current_collector_index]
 
@@ -417,11 +423,9 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
                             print('Error')
                             exit()
 
-                        burrs[current_collector_index] = burr
-
                         count += 1
 
-                        if len(burrs) == len(trained_collectors.geo_df):
+                        if len(current_day_growth_topologies) == len(trained_collectors.geo_df):
                             break
                         if count == len(trained_collectors.geo_df):
                             break
@@ -432,9 +436,28 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
             else:
                 break
 
-        current_day_burrs = cria_buffers.criaBuffers(burrs,buffer_production_function)
+        pairs = current_day_growth_topologies.items()
+        # All burrs
+        burrs = []
+        appended_indexes = []
+
+        for pair in pairs:
+
+            key = pair[0]
+            growth_topology = pair[1]
+            life_time = trained_collectors.geo_df.loc[key, 'life_time']
+            life_time += 1
+
+            if len(growth_topology.getSegments()) == 0:
+                continue
+
+            burr = cria_buffers.criaCarrapicho(growth_topology, 0.1, False, 0)
+            burrs.append(burr)
+            appended_indexes.append(key)
         
-        for burr in current_day_burrs:
+        burrs = gpd.GeoSeries(burrs, index=appended_indexes)
+        
+        for burr in burrs:
 
             for collector in test_collectors.itertuples():
 
@@ -471,19 +494,17 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
                             print('Error, hit + miss != len(test_collectors.query(\'Detected == 1\'))')
                             exit()
 
-        for burr in burrs.values():
+        for index, growth_topology in current_day_growth_topologies.items():
 
-            key = list(burrs.keys())[list(burrs.values()).index(burr)]
+            key = index
 
-            life_time = trained_collectors.geo_df.loc[key, 'life_time']
-
-            proportionSeg = 1 + TEST_PARAMS['growth_function_distance'](life_time, TEST_PARAMS['base'])
-
-            proportionLarge = 1 + TEST_PARAMS['growth_function_distance'](life_time, TEST_PARAMS['base'])/2
-
-            burr.growTopology(proportionSeg, proportionLarge)
+            growth_topology.growTopology(proportionSeg, proportionLarg)
 
             trained_collectors.geo_df.loc[key, 'life_time'] += 1
+        
+        # If it is the last day, assign a copy of burrs to last_result
+        if day == TEST_PARAMS['number_of_days'] - 1:
+            last_result = burrs.copy()
 
     # All the collectors that were not detected but had spores, change their color to yellow
     for collector in test_collectors.itertuples():
@@ -495,5 +516,5 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
                 test_collectors.loc[collector.Index, 'color'] = 'yellow'
                 test_collectors.loc[collector.Index, 'format_shape'] = '*'
 
-    return true_positive, false_positive, days_error
+    return true_positive, false_positive, days_error, last_result
 

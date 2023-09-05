@@ -55,15 +55,18 @@ def calculaTrianguloExpansaoPontaChata(segmento, r, rPonta):
     return bufferExpansao
 
 def criaCarrapicho(gt: col.GrowthTopology, proportR: float, comPontaChata: bool, rPonta: float):
-    r = gt.r * proportR
-    buffer = gt.center.buffer(r)
+    # r = gt.r * proportR
+    r = proportR
+    # buffer = gt.center.buffer(r)
+    buffer = None
     segs = gt.getSegments()
     for seg in segs:
         if comPontaChata:
             bufferExpansao = calculaTrianguloExpansaoPontaChata(seg,r,rPonta)
         else:
             bufferExpansao = calculaTrianguloExpansao(seg,r)
-        buffer = buffer.union(bufferExpansao)  
+        # buffer = buffer.union(bufferExpansao)  
+        buffer = bufferExpansao if buffer is None else buffer.union(bufferExpansao)
     return buffer
 
 def geraBuffersCarrapichos(topol_cresc, r: float, comPontaChata = False, rPonta = 0.00001):
@@ -75,8 +78,6 @@ def geraBuffersCarrapichos(topol_cresc, r: float, comPontaChata = False, rPonta 
 
 
 # ### Exemplo 2: Criando Amoras
-
-
 # minAspecRat: para não "achatar" a elipse em demasia
 def calculaElipseExpansao(segmento,r,minAspecRat = 0.2):
     seg = segmento.seg
@@ -148,7 +149,6 @@ def geraBuffersEsqueleto(topol_cresc):
         buffs.append(buf)
     return buffs
 
-
 # ### Exemplo 4: Cria Boneco Michelin
 
 def calculaBufferMembroBoneco(seg, r1,r2, npassos: int):
@@ -189,9 +189,6 @@ def geraBuffersBonecosMichelin(topol_cresc, r1: float, r2: float):
         buf = criaBonecoMichelin(gt, r1, r2)
         buffs.append(buf)
     return buffs
-
-
-
 
 # Crescimento
 def funcProduzCarrapichos(fator,comPontaChata=False,rPonta=0.000001):
