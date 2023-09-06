@@ -226,6 +226,32 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             temp_metrics.append(proportion_seg)
             temp_metrics.append(proportion_larg)
 
+        # _map.plot()
+
+        # topologies = trained_collectors_instance.topologiaCrescimentoDict.values()
+
+        # for topology in topologies:
+
+        #     segments = topology.getSegments()
+
+        #     for segment in segments:
+
+        #         seg = segment.seg
+
+        #         plt.plot(*seg.xy, color='black', linewidth=0.5, linestyle='--')
+
+        # for collector in trained_collectors_instance.geo_df.itertuples():
+
+        #     center_point = sg.Point(collector.LongitudeDecimal, collector.LatitudeDecimal)
+
+        #     plt.plot(*center_point.xy, color='black', marker='o', markersize=1.5)
+
+        # for burr in debug:
+
+        #     plt.plot(*burr.exterior.xy, color='red')
+
+        # plt.show()
+
         # metrics.append(
         #     growth_type,
         #     [TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, radius, number_of_days, true_positive, false_negative, 
