@@ -9,24 +9,6 @@ import shapely
 import shapely.geometry as sg
 import geopandas as gpd
 
-def write_csv(TEST_PARAMS: dict, PENALTIES: dict, start_day, end_day, method_used, file_name, test_duration)-> None:
-
-    # Retrive the keys from the dictionary
-    keys = TEST_PARAMS.keys()
-    values = TEST_PARAMS.values()
-
-    # Check if the file data.csv exists
-    if not os.path.exists(f'results_{method_used.replace(" ", "_")}.csv'):
-        f = open(f'hit_results_{method_used.replace(" ", "_")}.csv', 'w')
-        f.write(f"{'Method,Number of Days,Distance function,Days function,Base,RAI,RPC,Minimun Day,Days Passed,Test time,Test duration,File used,TPP,TNP,FPP,FNP'}\n")
-        f.close()
-        
-    f = open(f'hit_results_{method_used.replace(" ", "_")}.csv', 'a')
-
-    f.write(f"{method_used},{TEST_PARAMS['number_of_days']},{TEST_PARAMS['growth_function_distance'].__name__},{TEST_PARAMS['growth_function_days'].__name__},{TEST_PARAMS['base']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_abrangencia_imediata']},{'' if method_used != 'Topology growth' else TEST_PARAMS['raio_de_possivel_contaminacao']},{start_day},{end_day},{datetime.datetime.now()},{test_duration},{file_name if file_name != None else TEST_PARAMS['test_file']},{','.join(str(value) for value in PENALTIES.values())}\n")
-
-    f.close()
-
 def clean_up(collectors_geo_data_frame: gpd.GeoDataFrame)-> gpd.GeoDataFrame: 
     # Reset index
     collectors_geo_data_frame.index = range(0, len(collectors_geo_data_frame)) 
@@ -110,53 +92,6 @@ def find_closest_positive_collector(_collectors: pd.DataFrame, collector: pd.Dat
                     closest_collector = collectors_with_spores.iloc[i]
 
     return closest_point.distance(collector_point)
-
-def debug_burr(_map, burr_buffer, _collectors, plt):
-
-    _map.plot(color='lightgrey', edgecolor='grey', linewidth=0.5)
-    plt.scatter(_collectors['LongitudeDecimal'], _collectors['LatitudeDecimal'], c=_collectors['color'])
-    for i in range(len(_collectors)):
-        # plt.plot(_collectors['LongitudeDecimal'].iloc[i], _collectors['LatitudeDecimal'].iloc[i], 'o', color='black', markersize=5)
-        x, y = burr_buffer[int(_collectors['burr'].iloc[i])].exterior.xy
-        plt.plot(x, y, color='red', alpha=0.7, linewidth=3, solid_capstyle='round')
-
-def check_burr(_map, burr_buffer, _collectors, plt):
-
-    _map.plot(color='lightgrey', edgecolor='grey', linewidth=0.5)
-    for i in range(len(burr_buffer)):
-        x, y = burr_buffer[i].exterior.xy
-        plt.plot(x, y, color='red', alpha=0.7, linewidth=3, solid_capstyle='round')
-        plt.plot(_collectors['LongitudeDecimal'].iloc[i], _collectors['LatitudeDecimal'].iloc[i], 'o', color='black', markersize=5)
-        plt.pause(0.1)
-    plt.show()
-
-def treat_position(origin, point_found, c_radius):
-    
-    result_point = []
-
-    if point_found.x == origin.x:
-        if point_found.y < origin.y:
-            return Point(point_found.x, point_found.y - c_radius)
-        else:
-            return Point(point_found.x, point_found.y + c_radius)
-    elif point_found.y == origin.y:
-        if point_found.x < origin.x:
-            return Point(point_found.x - c_radius, point_found.y)
-        else:
-            return Point(point_found.x + c_radius, point_found.y)
-
-    slope = (point_found.y - origin.y) / (point_found.x - origin.x)
-
-    if point_found.x < origin.x:
-        result_point.append(point_found.x - abs((math.cos(math.atan(slope)) * c_radius)))
-    else:
-        result_point.append(point_found.x + abs((math.cos(math.atan(slope)) * c_radius)))
-    if point_found.y < origin.y:
-        result_point.append(point_found.y - abs((math.sin(math.atan(slope)) * c_radius)))
-    else:
-        result_point.append(point_found.y + abs((math.sin(math.atan(slope)) * c_radius)))
-    
-    return Point(result_point[0], result_point[1])
 
 def grid_region(_map, _collectors, root_folder):
 
@@ -242,22 +177,3 @@ def grid_region(_map, _collectors, root_folder):
         else:
             
             new_points_data.write(f",,,,,{center_point['LatitudeDecimal']},{center_point['LongitudeDecimal']},,,{center_point['Situacao']},,{september_10th.strftime('%d/%m/%y')},\n")
-
-def generate_regions(_map):
-
-    map_max_x = _map.bounds.maxx.max()
-    map_min_x = _map.bounds.minx.min()
-    map_max_y = _map.bounds.maxy.max()
-    map_min_y = _map.bounds.miny.min()
-
-    center_x = (map_max_x + map_min_x) / 2
-    center_y = (map_max_y + map_min_y) / 2
-
-    regions = []
-    regions_names = ['north', 'east', 'south', 'west']
-    regions.append(sg.Polygon([(map_min_x, map_max_y), (map_max_x, map_max_y), (center_x, center_y)]))
-    regions.append(sg.Polygon([(map_max_x, map_min_y), (map_max_x, map_max_y), (center_x, center_y)]))
-    regions.append(sg.Polygon([(map_min_x, map_min_y), (map_max_x, map_min_y), (center_x, center_y)]))
-    regions.append(sg.Polygon([(map_min_x, map_min_y), (map_min_x, map_max_y), (center_x, center_y)]))
-
-    return regions, regions_names
