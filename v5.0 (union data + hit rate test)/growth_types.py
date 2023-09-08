@@ -1,6 +1,6 @@
 import pandas as pd
 import geopandas as gpd
-import plots, math 
+import math 
 from shapely.geometry import Point
 from infection_circle import Infection_Circle
 import coletores, cria_buffers
@@ -126,26 +126,24 @@ def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old
         for infection_circle in infection_circles:
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        # if TEST_PARAMS['animation']: plots.plotting(_map, _collectors, infection_circles, old_geometries, start_day, day, None, None)
-
-    true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
-
-    # plots.save_fig_on_day(_map, _collectors, infection_circles, old_geometries, start_day, TEST_PARAMS['number_of_days'], None)
+    true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 
     return true_positive_total_error, infection_circles, 'Circular Growth touch'
 
 def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries: list, TEST_PARAMS: dict):
 
+    days_column = 'DiasAposInicioCiclo' if 'DiasAposInicioCiclo' in _collectors.columns else 'MediaDiasAposInicioCiclo'
+
     global true_positive_total_error, true_positives
 
-    _collectors.sort_values(by=['DiasAposInicioCiclo'], inplace=True)
+    _collectors.sort_values(by=[days_column], inplace=True)
 
     true_positive_total_error = 0
     true_positives = 0
-    positive_collectors = _collectors.query('DiasAposInicioCiclo != -1')
-    first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
+    positive_collectors = _collectors.query(f'{days_column} != -1')
+    first_appearances = positive_collectors[positive_collectors[days_column] == positive_collectors[days_column].min()]
     infection_circles = []
-    start_day = positive_collectors['DiasAposInicioCiclo'].iloc[0]
+    start_day = positive_collectors[days_column].iloc[0]
 
     for i in range(len(first_appearances)):
 
@@ -176,7 +174,7 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
 
                 if _collectors.loc[current_collector_index, 'circle_created'] == 0:
 
-                    if start_day + day >= _collectors.loc[current_collector_index, 'DiasAposInicioCiclo']:
+                    if start_day + day >= _collectors.loc[current_collector_index, days_column]:
 
                         infection_circle = Infection_Circle(
                             Point(_collectors.loc[current_collector_index, 'LongitudeDecimal'], _collectors.loc[current_collector_index, 'LatitudeDecimal']),
@@ -229,27 +227,29 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
 
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-    true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
+    true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
     
     return true_positive_total_error, infection_circles, 'Circular Growth no touch'
 
 def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries: list, TEST_PARAMS: dict):
 
+    days_column = 'DiasAposInicioCiclo' if 'DiasAposInicioCiclo' in _collectors.columns else 'MediaDiasAposInicioCiclo'
+
     global true_positive_total_error, true_positives
 
-    _collectors.sort_values(by=['DiasAposInicioCiclo'], inplace=True)
+    _collectors.sort_values(by=[days_column], inplace=True)
 
     true_positive_total_error = 0
 
     true_positives = 0
 
-    positive_collectors = _collectors.query('DiasAposInicioCiclo != -1')
+    positive_collectors = _collectors.query(f'{days_column} != -1')
 
-    first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
+    first_appearances = positive_collectors[positive_collectors[days_column] == positive_collectors[days_column].min()]
 
     infection_circles = []
 
-    start_day = positive_collectors['DiasAposInicioCiclo'].iloc[0]
+    start_day = positive_collectors[days_column].iloc[0]
 
     for i in range(len(first_appearances)):
 
@@ -279,7 +279,7 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
 
                 if _collectors.loc[current_collector_index, 'circle_created'] == 0:
 
-                    if start_day + day >= _collectors.loc[current_collector_index,'DiasAposInicioCiclo']:
+                    if start_day + day >= _collectors.loc[current_collector_index, days_column]:
 
                         infection_circle = Infection_Circle(
                             Point(_collectors.loc[current_collector_index, 'LongitudeDecimal'], _collectors.loc[current_collector_index, 'LatitudeDecimal']),
@@ -347,23 +347,25 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
 
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        if TEST_PARAMS['animation']: plots.plotting(_map, _collectors, infection_circles, old_geometries, start_day, day, None, None)
-
-    true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
+    true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 
     return true_positive_total_error, infection_circles, 'Mixed Growth'
 
 def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PARAMS: dict):
 
+    days_column = 'DiasAposInicioCiclo' if 'DiasAposInicioCiclo' in _collectors_instance.geo_df.columns else 'MediaDiasAposInicioCiclo'
+
     global true_positive_total_error, true_positives
 
-    _collectors_instance.geo_df.sort_values(by=['DiasAposInicioCiclo'], inplace=True)
+    _collectors_instance.geo_df.sort_values(by=[days_column], inplace=True)
     true_positive_total_error = 0
     true_positives = 0
-    positive_collectors = _collectors_instance.geo_df.query('DiasAposInicioCiclo != -1')
-    first_appearances = positive_collectors[positive_collectors['DiasAposInicioCiclo'] == positive_collectors['DiasAposInicioCiclo'].min()]
+    positive_collectors = _collectors_instance.geo_df.query(f'{days_column} != -1')
+    first_appearances = positive_collectors[positive_collectors[days_column] == positive_collectors[days_column].min()]
     current_day_growth_topologies = dict()
-    start_day = positive_collectors['DiasAposInicioCiclo'].iloc[0]
+    start_day = positive_collectors[days_column].iloc[0]
+    proportionSeg = TEST_PARAMS['proportionSeg']
+    proportionLarg = TEST_PARAMS['proportionLarg']
     
     growth_topology_dict = _collectors_instance.topologiaCrescimentoDict
     
@@ -392,7 +394,7 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
 
                 if _collectors_instance.geo_df.loc[current_collector_index, 'circle_created'] == 0:
 
-                    if start_day + day >= _collectors_instance.geo_df.loc[current_collector_index, 'DiasAposInicioCiclo']:
+                    if start_day + day >= _collectors_instance.geo_df.loc[current_collector_index, days_column]:
 
                         growth_topology = growth_topology_dict[current_collector_index]
 
@@ -469,14 +471,10 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
 
             life_time = _collectors_instance.geo_df.loc[key, 'life_time']
 
-            proportionSeg = 1.005
-
-            proportionLarg = 1.002
-
             growth_topology.growTopology(proportionSeg, proportionLarg)
 
             _collectors_instance.geo_df.loc[key, 'life_time'] += 1
 
-    true_positive_total_error = math.sqrt(true_positive_total_error/true_positives)
+    true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 
     return true_positive_total_error, current_day_growth_topologies, 'Topology Growth no touch'

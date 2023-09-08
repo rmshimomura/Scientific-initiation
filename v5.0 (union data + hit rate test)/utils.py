@@ -50,12 +50,14 @@ def calculate_false_positives_penalty(_collectors: pd.DataFrame, final_day: date
     penalty = 0
     false_positives = 0
 
+    days_column = 'DiasAposInicioCiclo' if 'DiasAposInicioCiclo' in _collectors.columns else 'MediaDiasAposInicioCiclo'
+
     for i in range(0, len(_collectors)):
-        if _collectors['DiasAposInicioCiclo'].iloc[i] == -1 and _collectors['Detected'].iloc[i] == 1:
+        if _collectors[days_column].iloc[i] == -1 and _collectors['Detected'].iloc[i] == 1:
             penalty += (abs(final_day - _collectors['discovery_day'].iloc[i])** 2)
             false_positives += 1
 
-    penalty = math.sqrt(penalty/false_positives)
+    penalty = 0 if false_positives == 0 else math.sqrt(penalty/false_positives)
 
     return penalty
 
@@ -77,8 +79,8 @@ def calculate_false_negatives_penalty(_collectors: pd.DataFrame, growth_function
 
         false_negatives += 1
 
-    if penalty > 0:
-        penalty = math.sqrt(penalty/false_negatives)
+
+    penalty = 0 if false_negatives == 0 else math.sqrt(penalty/false_negatives)
 
     return penalty
 

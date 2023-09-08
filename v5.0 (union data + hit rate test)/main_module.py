@@ -94,7 +94,9 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         true_negative_penalty = 0
 
-        start_day = test_collectors_geo_df.query('DiasAposInicioCiclo != -1').sort_values(by=['DiasAposInicioCiclo'])['DiasAposInicioCiclo'].iloc[0]
+        days_column = 'DiasAposInicioCiclo' if 'DiasAposInicioCiclo' in test_collectors_geo_df.columns else 'MediaDiasAposInicioCiclo'
+
+        start_day = test_collectors_geo_df.query(f'{days_column} != -1').sort_values(by=[days_column])[days_column].iloc[0]
 
         if growth_type == 'CGNT':
 
@@ -123,14 +125,14 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
             # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Topology Test 
 
-            trained_collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
+            test_collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
 
-            trained_collectors_instance.geo_df = test_collectors_geo_df
-            trained_collectors_instance.criaGrafo(test_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
-            trained_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
+            test_collectors_instance.geo_df = test_collectors_geo_df
+            test_collectors_instance.criaGrafo(test_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
+            test_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
 
             true_positive_penalty, burrs, method_used = \
-                gt.topology_growth_no_touch(trained_collectors_instance, TEST_PARAMS)
+                gt.topology_growth_no_touch(test_collectors_instance, TEST_PARAMS)
 
         false_positive_penalty = utils.calculate_false_positives_penalty(test_collectors_geo_df, start_day + TEST_PARAMS['number_of_days'] - 1)
 
