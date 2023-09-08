@@ -125,3 +125,21 @@ Todas as formas utilizadas para realizar as simulações neste projeto seguiram 
     Delta = |Quantidade de dias que seriam necessários para chegar até o determinado coletor partindo do coletor verdadeiro positivo mais próximo|^2
 
 ## Construção do modelo TG (_Topology Growth_):
+
+    A fim de testar outras geometrias para simular a movimentação dos esporos, foi empregado a ideia de topologias de crescimento para a criação de novas formas de crescimento.
+
+### Definição do grafo de propagação:
+    Levando em consideração as datas de infecção dos coletores, foi criado um grafo de propagação onde os vértices são os coletores e as arestas são os possíveis caminhos de infecção entre os coletores. Em relação as arestas, considere 2 coletores u e v, onde primeiro houve infecção do coletor u e depois no v, dependendo da distância entre esses coletores e a diferença de datas, pode-se dizer que o coletor u teve influência sobre a presença de esporos sobre o coletor v.
+
+    Alguns termos devem ser definidos para a construção do grafo de propagação:
+
+#### Área de abrangência imediata (utilizada posteriormente como RAI - raio de abrangência imediata)
+
+    - Definida como uma circunferência de raio RAI, centrada no coletor. Essa circunferência será distorcida a fim de gerar o buffer com as novas geometrias.
+
+#### Área de potencial contaminação direta (utilizada posteriormente como RPC - raio de potencial contaminação)
+
+    - Definida como uma circunferência de raio RPC centrada no coletor. Esse parâmetro define os critérios de poda de arestas no grafo de propagação.
+
+### Topologia de crescimento:
+    - Pode-se entender esse conceito como esqueleto resultante da construção e elaboração do grafo. Ela é constituída como um conjunto de segmentos que possuem origem em um ponto (x,y) e cada um dos segmentos apontam para outros coletores que satisfazem as condições de distância e diferença de datas. O comprimento do segmento é influenciado pela diferença de datas entre os coletores e a distância entre eles, sendo que quanto maior o comprimento, menor o tempo de infecção entre os coletores.
