@@ -7,7 +7,7 @@ A ferrugem asiática, causada pelo fungo _Phakopsora pachyrhizi_ é uma das doen
 O projeto objetiva construir um modelo de movimentação de esporos da ferrugem asiática, a fim de auxiliar na avaliação do risco da presença da doença na região e agilizar o manejo precoce exigido feito com fungicidas.
 
 ## Dados utilizados para a construção dos modelos:
-Os dados utilizados para a construção dos modelos foram obtidos através de um sistema de monitoramento de esporos da ferrugem asiática, que consiste em um conjunto de armadilhas de captura de esporos, instaladas em diferentes regiões produtoras de soja no Paraná. As armadilhas são compostas por um funil, que direciona os esporos para um tubo de coleta, onde são depositados em uma lâmina de vidro. As lâminas são coletadas manualmente e enviadas para análise em laboratório, onde são contados os esporos presentes em cada lâmina. Os dados utilizados para a construção dos modelos são localização geográfica da armadilha (Latitude, Longitude), data da detecção do primeiro esporo e a situação que se encontra o coletor (Com esporos ou Encerrado sem esporos).
+Os dados utilizados para a construção dos modelos foram obtidos através de um sistema de monitoramento de esporos da ferrugem asiática, que consiste em um conjunto de armadilhas de captura de esporos, instaladas em diferentes regiões produtoras de soja no Paraná. As armadilhas são compostas por um funil, que direciona os esporos para um tubo de coleta, onde são depositados em uma lâmina de vidro. As lâminas são coletadas manualmente e enviadas para análise em laboratório, onde são contados os esporos presentes em cada lâmina. Os dados utilizados para a construção dos modelos são localização geográfica da armadilha (Latitude, Longitude), data da detecção do primeiro esporo e a situação que se encontra o coletor ("Com esporos" ou "Encerrado sem esporos").
 
 Exemplo de dados coletados (safra 20/21):
 
@@ -29,7 +29,7 @@ Exemplo de dados coletados (safra 20/21):
     - InicioCiclo: Dia 11/09/20xx (xx é substituído de acordo com a safra)
     - DiasAposInicioCiclo: Quantos dias depois do InicioCiclo se passaram até que o primeiro esporo foi detectado (caso não haja infecção, o valor é -1)
 2. Normalização das datas de detecção do primeiro esporo:
-    A data definida na coluna InicioCiclo (11 de Setembro) foi encontrada nesta [notícia](https://globorural.globo.com/agricultura/soja/noticia/2023/07/governo-encurta-janela-de-plantio-de-soja-em-mato-grosso-parana-e-rio-grade-do-sul.ghtml) disponbilizado pelo Ministério da Agricultura.
+    A data definida na coluna InicioCiclo (11 de setembro) foi encontrada nesta [notícia](https://globorural.globo.com/agricultura/soja/noticia/2023/07/governo-encurta-janela-de-plantio-de-soja-em-mato-grosso-parana-e-rio-grade-do-sul.ghtml) disponibilizado pelo Ministério da Agricultura.
 3. Passagem de uma malha sobre o mapa do Paraná a fim de uniformizar a localização geográfica dos coletores
     - Divisão do estado do Paraná em regiões retangulares (dimensões do estado do Paraná = 735.1995280519512 km x 468.1821515409006 km). Os testes realizados neste repositório dividiram o estado em 31 partes horizontais e 23 partes verticais, criando retângulos de dimensões 23.71611380812746 km x 20.35574571916959 km. É importante ressaltar que é possível alterar o número de divisões horizontais e verticais por meio do da função `grid_region` presente no arquivo `utils.py`.
     - União dos pontos internos a cada retângulo criando assim o ponto representante seguindo algumas regras:
@@ -80,14 +80,14 @@ Todas as formas utilizadas para realizar as simulações neste projeto seguiram 
 
 - CGT (_Circular Growth no Touch_): 
     1. Usando `k` primeiros pontos da safra A para tentar prever a movimentação dos esporos nas safras B e C, iniciaremos a simulação de crescimento crescendo esses `k` primeiros no dia correto (por exemplo: `k = 3`, os valores presentes na coluna `DiasAposInicioCiclo` são 1,3,5; no dia 1, o círculo de infecção do ponto 1 crescerá, no dia 3, o círculo de infecção do ponto 2 crescerá, no dia 5, o círculo de infecção do ponto 3 crescerá).
-    2. A partir do dia `k+1`, o crescimento dos círculos de infecção serão feito de acordo com a função logarítmica definida na observação 4.
+    2. A partir do dia `k+1`, o crescimento dos círculos de infecção será feito de acordo com a função logarítmica definida na observação 4.
     3. Caso algum círculo de infecção cresça e toque em algum outro ponto `x`, um novo círculo de infecção será criado e a partir do próximo dia, irá crescer juntamente com todos os outros ativos no momento. O ponto `x` guardará o dia em que foi detectado.
 
 ### Modelos com aprendizagem de data:
 
 - CGNT (_Circular Growth no Touch_): 
     1. Todos os círculos de infecção serão ativados apenas nos dias corretos (da mesma maneira que o CGT).
-    2. A partir do dia `k+1`, o crescimento dos círculos de infecção serão feito de acordo com a função logarítmica definida na observação 4.
+    2. A partir do dia `k+1`, o crescimento dos círculos de infecção será feito de acordo com a função logarítmica definida na observação 4.
     3. Caso algum círculo de infecção cresça e toque em algum outro ponto `x`, esse ponto `x` guardará apenas o dia em que foi detectado e não criará um novo círculo de infecção. (Por isso o nome _no touch_)
 
 - MG (_Mixed Growth_):
