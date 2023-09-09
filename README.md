@@ -66,7 +66,8 @@ Exemplo de dados coletados (safra 20/21):
 - Observação 1: Os modelos foram criados utilizando a linguagem de programação Python com o auxílio das bibliotecas Shapely, Pandas, GeoPandas.
 - Observação 2: Será utilizado o termo "ponto" para se referir aos pontos da malha criada (que representam os coletores).
 - Observação 3: A fim de facilitar o entendimento do leitor, será utilizado terminologias como safra A, B e C.
-- Observação 4: Todos os modelos de crescimento seguem uma função de crescimento logarítmica definida como `tamanho_do_buffer = log(dia, base)`, onde dia se refere há quantos dias a geometria está crescendo, e as bases utilizadas foram encontradas por meio de testes de tal forma que se consiga valores de 20km, 25km, 30km, 35km, 40km, 45km, 50km, 55km e 60km no último dia do teste (137, número encontrado como o limite superior do grupo de maturação médio da soja no estado do Paraná, disponível [aqui](https://www.siagri.com.br/plantacao-de-soja/) no tópico 2 do site).
+- Observação 4: Todos os modelos de crescimento seguem uma função de crescimento logarítmica definida como `tamanho_do_buffer = log(dia, base)`, onde dia se refere há quantos dias a geometria está crescendo com um limite de 105 dias, e as bases utilizadas foram encontradas por meio de testes de tal forma que se consiga valores de 20km, 25km, 30km, 35km, 40km, 45km, 50km, 55km e 60km no último dia do teste (número encontrado como o tempo de esporulação do fungo, disponível [aqui](https://ourofinoagro.com.br/pragas/ferrugem-asiatica-da-soja/) e [aqui] (https://www.agrolink.com.br/noticias/agressividade-da-ferrugem-asiatica_475381.html))
+- Observação 5: O laço de repetição irá durar 137 dias. (número encontrado como o limite superior do grupo de maturação médio da soja no estado do Paraná, disponível [aqui](https://www.siagri.com.br/plantacao-de-soja/) no tópico 2 do site).
 
 1. Modelos circulares: Supondo que os esporos do fungo se movimentam no formato de um círculo, os modelos circulares foram criados com o objetivo de prever a movimentação dos esporos do fungo com raios dos círculos variando no intervalo [20, 60] km com passos de 5 km.
 
@@ -74,7 +75,7 @@ Exemplo de dados coletados (safra 20/21):
 
 Todas as formas utilizadas para realizar as simulações neste projeto seguiram as seguintes regras:
 - Círculos: O centro do círculo é o ponto em que o primeiro esporo foi detectado e o raio do círculo é incrementado diariamente de acordo com a função logarítmica definida na observação 4.
-- "Carrapichos": Parâmetros a serem explicados na próxima seção como `raio_de_abrangencia_imediata` e `raio_de_possivel_contaminacao` foram setados como `log(2, base)` e `log(137, base)` respectivamente.
+- "Carrapichos": Parâmetros a serem explicados na próxima seção como `raio_de_abrangencia_imediata` e `raio_de_possivel_contaminacao` foram setados como `log(2, base)` e `log(105, base)` respectivamente.
 
 ### Modelos sem aprendizagem de data:
 
