@@ -57,15 +57,14 @@ def calculaTrianguloExpansaoPontaChata(segmento, r, rPonta):
 def criaCarrapicho(gt: col.GrowthTopology, proportR: float, comPontaChata: bool, rPonta: float):
     # r = gt.r * proportR
     r = proportR
-    # buffer = gt.center.buffer(r)
-    buffer = None
+    buffer = gt.center.buffer(r)
+    # buffer = None
     segs = gt.getSegments()
     for seg in segs:
         if comPontaChata:
             bufferExpansao = calculaTrianguloExpansaoPontaChata(seg,r,rPonta)
         else:
             bufferExpansao = calculaTrianguloExpansao(seg,r)
-        # buffer = buffer.union(bufferExpansao)  
         buffer = bufferExpansao if buffer is None else buffer.union(bufferExpansao)
     return buffer
 

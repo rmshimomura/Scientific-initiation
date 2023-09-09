@@ -97,8 +97,6 @@ def grid_region(_map, _collectors, root_folder):
 
     global file_name, year_analyzed, horizontal_len, vertical_len
 
-    # horizontal_len = math.ceil(total_length / 0.1)
-    # vertical_len = math.ceil(total_height / 0.1)
     horizontal_len = 31
     vertical_len = 23
 

@@ -279,13 +279,4 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         return temp_metrics
 
 if __name__ == '__main__':
-    # main(10000, 137, 'arithmetic_mean_31_23', 'coletoressafra2021_31_23', 'parameter_search', 'TG')
-    # main(807003392603.5468, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 20, 1.05, 1.003)
-    # main(3353515271.3289995, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 25, 1.05, 1.003)
-    main(86679601.69000001, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 30, 1.05, 1.003)
-    # main(6366910.974999996, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 35, 1.05, 1.003)
-    # main(898333.6750000002, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 40, 1.05, 1.003)
-    # main(195859.48300000007, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 45, 1.05, 1.003)
-    # main(57909.54299999999, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 50, 1.05, 1.003)
-    # main(21368.440999999988, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 55, 1.05, 1.003)
-    # main(9310.188000000004, 137, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 4, 60, 1.05, 1.003)
+    main(6366910.974999996, 137, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 1, 35, 1.06, 1.04)

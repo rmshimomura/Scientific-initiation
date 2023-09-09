@@ -115,3 +115,6 @@ Error mean: 7.898220655689253
 Error std: 16.414976445943108
 Error max: 66.2601009909181
 Error min: -24.49913494550748
+
+
+Para comparar, utilizaremos TG_106_104

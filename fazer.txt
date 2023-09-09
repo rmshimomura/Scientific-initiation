@@ -1,18 +1,4 @@
-- Fazer modelo sem aprendizado com toque considerando primeiras k ocorrências de cada ano na respectiva data:
-(Variar K)
-    Por exemplo
-        Ano A:
-            1,3,5
-                - Crescer somente esses k primeiros
-        Ano B:
-            2,4,6
-                - Crescer somente esses k primeiros
-        Ano C:
-            10,10,10
-                - Crescer somente esses k primeiros
+Graficos:
 
-- Usar bases para conseguir chegar em raios iguais a [20,25,30,35,40,45,50] km
-
-(Fazer isso acima para CGT, MG, CGNT)
-
-Depois, fazer os testes com o buffer dos carrapichos
+- Comparação sobre qual média fazer: OK, escolhido média aritmética.
+- Mostrar quantidade de verdadeiros positivos, falsos positivos, verdadeiros negativos e falsos negativos: OK
