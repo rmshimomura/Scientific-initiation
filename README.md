@@ -68,6 +68,7 @@ Exemplo de dados coletados (safra 20/21):
 - Observação 3: A fim de facilitar o entendimento do leitor, será utilizado terminologias como safra A, B e C.
 - Observação 4: Todos os modelos de crescimento seguem uma função de crescimento logarítmica definida como `tamanho_do_buffer = log(dia, base)`, onde dia se refere há quantos dias a geometria está crescendo com um limite de 105 dias, e as bases utilizadas foram encontradas por meio de testes de tal forma que se consiga valores de 20km, 25km, 30km, 35km, 40km, 45km, 50km, 55km e 60km no último dia do teste (número encontrado como o tempo de esporulação do fungo, disponível [aqui](https://ourofinoagro.com.br/pragas/ferrugem-asiatica-da-soja/) e [aqui] (https://www.agrolink.com.br/noticias/agressividade-da-ferrugem-asiatica_475381.html))
 - Observação 5: O laço de repetição irá durar 137 dias. (número encontrado como o limite superior do grupo de maturação médio da soja no estado do Paraná, disponível [aqui](https://www.siagri.com.br/plantacao-de-soja/) no tópico 2 do site).
+- Observação 6: A conversão de graus para km foi feita baseada em 1 grau = 111.11km (disponível [aqui](https://www.teleco.com.br/tutoriais/tutorialsmsloc2/pagina_5.asp#:~:text=Cada%20grau%20de%20uma%20latitude,a%20aproximadamente%20111%2C11%20km.)). 
 
 1. Modelos circulares: Supondo que os esporos do fungo se movimentam no formato de um círculo, os modelos circulares foram criados com o objetivo de prever a movimentação dos esporos do fungo com raios dos círculos variando no intervalo [20, 60] km com passos de 5 km.
 
