@@ -1,28 +1,4 @@
 # Anotações de estudo IC
-
-## A fazer:
-
-- [x] Colocar os que nao detectaram aqui também
-- [x] Pensar em como penalizar os resultados
-- [x] Fazer função de penalidade
-- [x] Arrumar erros no RMSE
-- [x] Opção de "animação"
-- [x] Gerar csv com os resultados
-- [x] Transformar o csv que eu estou usando para o que o Evandro usa
-- [] Crescimento dos carrapicho 
-- Pensar no crescimento dinâmico
-- 1. Adaptar o programa atual para aceitar o csv 2021Final ok
-- 2. Rodar com o csv enriquecido com os fakes (ideia do quadriculado) os carrapichos já feitos. FAZER!
-
-> Na hora de escolher o tamanho dos quadradinhos, calcular a menor bouding box do Paraná e a partir daí fazer vários testes com tamanhos diferentes (20x20, 20x30, 10x10...)
-
-> Para testes, colocar os fakes somente nos quadradinhos que não tiverem coletores já reais
-
-> Para treinamento, colocar todos os pontos centrais. Decidir também sobre se o ponto que está representando aquele quadrado está infectado ou não baseado nos coletores dentro do quadrado
-
-
-
-
 ## Importante para o estudo:
 - Estima-se que a primeira geração de pústulas pode manter a esporulação por até quinze semanas,mesmo sob condições de baixa umidade. Para que o fungo (Phakopsora pachyrhizi) infecte a planta
     são necessárias condições favoráveis, tais como disponibilidade de água na folha, mínimo de 6
@@ -118,3 +94,39 @@ Error min: -24.49913494550748
 
 
 Para comparar, utilizaremos TG_106_104
+
+
+
+
+# RESULTADOS DOS TESTES
+
+## Qual média usar?
+Guiando-se pelos resultados testes de penalidades, obtive que a média __ARITMÉTICA__ é a melhor para o modelo em 5 dos 6 casos (CGNT - TPP e FPP, MG - TPP e FPP, TG - TPP). Os gráficos em relação aos modelos CGNT e MG ficaram "comportados" enquanto os gráficos de TG ficaram "instáveis" em alguns pontos.
+
+## CGT observações:
+Sobre o _Circular Growth touch_, o único raio que conseguiu detectar todos os coletores nos 6 casos ("treina" A - testa B e C, "treina" B - testa A e C e "treina" C - testa A e B) foi de __60KM__, então tenho que saber se os gráficos comparativos devem ser feitos com esse raio ou com o raio de __25~30KM__, que é o que eu estou usando para os outros modelos.
+
+## TG observações:
+Sobre o _Topology Growth_, percebi que ele começa a dar resultantes diferentes do base line apenas a partir de __30km__ de raio. Novamente, tenho que saber se os gráficos comparativos devem ser feitos com esse raio ou com o raio de __25~30KM__, que é o que eu estou usando para os outros modelos.
+
+## No geral:
+
+- Como devo fazer para construir um ranking?
+1. Ordenar os resultados por erro médio?
+2. Ordenar os resultados por desvio padrão?
+3. Devo considerar as observações mostradas nos dois tópicos acima?
+
+Pensei em fazer os seguintes gráficos:
+- Número de falsos positivos, comparando CGNT, MG e TG, porque daí ficaria mais fácil de ver que por conta do formato da topologia ser aprendido, o TG tem __menos__ falsos positivos em relação aos outros dois modelos.
+- Erro médio junto com desvio padrão usando média aritmética dos modelos CGNT, MG e TG e CGT? Acho que fique muito bagunçado...
+- Sobre o número de _k_-primeiros pontos no modelo CGT, já fiz o gráfico mostrando porque eu escolhi o _k_ = 4, mas não sei se é interessante mostrar isso no trabalho.
+
+Tabelas:
+Dependem da resposta da pergunta sobre o ranking.
+
+> Mas, pensei em comparar 2 a 2 (CGNT vs MG, CGNT vs TG, CGNT vs CGT):
+
+### O que cada tabela conseguiria mostrar?
+- CGNT vs MG: Mostrar se a ideia de misturar propagação por toque e propagação por data é melhor do que apenas por data
+- CGNT vs TG: Mostrar se a ideia de utilizar uma topologia com a forma aprendida previamente (TG) é melhor do que apenas um círculo simples (que é o que eu estou usando para o CGNT)
+- CGNT vs CGT: Mostrar a diferença entre utilizar aprendizado de datas (CGNT) e apenas utilizar propagação por toque (CGT)
