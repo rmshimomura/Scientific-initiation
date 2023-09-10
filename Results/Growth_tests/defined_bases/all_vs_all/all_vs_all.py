@@ -19,17 +19,17 @@ MG_DATA = pd.read_csv(r'G:\My Drive\IC\Codes\Results\Growth_tests\defined_bases\
 TG_DATA = pd.read_csv(r'G:\My Drive\IC\Codes\Results\Growth_tests\defined_bases\TG.csv')
 
 all_harversts = ['2021', '2122', '2223']
-all_names = ["Média aritmética", "Média geométrica", "Média harmônica"]
+all_names = "Média aritmética"
 for i in range(3):
     harvest = all_harversts[i]
-    title = all_names[i]
+    title = all_names
     mode = mode_picker(title)
 
     fig, ax = plt.subplots(figsize=(12, 6))
-    ax.set_title(f'Colheita {harvest} - {title.title()} - Média de dias adiantados em relação ao real')
+    ax.set_title(f'Colheita {harvest} - {title.title()} - Desvio padrão dos dias adiantados em relação ao real')
     ax.set_xlabel('Limites de infecção (Km)')
-    ax.set_ylabel('Dias adiantados em relação ao real (média)')
-    column_to_show = 'days_error_mean_total'
+    ax.set_ylabel('Dias (unidades)')
+    column_to_show = 'days_error_std_total'
 
     remaining_harvests = [h for h in all_harversts if h != harvest]
 
@@ -56,4 +56,4 @@ for i in range(3):
 
     plt.tight_layout()
 
-    plt.savefig(rf'G:/My Drive/IC/Codes/Results/Growth_tests/defined_bases/test_comparison_{mode}_{harvest}_{column_to_show}.png', dpi=300, bbox_inches='tight')
+    plt.savefig(rf'G:/My Drive/IC/Codes/Results/Growth_tests/defined_bases/all_vs_all/test_comparison_{mode}_{harvest}_{column_to_show}.png', dpi=300, bbox_inches='tight')
