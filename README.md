@@ -66,7 +66,7 @@ Exemplo de dados coletados (safra 20/21):
 - Observação 1: Os modelos foram criados utilizando a linguagem de programação Python com o auxílio das bibliotecas Shapely, Pandas, GeoPandas.
 - Observação 2: Será utilizado o termo "ponto" para se referir aos pontos da malha criada (que representam os coletores).
 - Observação 3: A fim de facilitar o entendimento do leitor, será utilizado terminologias como safra A, B e C.
-- Observação 4: Todos os modelos de crescimento seguem uma função de crescimento logarítmica definida como `tamanho_do_buffer = log(dia, base)`, onde dia se refere há quantos dias a geometria está crescendo com um limite de 105 dias, e as bases utilizadas foram encontradas por meio de testes de tal forma que se consiga valores de 20km, 25km, 30km, 35km, 40km, 45km, 50km, 55km e 60km no último dia do teste (número encontrado como o tempo de esporulação do fungo, disponível [aqui](https://ourofinoagro.com.br/pragas/ferrugem-asiatica-da-soja/) e [aqui] (https://www.agrolink.com.br/noticias/agressividade-da-ferrugem-asiatica_475381.html))
+- Observação 4: Todos os modelos de crescimento seguem uma função de crescimento logarítmica definida como `tamanho_do_buffer = log(dia, base)`, onde dia se refere há quantos dias a geometria está crescendo com um limite de 105 dias, e as bases utilizadas foram encontradas por meio de testes de tal forma que se consiga valores de 20km, 25km, 30km, 35km, 40km, 45km, 50km, 55km e 60km no último dia do teste (número encontrado como o tempo de esporulação do fungo, disponível [aqui](https://ourofinoagro.com.br/pragas/ferrugem-asiatica-da-soja/) e [aqui](https://www.agrolink.com.br/noticias/agressividade-da-ferrugem-asiatica_475381.html))
 - Observação 5: O laço de repetição irá durar 137 dias. (número encontrado como o limite superior do grupo de maturação médio da soja no estado do Paraná, disponível [aqui](https://www.siagri.com.br/plantacao-de-soja/) no tópico 2 do site).
 - Observação 6: A conversão de graus para km foi feita baseada em 1 grau = 111.11km (disponível [aqui](https://www.teleco.com.br/tutoriais/tutorialsmsloc2/pagina_5.asp#:~:text=Cada%20grau%20de%20uma%20latitude,a%20aproximadamente%20111%2C11%20km.)). 
 
@@ -152,3 +152,23 @@ Alguns termos devem ser definidos para a construção do grafo de propagação:
 #### Formato utilizado no modelo TG:
 
 O formato utilizado no modelo TG é basicamente a união de um círculo de raio r com um triângulo apontando para cada coletor que foi identificado como possível influência de infecção.
+
+#### Parâmetros utilizados no modelo TG:
+
+- Raio de abrangência imediata (RAI): `log(2, base)`
+- Raio de potencial contaminação (RPC): `log(105, base)`
+- Largura do segmento: 0.01
+- Proporção aumentada a cada dia no comprimento: 1.06
+- Proporção aumentada a cada dia na largura: 1.04
+
+## Resultados obtidos:
+
+### Melhor média:
+
+Utilizando nossas penalidades expostas acima (TPP, FPP e FNP), foi possível obter os seguintes resultados:
+Dos 3 modelos com aprendizado (CGNT, MG e TG), 5 em 6 dos rankings, foi observado que a média aritmética obteve as menores penalidades em relação às outras médias (geométrica e harmônica).
+
+#### Observações sobre o modelo CGT (_Circular Growth touch_):
+
+Das métricas obtidas, apenas os testes com os raios 55 e 60km foram capazes de detectar todos os coletores que haviam sido infectados. Isso pode ser observado nos resultados onde FNP == 0
+
