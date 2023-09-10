@@ -1,7 +1,14 @@
 import multiprocessing as mp
-import random
+import sys
 import main_module
 import os
+
+def print_progress_bar(iteration, total, prefix='', length=50, fill='█'):
+    percent = ("{:.1f}").format(100 * (iteration / float(total)))
+    filled_length = int(length * iteration // total)
+    bar = fill * filled_length + '-' * (length - filled_length)
+    sys.stdout.write(f'\r{prefix} |{bar}| {percent}% Complete')
+    sys.stdout.flush()
 
 if __name__ == "__main__":
     
@@ -36,6 +43,10 @@ if __name__ == "__main__":
     operation_mode = 'test'
 
     growth_type = 'TG'
+
+    count = 0
+
+    print_progress_bar(count, 1, prefix='Progress:', length=50)
 
     for base in bases:
         args_list = [
@@ -75,17 +86,17 @@ if __name__ == "__main__":
             # [base, number_of_days, '/Test_Data/coletoressafra2223_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
             # [base, number_of_days, '/Test_Data/coletoressafra2223_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
 
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
+            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
+            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
 
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
+            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
+            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
 
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04]
+            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
+            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
+            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01]
         ]
 
         if len(args_list) == 0:
@@ -103,6 +114,13 @@ if __name__ == "__main__":
 
         pool.close()
         pool.join()
+
+        count += num_processes
+        total = len(bases) * num_processes
+
+        print_progress_bar(count, total, prefix='Progress:', length=50)
+
+
 
     root_folder = None
 

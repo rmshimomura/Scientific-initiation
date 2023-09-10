@@ -1,17 +1,12 @@
 import os
-import sys
 import geopandas as gpd
 import pandas as pd
 import utils
 import growth_functions as gf
 import growth_types as gt
-import matplotlib.pyplot as plt
 import shapely.geometry as sg
 import numpy as np
-import coletores, cria_buffers
-import time
-import datetime
-import random
+import coletores
 import testing as t
 
 global root_folder, metrics, _map, regions, regions_names
@@ -67,7 +62,7 @@ def read_basic_info(train_file, test_file):
 
     return trained_collectors_geo_df, test_collectors_geo_df
 
-def main(base, number_of_days, train_file, test_file, operation_mode, growth_type, number_of_starting_points, radius, proportion_seg=1.001, proportion_larg=1.0005):
+def main(base, number_of_days, train_file, test_file, operation_mode, growth_type, number_of_starting_points, radius, proportion_seg, proportion_larg):
 
     global _map
 
@@ -80,13 +75,15 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         'test_file' : test_file,
         'number_of_starting_points' : number_of_starting_points,
         'proportionSeg' : proportion_seg,
-        'proportionLarg' : proportion_larg
+        'proportionLarg' : proportion_larg,
+        'expansion_days_limit' : 105,
+        'larg_seg' : 0.01
     }
 
     if growth_type == 'TG':
 
         TEST_PARAMS['raio_de_abrangencia_imediata'] = TEST_PARAMS['growth_function_distance'](2, TEST_PARAMS['base'])
-        TEST_PARAMS['raio_de_possivel_contaminacao'] = TEST_PARAMS['growth_function_distance'](137, TEST_PARAMS['base'])
+        TEST_PARAMS['raio_de_possivel_contaminacao'] = TEST_PARAMS['growth_function_distance'](TEST_PARAMS['expansion_days_limit'], TEST_PARAMS['base'])
 
     trained_collectors_geo_df, test_collectors_geo_df = read_basic_info(train_file, test_file)
 
@@ -129,7 +126,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
             test_collectors_instance.geo_df = test_collectors_geo_df
             test_collectors_instance.criaGrafo(test_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
-            test_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.01)
+            test_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], TEST_PARAMS['larg_seg'])
 
             true_positive_penalty, burrs, method_used = \
                 gt.topology_growth_no_touch(test_collectors_instance, TEST_PARAMS)
@@ -138,18 +135,18 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         false_negative_penalty = utils.calculate_false_negatives_penalty(test_collectors_geo_df, TEST_PARAMS['growth_function_days'], TEST_PARAMS['base'])
 
-        print(f"BASE USED: {base}")
-        print(f"Train file used: {train_file}")
-        print(f"Test file used: {test_file}")
-        print(f"True positive penalty: {true_positive_penalty}")
-        print(f"True negative penalty: {true_negative_penalty}")
-        print(f"False positive penalty: {false_positive_penalty}")
-        print(f"False negative penalty: {false_negative_penalty}")
-        print(f"Method used: {method_used}")
-        if growth_type == 'CGT':
-            print(f"Number of starting points: {number_of_starting_points}")
+        # print(f"BASE USED: {base}")
+        # print(f"Train file used: {train_file}")
+        # print(f"Test file used: {test_file}")
+        # print(f"True positive penalty: {true_positive_penalty}")
+        # print(f"True negative penalty: {true_negative_penalty}")
+        # print(f"False positive penalty: {false_positive_penalty}")
+        # print(f"False negative penalty: {false_negative_penalty}")
+        # print(f"Method used: {method_used}")
+        # if growth_type == 'CGT':
+        #     print(f"Number of starting points: {number_of_starting_points}")
 
-        print("\n")
+        # print("\n")
         
         results_metrics = [
             method_used,
@@ -195,7 +192,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
             trained_collectors_instance.geo_df = trained_collectors_geo_df
             trained_collectors_instance.criaGrafo(trained_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
-            trained_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], 0.001)
+            trained_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], TEST_PARAMS['larg_seg'])
 
             true_positive, false_positive, days_error, debug = t.topology_test_TG(trained_collectors_instance, test_collectors_geo_df, TEST_PARAMS)
 
@@ -254,29 +251,19 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         # plt.show()
 
-        # metrics.append(
-        #     growth_type,
-        #     [TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, radius, number_of_days, true_positive, false_negative, 
-        #     error_mean, error_std, error_max, error_min,
-        #     len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))]
-        # )
-
-        # if growth_type == 'CGT':
-        #     metrics.append(number_of_starting_points)
-
-        # print(f"Train file used: {temp_metrics[1]}")
-        # print(f"Test file used: {temp_metrics[2]}")
-        # print(f"Base used: {temp_metrics[3]}")
-        # print(f"Radius used: {temp_metrics[4]}")
-        # print(f"Number of days used: {temp_metrics[5]}")
-        # print(f"True positive: {temp_metrics[6]}")
-        # print(f"False positive: {temp_metrics[7]}")
-        # print(f"Error mean: {temp_metrics[8]}")
-        # print(f"Error std: {temp_metrics[9]}")
-        # print(f"Error max: {temp_metrics[10]}")
-        # print(f"Error min: {temp_metrics[11]}")
-        # print()
+        print(f"Train file used: {temp_metrics[1]}")
+        print(f"Test file used: {temp_metrics[2]}")
+        print(f"Base used: {temp_metrics[3]}")
+        print(f"Radius used: {temp_metrics[4]}")
+        print(f"Number of days used: {temp_metrics[5]}")
+        print(f"True positive: {temp_metrics[6]}")
+        print(f"False positive: {temp_metrics[7]}")
+        print(f"Error mean: {temp_metrics[8]}")
+        print(f"Error std: {temp_metrics[9]}")
+        print(f"Error max: {temp_metrics[10]}")
+        print(f"Error min: {temp_metrics[11]}")
+        print()
         return temp_metrics
 
 if __name__ == '__main__':
-    main(6366910.974999996, 137, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 1, 35, 1.06, 1.04)
+    main(2608613.8780000005, 137, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 1, 35, 1.05, 1.04)
