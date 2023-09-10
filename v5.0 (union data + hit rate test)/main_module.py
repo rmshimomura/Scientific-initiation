@@ -251,18 +251,18 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         # plt.show()
 
-        print(f"Train file used: {temp_metrics[1]}")
-        print(f"Test file used: {temp_metrics[2]}")
-        print(f"Base used: {temp_metrics[3]}")
-        print(f"Radius used: {temp_metrics[4]}")
-        print(f"Number of days used: {temp_metrics[5]}")
-        print(f"True positive: {temp_metrics[6]}")
-        print(f"False positive: {temp_metrics[7]}")
-        print(f"Error mean: {temp_metrics[8]}")
-        print(f"Error std: {temp_metrics[9]}")
-        print(f"Error max: {temp_metrics[10]}")
-        print(f"Error min: {temp_metrics[11]}")
-        print()
+        # print(f"Train file used: {temp_metrics[1]}")
+        # print(f"Test file used: {temp_metrics[2]}")
+        # print(f"Base used: {temp_metrics[3]}")
+        # print(f"Radius used: {temp_metrics[4]}")
+        # print(f"Number of days used: {temp_metrics[5]}")
+        # print(f"True positive: {temp_metrics[6]}")
+        # print(f"False positive: {temp_metrics[7]}")
+        # print(f"Error mean: {temp_metrics[8]}")
+        # print(f"Error std: {temp_metrics[9]}")
+        # print(f"Error max: {temp_metrics[10]}")
+        # print(f"Error min: {temp_metrics[11]}")
+        # print()
         return temp_metrics
 
 if __name__ == '__main__':

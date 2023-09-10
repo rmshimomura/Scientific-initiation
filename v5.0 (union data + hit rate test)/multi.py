@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     metrics = []
 
-    operation_mode = 'test'
+    operation_mode = 'parameter_search'
 
     growth_type = 'TG'
 
@@ -52,28 +52,25 @@ if __name__ == "__main__":
         args_list = [
 
             # SEARCH FOR THE BEST PARAMETERS
-            # [base, number_of_days, None, '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 4, radius[bases.index(base)], 1.01, 1.04],
-            # [base, number_of_days, None, '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 4, radius[bases.index(base)], 1.01, 1.04],
-            # [base, number_of_days, None, '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 4, radius[bases.index(base)], 1.01, 1.04],
 
-            # [base, number_of_days, None, '/Trained_Data/all_together/arithmetic_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
-            # [base, number_of_days, None, '/Trained_Data/all_together/geometric_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
-            # [base, number_of_days, None, '/Trained_Data/all_together/harmonic_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            [base, number_of_days, None, '/Trained_Data/all_together/arithmetic_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            [base, number_of_days, None, '/Trained_Data/all_together/geometric_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            [base, number_of_days, None, '/Trained_Data/all_together/harmonic_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
 
 
             # CGNT and MG TESTING
 
-            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04],
-            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04],
-            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04],
+            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            # [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
 
-            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04],
-            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04],
-            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04],
+            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            # [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
 
-            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04],
-            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04],
-            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)],  1.06, 1.04]
+            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04],
+            # [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.04]
 
             # CGT TESTING
 
@@ -85,18 +82,6 @@ if __name__ == "__main__":
 
             # [base, number_of_days, '/Test_Data/coletoressafra2223_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
             # [base, number_of_days, '/Test_Data/coletoressafra2223_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
-
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
-
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
-
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01],
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], 1.06, 1.01]
         ]
 
         if len(args_list) == 0:
