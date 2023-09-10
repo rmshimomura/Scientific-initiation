@@ -149,9 +149,16 @@ Alguns termos devem ser definidos para a construção do grafo de propagação:
 ### Topologia de crescimento:
 - Pode-se entender esse conceito como esqueleto resultante da construção e elaboração do grafo. Ela é constituída como um conjunto de segmentos que possuem origem em um ponto (x,y) e cada um dos segmentos apontam para outros coletores que satisfazem as condições de distância e diferença de datas. O comprimento do segmento é influenciado pela diferença de datas entre os coletores e a distância entre eles, sendo que quanto maior o comprimento, menor o tempo de infecção entre os coletores.
 
+<img src="./Images_for_README/esqueleto-crescimento.svg" alt="Esqueleto TG" width="50%" height="50%">
+
 #### Formato utilizado no modelo TG:
 
-O formato utilizado no modelo TG é basicamente a união de um círculo de raio r com um triângulo apontando para cada coletor que foi identificado como possível influência de infecção.
+O formato utilizado no modelo TG é basicamente a união de um círculo de raio r com um triângulo criado pela interpolação apontando para cada coletor que foi identificado como possível influência de infecção.
+
+<div style="display:flex;">
+    <img src="./Images_for_README/seminal.svg" alt="Buffer TG" width="30%" height="30%">
+    <img src="./Images_for_README/exemplo-1-buffer-seminal.svg" alt="Buffer TG" width="20%" height="20%">
+</div>
 
 #### Parâmetros utilizados no modelo TG:
 
@@ -161,14 +168,69 @@ O formato utilizado no modelo TG é basicamente a união de um círculo de raio 
 - Proporção aumentada a cada dia no comprimento: 1.06
 - Proporção aumentada a cada dia na largura: 1.04
 
+## Bases utilizadas na função logarítmica para realizar as simulações de crescimento no estado do Paraná:
+
+|Km|Base|
+|-|-|
+|20km|169323466473.21405|
+|25km|961554092.8640003|
+|30km|30606342.505|
+|35km|2608613.8780000005|
+|40km|411489.3269999999|
+|45km|97845.52200000003|
+|50km|31008.934999999983|
+|55km|12110.717000000004|
+|60km|5532.2990000000045|
+
+## Exemplos de simulações (imagens ao final da simulação):
+
+<img src="./Images_for_README/exemplo_circulos.png" width="40%" height="40%">
+<img src="./Images_for_README/exemplo_buffer_evand.png" width="40%" height="40%">
+
+A primeira imagem é com os círculos, e a segundo é com as geometrias aprendidas.
+
+
 ## Resultados obtidos:
+
+### Dispersão dos dados:
+
+<img src="./Images_for_README/dispersao_dados.png" width="70%" height="70%">
+
+Pode-se observar que a safra 2021 possui uma quantidade de pontos muito maior que as outras safras, isso se deve ao fato de que durante a safra 2021, a contaminação dos coletores foi muito maior que nas outras safras.
 
 ### Melhor média:
 
 Utilizando nossas penalidades expostas acima (TPP, FPP e FNP), foi possível obter os seguintes resultados:
-Dos 3 modelos com aprendizado (CGNT, MG e TG), 5 em 6 dos rankings, foi observado que a média aritmética obteve as menores penalidades em relação às outras médias (geométrica e harmônica).
+Dos 3 modelos com aprendizado (CGNT, MG e TG), 5 em 6 dos rankings, foi observado que a **média aritmética** obteve as menores penalidades em relação às outras médias (geométrica e harmônica).
 
-#### Observações sobre o modelo CGT (_Circular Growth touch_):
+<img src="./Images_for_README/mean/means_comparison_CGNT.png" width="70%" height="70%">
 
-Das métricas obtidas, apenas os testes com os raios 55 e 60km foram capazes de detectar todos os coletores que haviam sido infectados. Isso pode ser observado nos resultados onde FNP == 0
+<img src="./Images_for_README/mean/means_comparison_MG.png" width="70%" height="70%">
+
+<img src="./Images_for_README/mean/means_comparison_TG.png" width="70%" height="70%">
+
+
+#### Rankings que a média aritmética ganhou:
+
+- TPP CGNT
+- FPP CGNT
+- TPP MG
+- FPP MG
+- TPP TG
+
+
+### Falsos negativos [CGT (_Circular Growth touch_)]:
+
+Das métricas obtidas, apenas os testes com os raios 55 e 60km foram capazes de detectar todos os coletores que haviam sido infectados. Isso pode ser observado nos resultados onde FNP == 0:
+
+<img src="./Images_for_README/CGT_FNP.png" width="70%" height="70%">
+
+### Falsos positivos:
+
+- O modelo com aprendizagem de data e geometrica (TG) foi o melhor modelo em relação a quantidade de falsos positivos, uma vez que por crescer somente direcionado aos coletores que foram infectados, diminuindo assim a quantidade de falsos positivos.
+- A mistura de crescimento por data junto com crescimento por toque (MG) piorou a quantidade de falsos positivos, uma vez que o crescimento por toque possui uma tendência de crescer mais rápido que o crescimento por data, o que pode gerar falsos positivos. 
+
+<img src="./Images_for_README/false_positive/test_comparison_arithmetic_mean_2021_false_positive.png" width="70%" height="70%">
+<img src="./Images_for_README/false_positive/test_comparison_arithmetic_mean_2122_false_positive.png" width="70%" height="70%">
+<img src="./Images_for_README/false_positive/test_comparison_arithmetic_mean_2223_false_positive.png" width="70%" height="70%">
 

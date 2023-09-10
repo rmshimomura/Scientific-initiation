@@ -93,7 +93,7 @@ Error max: 66.2601009909181
 Error min: -24.49913494550748
 
 
-Para comparar, utilizaremos TG_106_101
+Para comparar, utilizaremos TG_106_104
 
 
 
@@ -119,7 +119,6 @@ Sobre o _Topology Growth_, percebi que ele começa a dar resultantes diferentes 
 Pensei em fazer os seguintes gráficos:
 - Número de falsos positivos, comparando CGNT, MG e TG, porque daí ficaria mais fácil de ver que por conta do formato da topologia ser aprendido, o TG tem __menos__ falsos positivos em relação aos outros dois modelos.
 - Erro médio junto com desvio padrão usando média aritmética dos modelos CGNT, MG e TG e CGT? Acho que fique muito bagunçado...
-- Sobre o número de _k_-primeiros pontos no modelo CGT, já fiz o gráfico mostrando porque eu escolhi o _k_ = 4, mas não sei se é interessante mostrar isso no trabalho.
 
 Tabelas:
 Dependem da resposta da pergunta sobre o ranking.

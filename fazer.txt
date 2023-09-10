@@ -1,4 +1,0 @@
-Graficos:
-
-- Comparação sobre qual média fazer: OK, escolhido média aritmética.
-- Mostrar quantidade de verdadeiros positivos, falsos positivos, verdadeiros negativos e falsos negativos: OK
