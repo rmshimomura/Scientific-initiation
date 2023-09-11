@@ -184,8 +184,8 @@ O formato utilizado no modelo TG é basicamente a união de um círculo de raio 
 
 ## Exemplos de simulações (imagens ao final da simulação):
 <div style="display:flex;">
-    <img src="./Images_for_README/exemplo_circulos.png" width="40%" height="40%">
-    <img src="./Images_for_README/exemplo_buffer_evand.png" width="40%" height="40%">
+<img src="./Images_for_README/exemplo_circulos.png" width="50%" height="40%">
+<img src="./Images_for_README/exemplo_buffer_evand.png" width="50%" height="40%">
 </div>
 
 A primeira imagem é com os círculos, e a segundo é com as geometrias aprendidas.
