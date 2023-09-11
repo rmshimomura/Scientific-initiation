@@ -184,8 +184,8 @@ O formato utilizado no modelo TG é basicamente a união de um círculo de raio 
 
 ## Exemplos de simulações (imagens ao final da simulação):
 <div style="display:flex;">
-<img src="./Images_for_README/exemplo_circulos.png" width="50%" height="40%">
-<img src="./Images_for_README/exemplo_buffer_evand.png" width="50%" height="40%">
+    <img src="./Images_for_README/exemplo_circulos.png" width="100%" height="50%">
+    <img src="./Images_for_README/exemplo_buffer_evand.png" width="100%" height="50%">
 </div>
 
 A primeira imagem é com os círculos, e a segundo é com as geometrias aprendidas.
@@ -195,7 +195,7 @@ A primeira imagem é com os círculos, e a segundo é com as geometrias aprendid
 
 ### Dispersão dos dados:
 
-<img src="./Images_for_README/dispersao_dados.png" width="100%"" height="70%">
+<img src="./Images_for_README/dispersao_dados.png" width="100%" height="70%">
 
 Pode-se observar que a safra 2021 possui uma quantidade de pontos muito maior que as outras safras, isso se deve ao fato de que durante a safra 2021, a contaminação dos coletores foi muito maior que nas outras safras.
 
