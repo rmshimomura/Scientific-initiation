@@ -246,6 +246,8 @@ Basicamente, essa coluna representa o maior erro possível que o modelo pode com
 
 ### Safra 2021
 
+<img src="./Images_for_README/biggest_error/test_comparison_arithmetic_mean_2021_biggest_error.png" width="70%" height="70%">
+
 |growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
 |-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
 |CGT        |55    |coletoressafra2122_31_23|3.437                |27.27               |126          |352           |30.707       |
@@ -262,6 +264,8 @@ Basicamente, essa coluna representa o maior erro possível que o modelo pode com
 
 ### Safra 2122
 
+<img src="./Images_for_README/biggest_error/test_comparison_arithmetic_mean_2122_biggest_error.png" width="70%" height="70%">
+
 |growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
 |-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
 |TG         |25    |arithmetic_mean_31_23   |-1.699               |23.235              |68           |180           |24.934       |
@@ -277,6 +281,8 @@ Basicamente, essa coluna representa o maior erro possível que o modelo pode com
 
 
 ### Safra 2223
+
+<img src="./Images_for_README/biggest_error/test_comparison_arithmetic_mean_2223_biggest_error.png" width="70%" height="70%">
 
 |growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
 |-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
