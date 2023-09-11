@@ -1,0 +1,11 @@
+growth_type,radius,train_file,days_error_mean_total,days_error_std_total,true_positive,false_positive,biggest_error
+CGT,55,coletoressafra2122_31_23,3.437,27.27,126,352,30.707
+TG,25,arithmetic_mean_31_23,2.484,28.308,126,122,30.793
+CGNT,25,arithmetic_mean_31_23,3.401,27.658,126,137,31.059
+MG,25,arithmetic_mean_31_23,3.401,27.658,126,147,31.059
+TG,30,arithmetic_mean_31_23,1.728,29.582,126,122,31.309
+MG,30,arithmetic_mean_31_23,1.62,30.279,126,250,31.899
+CGT,60,coletoressafra2122_31_23,10.008,22.96,126,377,32.968
+CGNT,30,arithmetic_mean_31_23,0.374,33.481,126,182,33.856
+TG,35,arithmetic_mean_31_23,-1.858,37.447,126,148,39.305
+CGNT,35,arithmetic_mean_31_23,-4.946,37.683,126,210,42.628

@@ -1,0 +1,11 @@
+growth_type,radius,train_file,days_error_mean_total,days_error_std_total,true_positive,false_positive,biggest_error
+TG,25,arithmetic_mean_31_23,-9.005,18.937,98,150,27.942
+TG,35,arithmetic_mean_31_23,-9.844,19.244,98,176,29.088
+MG,30,arithmetic_mean_31_23,-10.544,20.641,98,278,31.185
+CGNT,30,arithmetic_mean_31_23,-10.677,20.718,98,210,31.395
+TG,30,arithmetic_mean_31_23,-11.049,25.405,98,150,36.455
+MG,25,arithmetic_mean_31_23,-13.536,29.673,98,175,43.209
+CGNT,25,arithmetic_mean_31_23,-13.536,29.673,98,165,43.209
+TG,40,arithmetic_mean_31_23,-16.0,33.308,98,176,49.308
+CGNT,35,arithmetic_mean_31_23,-17.874,34.202,98,238,52.076
+TG,50,arithmetic_mean_31_23,-20.26,39.23,98,197,59.491

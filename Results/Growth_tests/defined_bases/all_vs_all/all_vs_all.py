@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 def mode_picker(mode):
 
@@ -13,10 +14,15 @@ def mode_picker(mode):
         # Print error
         print("Error: Invalid mode")
 
-CGNT_DATA = pd.read_csv(r'G:\My Drive\IC\Codes\Results\Growth_tests\defined_bases\CGNT.csv')
-CGT_DATA = pd.read_csv(r'G:\My Drive\IC\Codes\Results\Growth_tests\defined_bases\CGT.csv')
-MG_DATA = pd.read_csv(r'G:\My Drive\IC\Codes\Results\Growth_tests\defined_bases\MG.csv')
-TG_DATA = pd.read_csv(r'G:\My Drive\IC\Codes\Results\Growth_tests\defined_bases\TG.csv')
+CGNT_DATA = pd.read_csv(r'G:\Meu Drive\IC\Codes\Results\Growth_tests\defined_bases\CGNT.csv')
+CGT_DATA = pd.read_csv(r'G:\Meu Drive\IC\Codes\Results\Growth_tests\defined_bases\CGT.csv')
+MG_DATA = pd.read_csv(r'G:\Meu Drive\IC\Codes\Results\Growth_tests\defined_bases\MG.csv')
+TG_DATA = pd.read_csv(r'G:\Meu Drive\IC\Codes\Results\Growth_tests\defined_bases\TG.csv')
+
+CGNT_DATA['biggest_error'] = np.maximum(abs(CGNT_DATA['days_error_mean_total'] + CGNT_DATA['days_error_std_total']), abs(CGNT_DATA['days_error_mean_total'] - CGNT_DATA['days_error_std_total']))
+CGT_DATA['biggest_error'] = np.maximum(abs(CGT_DATA['days_error_mean_total'] + CGT_DATA['days_error_std_total']), abs(CGT_DATA['days_error_mean_total'] - CGT_DATA['days_error_std_total']))
+MG_DATA['biggest_error'] = np.maximum(abs(MG_DATA['days_error_mean_total'] + MG_DATA['days_error_std_total']), abs(MG_DATA['days_error_mean_total'] - MG_DATA['days_error_std_total']))
+TG_DATA['biggest_error'] = np.maximum(abs(TG_DATA['days_error_mean_total'] + TG_DATA['days_error_std_total']), abs(TG_DATA['days_error_mean_total'] - TG_DATA['days_error_std_total']))
 
 all_harversts = ['2021', '2122', '2223']
 all_names = "Média aritmética"
@@ -26,10 +32,10 @@ for i in range(3):
     mode = mode_picker(title)
 
     fig, ax = plt.subplots(figsize=(12, 6))
-    ax.set_title(f'Colheita {harvest} - {title.title()} - Desvio padrão dos dias adiantados em relação ao real')
+    ax.set_title(f'Colheita {harvest} - {title.title()} - Maiores erros')
     ax.set_xlabel('Limites de infecção (Km)')
     ax.set_ylabel('Dias (unidades)')
-    column_to_show = 'days_error_std_total'
+    column_to_show = 'biggest_error'
 
     remaining_harvests = [h for h in all_harversts if h != harvest]
 
@@ -56,4 +62,4 @@ for i in range(3):
 
     plt.tight_layout()
 
-    plt.savefig(rf'G:/My Drive/IC/Codes/Results/Growth_tests/defined_bases/all_vs_all/test_comparison_{mode}_{harvest}_{column_to_show}.png', dpi=300, bbox_inches='tight')
+    plt.savefig(rf'G:/Meu Drive/IC/Codes/Results/Growth_tests/defined_bases/all_vs_all/test_comparison_{mode}_{harvest}_{column_to_show}.png', dpi=300, bbox_inches='tight')

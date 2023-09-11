@@ -234,3 +234,62 @@ Das métricas obtidas, apenas os testes com os raios 55 e 60km foram capazes de 
 <img src="./Images_for_README/false_positive/test_comparison_arithmetic_mean_2122_false_positive.png" width="70%" height="70%">
 <img src="./Images_for_README/false_positive/test_comparison_arithmetic_mean_2223_false_positive.png" width="70%" height="70%">
 
+### Métrica criada para rankear as melhores soluções para cada ano:
+
+- Foi criado uma coluna no Dataframe chamada 'biggest_error' que segue a fórmula:
+
+```python
+results['biggest_error'] = np.maximum(abs(results['days_error_mean_total'] + results['days_error_std_total']), abs(results['days_error_mean_total'] - results['days_error_std_total']))
+```
+
+Basicamente, essa coluna representa o maior erro possível que o modelo pode cometer em relação aos dias adiantados.
+
+### Safra 2021
+
+|growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
+|-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
+|CGT        |55    |coletoressafra2122_31_23|3.437                |27.27               |126          |352           |30.707       |
+|TG         |25    |arithmetic_mean_31_23   |2.484                |28.308              |126          |122           |30.793       |
+|CGNT       |25    |arithmetic_mean_31_23   |3.401                |27.658              |126          |137           |31.059       |
+|MG         |25    |arithmetic_mean_31_23   |3.401                |27.658              |126          |147           |31.059       |
+|TG         |30    |arithmetic_mean_31_23   |1.728                |29.582              |126          |122           |31.309       |
+|MG         |30    |arithmetic_mean_31_23   |1.62                 |30.279              |126          |250           |31.899       |
+|CGT        |60    |coletoressafra2122_31_23|10.008               |22.96               |126          |377           |32.968       |
+|CGNT       |30    |arithmetic_mean_31_23   |0.374                |33.481              |126          |182           |33.856       |
+|TG         |35    |arithmetic_mean_31_23   |-1.858               |37.447              |126          |148           |39.305       |
+|CGNT       |35    |arithmetic_mean_31_23   |-4.946               |37.683              |126          |210           |42.628       |
+
+
+### Safra 2122
+
+|growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
+|-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
+|TG         |25    |arithmetic_mean_31_23   |-1.699               |23.235              |68           |180           |24.934       |
+|CGT        |60    |coletoressafra2021_31_23|-8.5                 |21.557              |68           |436           |30.057       |
+|TG         |30    |arithmetic_mean_31_23   |-3.777               |28.298              |68           |180           |32.075       |
+|CGT        |55    |coletoressafra2021_31_23|-15.147              |25.787              |68           |428           |40.934       |
+|CGT        |60    |coletoressafra2223_31_23|-17.971              |24.411              |68           |436           |42.382       |
+|CGNT       |25    |arithmetic_mean_31_23   |-7.515               |36.143              |68           |195           |43.657       |
+|MG         |25    |arithmetic_mean_31_23   |-7.515               |36.143              |68           |205           |43.657       |
+|TG         |35    |arithmetic_mean_31_23   |-9.944               |37.985              |68           |206           |47.929       |
+|TG         |40    |arithmetic_mean_31_23   |-10.493              |41.306              |68           |206           |51.799       |
+|CGT        |55    |coletoressafra2223_31_23|-24.897              |29.354              |68           |419           |54.251       |
+
+
+### Safra 2223
+
+|growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
+|-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
+|TG         |25    |arithmetic_mean_31_23   |-9.005               |18.937              |98           |150           |27.942       |
+|TG         |35    |arithmetic_mean_31_23   |-9.844               |19.244              |98           |176           |29.088       |
+|MG         |30    |arithmetic_mean_31_23   |-10.544              |20.641              |98           |278           |31.185       |
+|CGNT       |30    |arithmetic_mean_31_23   |-10.677              |20.718              |98           |210           |31.395       |
+|TG         |30    |arithmetic_mean_31_23   |-11.049              |25.405              |98           |150           |36.455       |
+|MG         |25    |arithmetic_mean_31_23   |-13.536              |29.673              |98           |175           |43.209       |
+|CGNT       |25    |arithmetic_mean_31_23   |-13.536              |29.673              |98           |165           |43.209       |
+|TG         |40    |arithmetic_mean_31_23   |-16.0                |33.308              |98           |176           |49.308       |
+|CGNT       |35    |arithmetic_mean_31_23   |-17.874              |34.202              |98           |238           |52.076       |
+|TG         |50    |arithmetic_mean_31_23   |-20.26               |39.23               |98           |197           |59.491       |
+
+
+Conseguimos perceber que levando em consideração a coluna `biggest_error` juntamente com a coluna `false_positive`, o modelo TG conseguiu os melhores resultados. 
