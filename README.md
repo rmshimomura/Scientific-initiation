@@ -245,6 +245,8 @@ results['biggest_error'] = np.maximum(abs(results['days_error_mean_total'] + res
 
 Basicamente, essa coluna representa o maior erro possível que o modelo pode cometer em relação aos dias adiantados.
 
+A seguir, as tabelas com os resultados obtidos (desconsiderando CGT com raio < 55 e descartando modelos base com raio < 25):
+
 ### Safra 2021
 
 <img src="./Images_for_README/biggest_error/test_comparison_arithmetic_mean_2021_biggest_error.png" width="100%" height="70%">
