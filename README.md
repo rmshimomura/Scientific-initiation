@@ -129,6 +129,8 @@ Falso negativo - False Negative (FN): O modelo diz que no local não existem esp
 
     Delta = |Quantidade de dias que seriam necessários para chegar até o determinado coletor partindo do coletor verdadeiro positivo mais próximo|^2
 
+- É de suma importância ressaltar que essa penalidade indica se o modelo conseguiu detectar todos os coletores que foram infectados. Qualquer valor diferente de zero indica que o modelo não está sendo suficiente para detectar todos os coletores que foram infectados!
+
 ## Construção do modelo TG (_Topology Growth_):
 
 A fim de testar outras geometrias para simular a movimentação dos esporos, foi empregado a ideia de topologias de crescimento para a criação de novas formas de crescimento.
@@ -222,7 +224,7 @@ Dos 3 modelos com aprendizado (CGNT, MG e TG), 5 em 6 dos rankings, foi observad
 
 ### Falsos negativos [CGT (_Circular Growth touch_)]:
 
-Das métricas obtidas, apenas os testes com os raios 55 e 60km foram capazes de detectar todos os coletores que haviam sido infectados. Isso pode ser observado nos resultados onde FNP == 0:
+Das métricas obtidas, apenas os testes com os raios 55 e 60km foram capazes de detectar todos os coletores que haviam sido infectados. Isso pode ser observado nos resultados onde FNP == 0 (lembrando que essa métrica indica se o modelo conseguiu detectar todos os coletores que foram infectados):
 
 <img src="./Images_for_README/CGT_FNP.png" width="100%" height="70%">
 
@@ -251,54 +253,57 @@ A seguir, as tabelas com os resultados obtidos (desconsiderando CGT com raio < 5
 
 <img src="./Images_for_README/biggest_error/test_comparison_arithmetic_mean_2021_biggest_error.png" width="100%" height="70%">
 
-|growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
-|-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
-|CGT        |55    |coletoressafra2122_31_23|3.437                |27.27               |126          |352           |30.707       |
-|TG         |25    |arithmetic_mean_31_23   |2.484                |28.308              |126          |122           |30.793       |
-|CGNT       |25    |arithmetic_mean_31_23   |3.401                |27.658              |126          |137           |31.059       |
-|MG         |25    |arithmetic_mean_31_23   |3.401                |27.658              |126          |147           |31.059       |
-|TG         |30    |arithmetic_mean_31_23   |1.728                |29.582              |126          |122           |31.309       |
-|MG         |30    |arithmetic_mean_31_23   |1.62                 |30.279              |126          |250           |31.899       |
-|CGT        |60    |coletoressafra2122_31_23|10.008               |22.96               |126          |377           |32.968       |
-|CGNT       |30    |arithmetic_mean_31_23   |0.374                |33.481              |126          |182           |33.856       |
-|TG         |35    |arithmetic_mean_31_23   |-1.858               |37.447              |126          |148           |39.305       |
-|CGNT       |35    |arithmetic_mean_31_23   |-4.946               |37.683              |126          |210           |42.628       |
+|growth_type|radius|train_file|days_error_mean_total   |days_error_std_total|true_positive|false_positive|biggest_error|precision|recall|accuracy|f1_score|
+|-----------|------|----------|------------------------|--------------------|-------------|--------------|-------------|---------|------|--------|--------|
+|CGT        |55    |coletoressafra2122_31_23|3.4365                  |27.2701             |126          |352           |30.7066      |0.2636   |1.0   |1.0     |0.4172  |
+|TG         |25    |arithmetic_mean_31_23|2.4841                  |28.3085             |126          |122           |30.7926      |0.5081   |1.0   |1.0     |0.6738  |
+|CGNT       |25    |arithmetic_mean_31_23|3.4008                  |27.6578             |126          |137           |31.0586      |0.4791   |1.0   |1.0     |0.6478  |
+|MG         |25    |arithmetic_mean_31_23|3.4008                  |27.6578             |126          |147           |31.0586      |0.4615   |1.0   |1.0     |0.6316  |
+|TG         |30    |arithmetic_mean_31_23|1.7275                  |29.5817             |126          |122           |31.3092      |0.5081   |1.0   |1.0     |0.6738  |
+|MG         |30    |arithmetic_mean_31_23|1.6204                  |30.2788             |126          |250           |31.8992      |0.3351   |1.0   |1.0     |0.502   |
+|CGT        |60    |coletoressafra2122_31_23|10.0079                 |22.9605             |126          |377           |32.9684      |0.2505   |1.0   |1.0     |0.4006  |
+|CGNT       |30    |arithmetic_mean_31_23|0.3743                  |33.4813             |126          |182           |33.8556      |0.4091   |1.0   |1.0     |0.5806  |
+|TG         |35    |arithmetic_mean_31_23|-1.8585                 |37.4467             |126          |148           |39.3052      |0.4599   |1.0   |1.0     |0.63    |
+|CGNT       |35    |arithmetic_mean_31_23|-4.9458                 |37.6825             |126          |210           |42.6283      |0.375    |1.0   |1.0     |0.5455  |
+
 
 
 ### Safra 2122
 
 <img src="./Images_for_README/biggest_error/test_comparison_arithmetic_mean_2122_biggest_error.png" width="100%" height="70%">
 
-|growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
-|-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
-|TG         |25    |arithmetic_mean_31_23   |-1.699               |23.235              |68           |180           |24.934       |
-|CGT        |60    |coletoressafra2021_31_23|-8.5                 |21.557              |68           |436           |30.057       |
-|TG         |30    |arithmetic_mean_31_23   |-3.777               |28.298              |68           |180           |32.075       |
-|CGT        |55    |coletoressafra2021_31_23|-15.147              |25.787              |68           |428           |40.934       |
-|CGT        |60    |coletoressafra2223_31_23|-17.971              |24.411              |68           |436           |42.382       |
-|CGNT       |25    |arithmetic_mean_31_23   |-7.515               |36.143              |68           |195           |43.657       |
-|MG         |25    |arithmetic_mean_31_23   |-7.515               |36.143              |68           |205           |43.657       |
-|TG         |35    |arithmetic_mean_31_23   |-9.944               |37.985              |68           |206           |47.929       |
-|TG         |40    |arithmetic_mean_31_23   |-10.493              |41.306              |68           |206           |51.799       |
-|CGT        |55    |coletoressafra2223_31_23|-24.897              |29.354              |68           |419           |54.251       |
+|growth_type|radius|train_file|days_error_mean_total   |days_error_std_total|true_positive|false_positive|biggest_error|precision|recall|accuracy|f1_score|
+|-----------|------|----------|------------------------|--------------------|-------------|--------------|-------------|---------|------|--------|--------|
+|TG         |25    |arithmetic_mean_31_23|-1.6985                 |23.235              |68           |180           |24.9335      |0.2742   |1.0   |1.0     |0.4304  |
+|CGT        |60    |coletoressafra2021_31_23|-8.5                    |21.5574             |68           |436           |30.0574      |0.1349   |1.0   |1.0     |0.2378  |
+|TG         |30    |arithmetic_mean_31_23|-3.777                  |28.2984             |68           |180           |32.0754      |0.2742   |1.0   |1.0     |0.4304  |
+|CGT        |55    |coletoressafra2021_31_23|-15.1471                |25.7872             |68           |428           |40.9342      |0.1371   |1.0   |1.0     |0.2411  |
+|CGT        |60    |coletoressafra2223_31_23|-17.9706                |24.4113             |68           |436           |42.3819      |0.1349   |1.0   |1.0     |0.2378  |
+|CGNT       |25    |arithmetic_mean_31_23|-7.5147                 |36.1427             |68           |195           |43.6574      |0.2586   |1.0   |1.0     |0.4109  |
+|MG         |25    |arithmetic_mean_31_23|-7.5147                 |36.1427             |68           |205           |43.6574      |0.2491   |1.0   |1.0     |0.3988  |
+|TG         |35    |arithmetic_mean_31_23|-9.9436                 |37.9849             |68           |206           |47.9285      |0.2482   |1.0   |1.0     |0.3977  |
+|TG         |40    |arithmetic_mean_31_23|-10.4926                |41.306              |68           |206           |51.7987      |0.2482   |1.0   |1.0     |0.3977  |
+|CGT        |55    |coletoressafra2223_31_23|-24.8971                |29.3544             |68           |419           |54.2515      |0.1396   |1.0   |1.0     |0.245   |
+
 
 
 ### Safra 2223
 
 <img src="./Images_for_README/biggest_error/test_comparison_arithmetic_mean_2223_biggest_error.png" width="100%" height="70%">
 
-|growth_type|radius|train_file              |days_error_mean_total|days_error_std_total|true_positive|false_positive|biggest_error|
-|-----------|------|------------------------|---------------------|--------------------|-------------|--------------|-------------|
-|TG         |25    |arithmetic_mean_31_23   |-9.005               |18.937              |98           |150           |27.942       |
-|TG         |35    |arithmetic_mean_31_23   |-9.844               |19.244              |98           |176           |29.088       |
-|MG         |30    |arithmetic_mean_31_23   |-10.544              |20.641              |98           |278           |31.185       |
-|CGNT       |30    |arithmetic_mean_31_23   |-10.677              |20.718              |98           |210           |31.395       |
-|TG         |30    |arithmetic_mean_31_23   |-11.049              |25.405              |98           |150           |36.455       |
-|MG         |25    |arithmetic_mean_31_23   |-13.536              |29.673              |98           |175           |43.209       |
-|CGNT       |25    |arithmetic_mean_31_23   |-13.536              |29.673              |98           |165           |43.209       |
-|TG         |40    |arithmetic_mean_31_23   |-16.0                |33.308              |98           |176           |49.308       |
-|CGNT       |35    |arithmetic_mean_31_23   |-17.874              |34.202              |98           |238           |52.076       |
-|TG         |50    |arithmetic_mean_31_23   |-20.26               |39.23               |98           |197           |59.491       |
+|growth_type|radius|train_file|days_error_mean_total   |days_error_std_total|true_positive|false_positive|biggest_error|precision|recall|accuracy|f1_score|
+|-----------|------|----------|------------------------|--------------------|-------------|--------------|-------------|---------|------|--------|--------|
+|TG         |25    |arithmetic_mean_31_23|-9.0051                 |18.9372             |98           |150           |27.9423      |0.3952   |1.0   |1.0     |0.5665  |
+|TG         |35    |arithmetic_mean_31_23|-9.8435                 |19.2444             |98           |176           |29.0879      |0.3577   |1.0   |1.0     |0.5269  |
+|MG         |30    |arithmetic_mean_31_23|-10.5442                |20.6407             |98           |278           |31.1849      |0.2606   |1.0   |1.0     |0.4135  |
+|CGNT       |30    |arithmetic_mean_31_23|-10.6769                |20.7184             |98           |210           |31.3953      |0.3182   |1.0   |1.0     |0.4828  |
+|TG         |30    |arithmetic_mean_31_23|-11.0493                |25.4053             |98           |150           |36.4547      |0.3952   |1.0   |1.0     |0.5665  |
+|MG         |25    |arithmetic_mean_31_23|-13.5357                |29.6731             |98           |175           |43.2089      |0.359    |1.0   |1.0     |0.5283  |
+|CGNT       |25    |arithmetic_mean_31_23|-13.5357                |29.6731             |98           |165           |43.2089      |0.3726   |1.0   |1.0     |0.5429  |
+|TG         |40    |arithmetic_mean_31_23|-16.0                   |33.3082             |98           |176           |49.3082      |0.3577   |1.0   |1.0     |0.5269  |
+|CGNT       |35    |arithmetic_mean_31_23|-17.8741                |34.2015             |98           |238           |52.0757      |0.2917   |1.0   |1.0     |0.4516  |
+|TG         |50    |arithmetic_mean_31_23|-20.2602                |39.2304             |98           |197           |59.4906      |0.3322   |1.0   |1.0     |0.4987  |
+
 
 
 Conseguimos perceber que levando em consideração a coluna `biggest_error` juntamente com a coluna `false_positive`, o modelo TG conseguiu os melhores resultados. 
