@@ -13,7 +13,7 @@ ALL_DATA.reset_index(drop=True, inplace=True)
 
 all_harversts = ['2021', '2122', '2223']
 
-harvest = '2223'
+harvest = '2021'
 
 ALL_DATA['active'] = 1
 all_data_harvest = ALL_DATA.query(f"test_file == 'coletoressafra{harvest}_31_23' and (train_file == 'arithmetic_mean_31_23' or growth_type == 'CGT')")
@@ -37,8 +37,7 @@ all_data_harvest = all_data_harvest.query('not_detected_with_spores == 0')
 
 all_data_harvest['biggest_error'] = np.maximum(abs(all_data_harvest['days_error_mean_total'] + all_data_harvest['days_error_std_total']), abs(all_data_harvest['days_error_mean_total'] - all_data_harvest['days_error_std_total']))
 
-
-all_data_harvest = all_data_harvest.sort_values(by=['biggest_error'], key=abs)
+all_data_harvest = all_data_harvest.sort_values(by=['days_error_mean_total'], key=abs)
 all_data_harvest = all_data_harvest.round(3)
 best_10 = all_data_harvest[['growth_type', 'radius', 'train_file', 'days_error_mean_total', 'days_error_std_total', 'true_positive', 'false_positive', 'biggest_error']].head(10)
 print(best_10)
@@ -47,4 +46,4 @@ print("=========================================")
 # Round all values to 3 decimal places
 
 # Export to csv best_10
-best_10.to_csv(rf'G:\My Drive\IC\Codes\Results\Growth_tests\defined_bases\best_10_{harvest}.csv', index=False)
+# best_10.to_csv(rf'G:\My Drive\IC\Codes\Results\Growth_tests\defined_bases\best_10_{harvest}.csv', index=False)
