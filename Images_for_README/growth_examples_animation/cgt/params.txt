@@ -1,0 +1,1 @@
+main(12110.717000000004, 137, None, '/Test_Data/coletoressafra2021_31_23', 'parameter_search', 'CGT', 4, 55, 1.06, 1.04)

@@ -96,3 +96,71 @@ def save_fig_on_day(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, infection
     plt.tight_layout()
     # plt.gcf().set_size_inches(40, 30)
     plt.savefig(f'G:/' + root_folder + f"/IC/Codes/Plots/plot_{day}_{TEST_PARAMS['base']}_{TEST_PARAMS['train_file']}_{TEST_PARAMS['test_file']}{'burr' if burrs is not None else 'circles'}.svg", bbox_inches='tight')
+
+def plot_def_circles(_map, _collectors, infection_circles, start_day, day):
+
+    _map.plot(color='white', edgecolor='grey', linewidth=0.3, alpha=0.5)
+
+    for infection_circle in infection_circles:
+        plt.plot(*infection_circle.circle.exterior.xy, color='black', linewidth=0.6, alpha=1, linestyle='--')
+    
+    for collector in _collectors.itertuples():
+
+        if collector.Detected == 1:
+
+
+            if collector.color == 'red':
+                plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color='red', s=100, marker='.')
+            else:
+                value = (100/137) * ((start_day + day) - collector.discovery_day)
+                plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color=collector.color, s=100, marker='.', alpha=(100-(value))/100)
+
+        else:
+
+            plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color='black', s=40, marker='.', alpha=0.1)
+
+    plt.title(f"Ferrugem asiática no Paraná - dia {day + 1}", fontsize=20)
+    plt.tight_layout()
+
+    plt.savefig(f'./{day + 1}.svg', bbox_inches='tight')
+
+    plt.clf()
+
+def plot_def_topologies(_map, _collectors, topologies, buffers, start_day, day):
+
+    _map.plot(color='white', edgecolor='grey', linewidth=0.3, alpha=0.5)
+
+    # for topology in topologies:
+
+    #     segments = topology.getSegments()
+
+    #     for segment in segments:
+
+    #         seg = segment.seg
+
+    #         plt.plot(*seg.xy, color='black', linewidth=0.6, alpha=1)
+
+    for collector in _collectors.itertuples():
+
+        if collector.Detected == 1:
+
+
+            if collector.color == 'red':
+                plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color='red', s=100, marker='.')
+            else:
+                value = (100/137) * ((start_day + day) - collector.discovery_day)
+                plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color=collector.color, s=100, marker='.', alpha=(100-(value))/100)
+
+        else:
+
+            plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color='black', s=40, marker='.', alpha=0.1)
+        
+    # for buffer in buffers:
+
+    #     plt.plot(*buffer.exterior.xy, color='black', linewidth=0.6, alpha=1, linestyle='--')
+
+    
+    plt.title(f"Ferrugem asiática no Paraná - dia {day + 1}", fontsize=20)
+    plt.tight_layout()
+
+    plt.savefig(f'./{day + 1}_final.svg', bbox_inches='tight')

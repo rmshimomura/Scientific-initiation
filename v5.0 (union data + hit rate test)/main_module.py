@@ -129,7 +129,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             test_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], TEST_PARAMS['larg_seg'])
 
             true_positive_penalty, burrs, method_used = \
-                gt.topology_growth_no_touch(test_collectors_instance, TEST_PARAMS)
+                gt.topology_growth_no_touch(_map, test_collectors_instance, TEST_PARAMS)
 
         false_positive_penalty = utils.calculate_false_positives_penalty(test_collectors_geo_df, start_day + TEST_PARAMS['number_of_days'] - 1)
 
@@ -266,4 +266,4 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         return temp_metrics
 
 if __name__ == '__main__':
-    main(2608613.8780000005, 137, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'TG', 1, 35, 1.05, 1.04)
+    main(12110.717000000004, 137, None, '/Test_Data/coletoressafra2021_31_23', 'parameter_search', 'CGT', 4, 55, 1.06, 1.04)
