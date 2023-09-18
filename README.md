@@ -80,7 +80,7 @@ Todas as formas utilizadas para realizar as simulações neste projeto seguiram 
 
 ### Modelos sem aprendizagem de data:
 
-- CGT (_Circular Growth no Touch_): 
+- CGT (_Circular Growth Touch_): 
     1. Usando `k` primeiros pontos da safra A para tentar prever a movimentação dos esporos nas safras B e C, iniciaremos a simulação de crescimento crescendo esses `k` primeiros no dia correto (por exemplo: `k = 3`, os valores presentes na coluna `DiasAposInicioCiclo` são 1,3,5; no dia 1, o círculo de infecção do ponto 1 crescerá, no dia 3, o círculo de infecção do ponto 2 crescerá, no dia 5, o círculo de infecção do ponto 3 crescerá).
     2. A partir do dia `k+1`, o crescimento dos círculos de infecção será feito de acordo com a função logarítmica definida na observação 4.
     3. Caso algum círculo de infecção cresça e toque em algum outro ponto `x`, um novo círculo de infecção será criado e a partir do próximo dia, irá crescer juntamente com todos os outros ativos no momento. O ponto `x` guardará o dia em que foi detectado.
@@ -230,7 +230,7 @@ Das métricas obtidas, apenas os testes com os raios 55 e 60km foram capazes de 
 
 ### Falsos positivos:
 
-- O modelo com aprendizagem de data e geometrica (TG) foi o melhor modelo em relação a quantidade de falsos positivos, uma vez que por crescer somente direcionado aos coletores que foram infectados, diminuindo assim a quantidade de falsos positivos.
+- O modelo com aprendizagem de data e geometria (TG) foi o melhor modelo em relação a quantidade de falsos positivos, uma vez que por crescer somente direcionado aos coletores que foram infectados, diminuindo assim a quantidade de falsos positivos.
 - A mistura de crescimento por data junto com crescimento por toque (MG) piorou a quantidade de falsos positivos, uma vez que o crescimento por toque possui uma tendência de crescer mais rápido que o crescimento por data, o que pode gerar falsos positivos. 
 
 <img src="./Images_for_README/false_positive/test_comparison_arithmetic_mean_2021_false_positive.png" width="100%" height="70%">
