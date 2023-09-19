@@ -3,7 +3,7 @@ import geopandas as gpd
 import math 
 from shapely.geometry import Point
 from infection_circle import Infection_Circle
-import coletores, cria_buffers, plots
+import coletores, cria_buffers
 
 true_positive_total_error = 0
 true_positives = 0
@@ -48,7 +48,7 @@ def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old
 
     count = 0
 
-    plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
+    # plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
 
     for day in range(TEST_PARAMS['number_of_days']):
 
@@ -128,8 +128,8 @@ def circular_growth_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old
         for infection_circle in infection_circles:
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        if day + 1 in plot_days:
-            plots.plot_def_circles(_map, _collectors, infection_circles, start_day, day)
+        # if day + 1 in plot_days:
+        #     plots.plot_def_circles(_map, _collectors, infection_circles, start_day, day)
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 
@@ -150,7 +150,7 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
     infection_circles = []
     start_day = positive_collectors[days_column].iloc[0]
 
-    plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
+    # plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
 
     for i in range(len(first_appearances)):
 
@@ -234,8 +234,8 @@ def circular_growth_no_touch(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, 
 
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        if day + 1 in plot_days:
-            plots.plot_def_circles(_map, _collectors, infection_circles, start_day, day)
+        # if day + 1 in plot_days:
+        #     plots.plot_def_circles(_map, _collectors, infection_circles, start_day, day)
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
     
@@ -261,7 +261,7 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
 
     start_day = positive_collectors[days_column].iloc[0]
 
-    plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
+    # plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
 
     for i in range(len(first_appearances)):
 
@@ -359,8 +359,8 @@ def mix_growth(_map: gpd.GeoDataFrame, _collectors: pd.DataFrame, old_geometries
 
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        if day + 1 in plot_days:
-            plots.plot_def_circles(_map, _collectors, infection_circles, start_day, day)
+        # if day + 1 in plot_days:
+        #     plots.plot_def_circles(_map, _collectors, infection_circles, start_day, day)
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 
@@ -384,7 +384,7 @@ def topology_growth_no_touch(_map, _collectors_instance: coletores.Coletores, TE
     
     growth_topology_dict = _collectors_instance.topologiaCrescimentoDict
 
-    plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
+    # plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
     
     for i in range(len(first_appearances)):
 
@@ -492,8 +492,8 @@ def topology_growth_no_touch(_map, _collectors_instance: coletores.Coletores, TE
 
             _collectors_instance.geo_df.loc[key, 'life_time'] += 1
 
-        if day + 1 in plot_days:
-            plots.plot_def_topologies(_map, _collectors_instance.geo_df, current_day_growth_topologies.values(), burrs, start_day, day)
+        # if day + 1 in plot_days:
+        #     plots.plot_def_topologies(_map, _collectors_instance.geo_df, current_day_growth_topologies.values(), burrs, start_day, day)
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 

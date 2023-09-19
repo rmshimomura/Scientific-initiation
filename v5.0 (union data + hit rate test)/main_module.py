@@ -176,15 +176,15 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         if growth_type == 'CGNT':
 
-            true_positive, false_positive, days_error = t.learning_based_CGNT_MG(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
+            true_positive, false_positive, days_error = t.learning_based_CGNT_MG(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'No touch')
 
         elif growth_type == 'CGT':
 
-            true_positive, false_positive, days_error = t.normal_testing_CGT(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, number_of_starting_points)
+            true_positive, false_positive, days_error = t.normal_testing_CGT(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, number_of_starting_points)
 
         elif growth_type == 'MG':
 
-            true_positive, false_positive, days_error = t.learning_based_CGNT_MG(trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
+            true_positive, false_positive, days_error = t.learning_based_CGNT_MG(_map, trained_collectors_geo_df, test_collectors_geo_df, TEST_PARAMS, 'Touch')
 
         elif growth_type == 'TG':
 
@@ -194,7 +194,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             trained_collectors_instance.criaGrafo(trained_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
             trained_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], TEST_PARAMS['larg_seg'])
 
-            true_positive, false_positive, days_error, debug = t.topology_test_TG(trained_collectors_instance, test_collectors_geo_df, TEST_PARAMS)
+            true_positive, false_positive, days_error, debug = t.topology_test_TG(_map, trained_collectors_instance, test_collectors_geo_df, TEST_PARAMS)
 
         else:
 
@@ -266,4 +266,4 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         return temp_metrics
 
 if __name__ == '__main__':
-    main(30606342.505, 137, None, '/Trained_Data/all_together/arithmetic_mean_31_23', 'parameter_search', 'TG', 1, 30, 1.06, 1.04)
+    main(30606342.505, 137, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'MG', 1, 30, 1.06, 1.04)

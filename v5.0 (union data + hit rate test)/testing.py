@@ -1,17 +1,18 @@
 import pandas as pd
 from infection_circle import Infection_Circle
 from shapely.geometry import Point
-import coletores, cria_buffers
+import coletores, cria_buffers, plots
 import geopandas as gpd
 
-def learning_based_CGNT_MG(trained_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict, mode):
+def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict, mode):
 
     trained_collectors.sort_values(by=['MediaDiasAposInicioCiclo'], inplace=True)
     positive_collectors = trained_collectors.query('MediaDiasAposInicioCiclo != -1')
     first_appearances = positive_collectors[positive_collectors['MediaDiasAposInicioCiclo'] == positive_collectors['MediaDiasAposInicioCiclo'].min()]
     infection_circles = []
     start_day = positive_collectors['MediaDiasAposInicioCiclo'].iloc[0]
-
+    # plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
+    plot_days = [137]
     days_error = []
 
     true_positive = 0
@@ -30,6 +31,7 @@ def learning_based_CGNT_MG(trained_collectors: pd.DataFrame, test_collectors: pd
         test_collector = test_collectors.query('id == ' + str(trained_collector.id))
 
         test_collectors.loc[test_collector.index[0], 'Detected'] = 1
+        test_collectors.loc[test_collector.index[0], 'discovery_day'] = start_day
 
         test_collector = test_collectors.loc[test_collector.index[0]]
 
@@ -83,11 +85,13 @@ def learning_based_CGNT_MG(trained_collectors: pd.DataFrame, test_collectors: pd
                             if test_collector['DiasAposInicioCiclo'] == -1:
 
                                 test_collectors.loc[test_collector.id, 'color'] = 'red'
+                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
                                 false_positive += 1
 
                             else:
 
                                 test_collectors.loc[test_collector.id, 'color'] = 'green'
+                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
 
                                 true_positive += 1
 
@@ -142,6 +146,7 @@ def learning_based_CGNT_MG(trained_collectors: pd.DataFrame, test_collectors: pd
                         if collector.Situacao == 'Com esporos': # True positive
 
                             test_collectors.loc[collector.Index, 'color'] = 'green'
+                            test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             true_positive += 1
 
                             days_error.append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
@@ -149,6 +154,7 @@ def learning_based_CGNT_MG(trained_collectors: pd.DataFrame, test_collectors: pd
                         else: # False positive
 
                             test_collectors.loc[collector.Index, 'color'] = 'red'
+                            test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             false_positive += 1
 
                         if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
@@ -175,6 +181,9 @@ def learning_based_CGNT_MG(trained_collectors: pd.DataFrame, test_collectors: pd
 
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
+        if day + 1 in plot_days:
+            plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
+
     # All the collectors that were not detected but had spores, change their color to yellow
     for collector in test_collectors.itertuples():
             
@@ -189,7 +198,7 @@ def learning_based_CGNT_MG(trained_collectors: pd.DataFrame, test_collectors: pd
 
     return true_positive, false_positive, days_error
 
-def normal_testing_CGT(base_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict, number_of_starting_points=4):
+def normal_testing_CGT(_map, base_collectors: pd.DataFrame, test_collectors: pd.DataFrame, TEST_PARAMS: dict, number_of_starting_points=4):
 
     base_collectors.sort_values(by=['DiasAposInicioCiclo'], inplace=True)
     positive_collectors = base_collectors.query('DiasAposInicioCiclo != -1')
@@ -197,7 +206,8 @@ def normal_testing_CGT(base_collectors: pd.DataFrame, test_collectors: pd.DataFr
     infection_circles = []
     start_day = positive_collectors['DiasAposInicioCiclo'].iloc[0]
 
-    # North, East, South, West
+    # plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
+    plot_days = [137]
     days_error = []
     true_positive = 0
     false_positive = 0
@@ -230,10 +240,12 @@ def normal_testing_CGT(base_collectors: pd.DataFrame, test_collectors: pd.DataFr
                         if test_collector['Detected'] == 0:
 
                             if test_collector['DiasAposInicioCiclo'] == -1:
-                                test_collectors.loc[test_collector.id, 'color'] = 'red'    
+                                test_collectors.loc[test_collector.id, 'color'] = 'red'
+                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
                                 false_positive += 1
                             else:
                                 test_collectors.loc[test_collector.id, 'color'] = 'green'
+                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
 
                                 true_positive += 1
 
@@ -284,10 +296,12 @@ def normal_testing_CGT(base_collectors: pd.DataFrame, test_collectors: pd.DataFr
                         if collector.Situacao == 'Com esporos': # True positive
 
                             test_collectors.loc[collector.Index, 'color'] = 'green'
+                            test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             true_positive += 1
                             days_error.append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
                         else:
                             test_collectors.loc[collector.Index, 'color'] = 'red'
+                            test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             false_positive += 1
                         
                         if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
@@ -312,6 +326,9 @@ def normal_testing_CGT(base_collectors: pd.DataFrame, test_collectors: pd.DataFr
                 
                 infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
+        if day + 1 in plot_days:
+            plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
+
     # All the collectors that were not detected but had spores, change their color to yellow
     for collector in test_collectors.itertuples():
                 
@@ -324,7 +341,7 @@ def normal_testing_CGT(base_collectors: pd.DataFrame, test_collectors: pd.DataFr
                 
     return true_positive, false_positive, days_error
 
-def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: pd.DataFrame, TEST_PARAMS: dict):
+def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collectors: pd.DataFrame, TEST_PARAMS: dict):
 
     trained_collectors.geo_df.sort_values(by=['MediaDiasAposInicioCiclo'], inplace=True)
     positive_collectors = trained_collectors.geo_df.query('MediaDiasAposInicioCiclo != -1')
@@ -335,6 +352,8 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
     days_error = []
 
     last_result = []
+    # plot_days = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 137]
+    plot_days = [137]
 
     proportionSeg = TEST_PARAMS['proportionSeg']
     proportionLarg = TEST_PARAMS['proportionLarg']
@@ -352,6 +371,7 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
         test_collector = test_collectors.query('id == ' + str(trained_collector.id))
 
         test_collectors.loc[test_collector.index[0], 'Detected'] = 1
+        test_collectors.loc[test_collector.index[0], 'discovery_day'] = start_day
 
         test_collector = test_collectors.loc[test_collector.index[0]]
 
@@ -400,11 +420,13 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
                             if test_collector['DiasAposInicioCiclo'] == -1:
 
                                 test_collectors.loc[test_collector.id, 'color'] = 'red'
+                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
                                 false_positive += 1
 
                             else:
 
                                 test_collectors.loc[test_collector.id, 'color'] = 'green'
+                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
 
                                 true_positive += 1
 
@@ -483,11 +505,13 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
                         if collector.Situacao == 'Com esporos':
 
                             test_collectors.loc[collector.Index, 'color'] = 'green'
+                            test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             true_positive += 1
 
                             days_error.append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
                         else:
                             test_collectors.loc[collector.Index, 'color'] = 'red'
+                            test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             false_positive += 1
 
                         if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
@@ -502,6 +526,9 @@ def topology_test_TG(trained_collectors: coletores.Coletores, test_collectors: p
 
             trained_collectors.geo_df.loc[key, 'life_time'] += 1
         
+        if day + 1 in plot_days:
+            plots.plot_def_topologies(_map, test_collectors, current_day_growth_topologies.values(), burrs, start_day, day)
+
         # If it is the last day, assign a copy of burrs to last_result
         if day == TEST_PARAMS['number_of_days'] - 1:
             last_result = burrs.copy()
