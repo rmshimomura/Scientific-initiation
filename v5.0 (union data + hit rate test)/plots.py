@@ -5,7 +5,7 @@ import os
 import geopandas as gpd
 import pandas as pd
 from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('svg')
+set_matplotlib_formats('png')
 
 def plot_infection_circles(infection_circles: list, old_geometries: list) -> None:
 
@@ -112,7 +112,8 @@ def plot_def_circles(_map, _collectors, infection_circles, start_day, day):
             if collector.color == 'red':
                 plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color='red', s=100, marker='.')
             else:
-                value = (100/137) * ((start_day + day) - collector.discovery_day)
+                # value = (100/137) * abs(collector.MediaDiasAposInicioCiclo - collector.discovery_day)
+                value = 0
                 plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color=collector.color, s=100, marker='.', alpha=(100-(value))/100)
 
         else:
@@ -122,7 +123,7 @@ def plot_def_circles(_map, _collectors, infection_circles, start_day, day):
     plt.title(f"Ferrugem asiática no Paraná - dia {day + 1}", fontsize=20)
     plt.tight_layout()
 
-    plt.savefig(f'./{day + 1}.svg', bbox_inches='tight')
+    plt.savefig(f'./{day + 1}.png', bbox_inches='tight')
 
     plt.clf()
 
@@ -148,19 +149,20 @@ def plot_def_topologies(_map, _collectors, topologies, buffers, start_day, day):
             if collector.color == 'red':
                 plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color='red', s=100, marker='.')
             else:
-                value = (100/137) * ((start_day + day) - collector.discovery_day)
+                # value = (100/137) * ((start_day + day) - collector.discovery_day)
+                value = 0
                 plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color=collector.color, s=100, marker='.', alpha=(100-(value))/100)
 
         else:
 
             plt.scatter(collector.LongitudeDecimal, collector.LatitudeDecimal, color='black', s=40, marker='.', alpha=0.1)
         
-    # for buffer in buffers:
+    for buffer in buffers:
 
-    #     plt.plot(*buffer.exterior.xy, color='black', linewidth=0.6, alpha=1, linestyle='--')
+        plt.plot(*buffer.exterior.xy, color='black', linewidth=0.6, alpha=1, linestyle='--')
 
     
     plt.title(f"Ferrugem asiática no Paraná - dia {day + 1}", fontsize=20)
     plt.tight_layout()
 
-    plt.savefig(f'./{day + 1}_final.svg', bbox_inches='tight')
+    plt.savefig(f'./{day + 1}_final.png', bbox_inches='tight')

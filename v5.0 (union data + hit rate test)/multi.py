@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     count = 0
 
-    compSeg = 1.07
+    compSeg = 1.06
     compLarg = 1.04
 
     print_progress_bar(count, 1, prefix='Progress:', length=50)
