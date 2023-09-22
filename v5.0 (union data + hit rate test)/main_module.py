@@ -266,4 +266,4 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         return temp_metrics
 
 if __name__ == '__main__':
-    main(30606342.505, 137, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'MG', 1, 30, 1.06, 1.04)
+    main(30606342.505, 137, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', 'test', 'CGNT', 1, 30, 1.06, 1.04)
