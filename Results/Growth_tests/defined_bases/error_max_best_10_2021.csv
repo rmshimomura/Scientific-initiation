@@ -1,11 +1,11 @@
-growth_type,radius,train_file,days_error_mean_total,days_error_std_total,true_positive,false_positive,biggest_error,f1_score
+growth_type,radius,train_file,days_error_mean_total,days_error_std_total,true_positive,false_positive,error_max,f1_score
 TG,25,arithmetic_mean_31_23,6.794,14.883,126,122,21.677,0.674
 TG,30,arithmetic_mean_31_23,6.87,14.903,126,122,21.774,0.674
-CGNT,25,arithmetic_mean_31_23,7.75,15.163,126,137,22.913,0.648
-MG,25,arithmetic_mean_31_23,7.75,15.163,126,147,22.913,0.632
 TG,35,arithmetic_mean_31_23,7.403,14.981,126,148,22.385,0.63
 TG,40,arithmetic_mean_31_23,7.56,14.982,126,148,22.542,0.63
+CGNT,25,arithmetic_mean_31_23,7.75,15.163,126,137,22.913,0.648
+MG,25,arithmetic_mean_31_23,7.75,15.163,126,147,22.913,0.632
 TG,45,arithmetic_mean_31_23,8.171,15.235,126,151,23.406,0.625
 TG,50,arithmetic_mean_31_23,10.532,16.36,126,169,26.892,0.599
 CGNT,30,arithmetic_mean_31_23,10.581,17.143,126,182,27.723,0.581
-CGNT,35,arithmetic_mean_31_23,13.602,19.426,126,210,33.028,0.545
+TG,55,arithmetic_mean_31_23,11.594,16.492,126,232,28.085,0.521
