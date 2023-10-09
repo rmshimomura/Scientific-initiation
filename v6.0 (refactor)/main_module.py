@@ -9,36 +9,29 @@ import numpy as np
 import coletores
 import testing as t
 
-global root_folder, metrics, _map, regions, regions_names
+global metrics, _map, regions, regions_names
 
-root_folder = None
-
-if 'Meu Drive' in os.getcwd():
-    root_folder = 'Meu Drive'
-elif 'My Drive' in os.getcwd():
-    root_folder = 'My Drive'
-
-number_of_days = 137
-
-_map = gpd.read_file('G:/' + root_folder + '/IC/Codes/Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
+_map = gpd.read_file(r'G:\My Drive\IC\Codes\Data\Maps\PR_Municipios_2021\PR_Municipios_2021.shp') 
 
 metrics = []
 
 def read_basic_info(train_file, test_file):
 
-    global root_folder, burr_buffer
+    global burr_buffer
 
     trained_collectors = None
     trained_collectors_geo_df = None
 
     if train_file is not None:
         # Read collectors file
-        trained_collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Gridded_Data/' + train_file + '.csv', sep=',', decimal='.', infer_datetime_format=True)
+        trained_collectors = pd.read_csv(rf"{train_file}", sep=',', decimal='.', infer_datetime_format=True)
+
+        # Used with topologies
         trained_geometry = [sg.Point(x,y) for x,y in zip(trained_collectors.LongitudeDecimal, trained_collectors.LatitudeDecimal)]
         trained_collectors_geo_df = gpd.GeoDataFrame(trained_collectors, geometry=trained_geometry)
+        
         trained_collectors_geo_df['discovery_day'] = None
         trained_collectors_geo_df['circle_created'] = 0
-        trained_collectors_geo_df['id'] = trained_collectors_geo_df.index
 
         if 'MediaDiasAposInicioCiclo' in trained_collectors_geo_df.columns:
 
@@ -51,12 +44,11 @@ def read_basic_info(train_file, test_file):
         trained_collectors_geo_df.loc[trained_collectors_geo_df['Situacao'] == 'Com esporos', 'color'] = 'green'
         trained_collectors_geo_df.loc[trained_collectors_geo_df['Situacao'] == 'Encerrado sem esporos', 'color'] = 'red'
 
-    test_collectors = pd.read_csv('G:/' + root_folder + '/IC/Codes/Data/Gridded_Data/' + test_file + '.csv', sep=',', decimal='.', infer_datetime_format=True)
+    test_collectors = pd.read_csv(rf"{test_file}", sep=',', decimal='.', infer_datetime_format=True)
     test_geometry = [sg.Point(x,y) for x,y in zip(test_collectors.LongitudeDecimal, test_collectors.LatitudeDecimal)]
     test_collectors_geo_df = gpd.GeoDataFrame(test_collectors, geometry=test_geometry)
     test_collectors_geo_df = utils.clean_up(test_collectors_geo_df)
     test_collectors_geo_df['discovery_day'] = None
-    test_collectors_geo_df['id'] = test_collectors_geo_df.index
     test_collectors_geo_df['color'] = 'black'
     test_collectors_geo_df['circle_created'] = 0
 
@@ -97,30 +89,17 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
 
         if growth_type == 'CGNT':
 
-            # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Circular Growth No Touch
+            true_positive_penalty, method_used = gt.circular_growth_no_touch(test_collectors_geo_df, TEST_PARAMS)
 
-            true_positive_penalty, infection_circles, method_used = \
-                gt.circular_growth_no_touch(test_collectors_geo_df, TEST_PARAMS)
+        elif growth_type == 'CGT':
 
-        elif growth_type == 'CGT': # For now, only not learning based
-
-            # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Circular Growth Touch
-
-            old_geometries = []
-
-            true_positive_penalty, infection_circles, method_used = \
-                gt.circular_growth_touch(_map, test_collectors_geo_df, old_geometries, number_of_starting_points, TEST_PARAMS)
+            true_positive_penalty, method_used = gt.circular_growth_touch(test_collectors_geo_df, number_of_starting_points, TEST_PARAMS)
 
         elif growth_type == 'MG':
 
-            # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Mixed Growth Touch
-
-            true_positive_penalty, infection_circles, method_used = \
-                gt.mix_growth(_map, test_collectors_geo_df, None, TEST_PARAMS)
+            true_positive_penalty, method_used = gt.mix_growth(test_collectors_geo_df, None, TEST_PARAMS)
 
         elif growth_type == 'TG':
-
-            # [SEARCHING FOR A PARAMETER TO FIT ON THE LOGARITHMIC FUNCTION] Topology Test 
 
             test_collectors_instance = coletores.Coletores('LongitudeDecimal', 'LatitudeDecimal', 'Primeiro_Esporo')
 
@@ -128,8 +107,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             test_collectors_instance.criaGrafo(test_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
             test_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], TEST_PARAMS['larg_seg'])
 
-            true_positive_penalty, burrs, method_used = \
-                gt.topology_growth_no_touch(_map, test_collectors_instance, TEST_PARAMS)
+            true_positive_penalty, method_used = gt.topology_growth_no_touch(test_collectors_instance, TEST_PARAMS)
 
         false_positive_penalty = utils.calculate_false_positives_penalty(test_collectors_geo_df, start_day + TEST_PARAMS['number_of_days'] - 1)
 
@@ -213,7 +191,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         
         temp_metrics = [
             growth_type,
-            TEST_PARAMS['train_file'], TEST_PARAMS['test_file'], base, radius, number_of_days, true_positive, false_positive, 
+            TEST_PARAMS['train_file'].split('\\')[-1].split('.')[0], TEST_PARAMS['test_file'].split('\\')[-1].split('.')[0], base, radius, number_of_days, true_positive, false_positive, 
             error_mean, error_std, error_max, error_min,
             len(test_collectors_geo_df.query("Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Situacao == \'Encerrado sem esporos\'")), len(test_collectors_geo_df.query("Detected == 1 and Situacao == \'Com esporos\'")), len(test_collectors_geo_df.query("Detected == 0 and Situacao == \'Com esporos\'"))
         ]
@@ -225,7 +203,20 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             temp_metrics.append(proportion_seg)
             temp_metrics.append(proportion_larg)
 
+        # print(f"Train file used: {temp_metrics[1]}")
+        # print(f"Test file used: {temp_metrics[2]}")
+        # print(f"Base used: {temp_metrics[3]}")
+        # print(f"Radius used: {temp_metrics[4]}")
+        # print(f"Number of days used: {temp_metrics[5]}")
+        # print(f"True positive: {temp_metrics[6]}")
+        # print(f"False positive: {temp_metrics[7]}")
+        # print(f"Error mean: {temp_metrics[8]}")
+        # print(f"Error std: {temp_metrics[9]}")
+        # print(f"Error max: {temp_metrics[10]}")
+        # print(f"Error min: {temp_metrics[11]}")
+        # print()
         return temp_metrics
 
 if __name__ == '__main__':
-    main(30606342.505, 137, None, '/Test_Data/coletoressafra2021_31_23', 'parameter_search', 'TG', 1, 30, 1.06, 1.04)
+    # main(961554092.8640003, 137, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\arithmetic_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', 'test', 'CGNT', 1, 25, 1.06, 1.04)
+    main(961554092.8640003, 137, None, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\arithmetic_mean_31_23.csv', 'parameter_search', 'TG', 1, 25, 1.05, 1.04)

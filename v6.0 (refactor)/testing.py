@@ -26,14 +26,15 @@ def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collecto
             start_day
         )
 
-        trained_collector = trained_collectors.loc[first_appearances.index[k]]
 
-        test_collector = test_collectors.query('id == ' + str(trained_collector.id))
+        trained_collector = trained_collectors.loc[first_appearances.iloc[k].name]
 
-        test_collectors.loc[test_collector.index[0], 'Detected'] = 1
-        test_collectors.loc[test_collector.index[0], 'discovery_day'] = start_day
+        test_collector = test_collectors.loc[trained_collector.name]
 
-        test_collector = test_collectors.loc[test_collector.index[0]]
+        test_collectors.loc[test_collector.name, 'Detected'] = 1
+        test_collectors.loc[test_collector.name, 'discovery_day'] = start_day
+
+        test_collector = test_collectors.loc[test_collector.name]
 
         if test_collector['DiasAposInicioCiclo'] == -1:
 
@@ -45,10 +46,10 @@ def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collecto
 
             days_error.append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
 
-        trained_collectors.loc[first_appearances.index[k], 'Detected'] = 1
-        trained_collectors.loc[first_appearances.index[k], 'circle_created'] = 1
-        trained_collectors.loc[first_appearances.index[k], 'color'] = 'green'
-        trained_collectors.loc[first_appearances.index[k], 'discovery_day'] = start_day
+        trained_collectors.loc[first_appearances.iloc[k].name, 'Detected'] = 1
+        trained_collectors.loc[first_appearances.iloc[k].name, 'circle_created'] = 1
+        trained_collectors.loc[first_appearances.iloc[k].name, 'color'] = 'green'
+        trained_collectors.loc[first_appearances.iloc[k].name, 'discovery_day'] = start_day
 
         infection_circles.append(infection_circle)
 
@@ -60,7 +61,7 @@ def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collecto
             
             if count < len(positive_collectors):
 
-                current_collector_index = positive_collectors.index[count]
+                current_collector_index = positive_collectors.iloc[count].name
 
                 if trained_collectors.loc[current_collector_index, 'circle_created'] == 0:
 
@@ -77,29 +78,32 @@ def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collecto
                         trained_collector = trained_collectors.loc[current_collector_index]
 
                         # Locate the collector in the test_collectors dataframe using the id
-                        test_collector = test_collectors.loc[trained_collector.id]
+                        test_collector = test_collectors.loc[trained_collector.name]
 
                         # Check if the collector was detected
                         if test_collector['Detected'] == 0:
 
                             if test_collector['DiasAposInicioCiclo'] == -1:
 
-                                test_collectors.loc[test_collector.id, 'color'] = 'red'
-                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
+                                test_collectors.loc[test_collector.name, 'color'] = 'red'
+                                test_collectors.loc[test_collector.name, 'discovery_day'] = start_day + day
                                 false_positive += 1
 
                             else:
 
-                                test_collectors.loc[test_collector.id, 'color'] = 'green'
-                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
+                                test_collectors.loc[test_collector.name, 'color'] = 'green'
+                                test_collectors.loc[test_collector.name, 'discovery_day'] = start_day + day
 
                                 true_positive += 1
 
                                 days_error.append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
 
-                            test_collectors.loc[test_collector.id, 'Detected'] = 1
+                            test_collectors.loc[test_collector.name, 'Detected'] = 1
                             
                         trained_collectors.loc[current_collector_index, 'Detected'] = 1
+                        trained_collectors.loc[current_collector_index, 'circle_created'] = 1
+                        trained_collectors.loc[current_collector_index, 'color'] = 'green'
+                        trained_collectors.loc[current_collector_index, 'discovery_day'] = start_day + day
 
                         if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
                             print('Error')
@@ -131,16 +135,13 @@ def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collecto
 
                         test_collectors.loc[collector.Index, 'Detected'] = 1
 
+                        trained_collector = trained_collectors.loc[collector.Index]
 
-                        trained_collector = trained_collectors.query('id == ' + str(collector.id))
-                        trained_collector_index = trained_collector.index[0]
-                        trained_collector = trained_collectors.loc[trained_collector_index]
-
-                        if trained_collector.id == collector.id:
+                        if trained_collector.name == collector.Index:
                             pass
                         else:
                             print('Error')
-                            print(trained_collector.id, collector.id)
+                            print(trained_collector.name, collector.Index)
                             exit()
 
                         if collector.Situacao == 'Com esporos': # True positive
@@ -149,7 +150,7 @@ def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collecto
                             test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             true_positive += 1
 
-                            days_error.append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
+                            days_error.append(test_collectors.loc[collector.Index, 'DiasAposInicioCiclo'] - (start_day + day))
 
                         else: # False positive
 
@@ -168,21 +169,17 @@ def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collecto
                                 start_day + day
                             )
 
-                            trained_collectors.loc[trained_collector_index, 'Detected'] = 1
+                            trained_collectors.loc[collector.Index, 'Detected'] = 1
 
 
                             infection_circles.append(new_infection_circle)
-
-                        if trained_collectors.loc[trained_collector_index,'id'] != trained_collector.id:
-                            print('Error')
-                            exit()
         
         for infection_circle in infection_circles:
 
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        if day + 1 in plot_days:
-            plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
+        # if day + 1 in plot_days:
+        #     plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
 
     # All the collectors that were not detected but had spores, change their color to yellow
     for collector in test_collectors.itertuples():
@@ -221,7 +218,7 @@ def normal_testing_CGT(_map, base_collectors: pd.DataFrame, test_collectors: pd.
 
             if count < len(first_k_appearances):
 
-                current_collector_index = first_k_appearances.index[count]
+                current_collector_index = first_k_appearances.iloc[count].name
 
                 if base_collectors.loc[current_collector_index, 'circle_created'] == 0:
 
@@ -235,23 +232,23 @@ def normal_testing_CGT(_map, base_collectors: pd.DataFrame, test_collectors: pd.
 
                         base_collector = base_collectors.loc[current_collector_index]
 
-                        test_collector = test_collectors.loc[base_collector.id]
+                        test_collector = test_collectors.loc[base_collector.name]
 
                         if test_collector['Detected'] == 0:
 
                             if test_collector['DiasAposInicioCiclo'] == -1:
-                                test_collectors.loc[test_collector.id, 'color'] = 'red'
-                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
+                                test_collectors.loc[test_collector.name, 'color'] = 'red'
+                                test_collectors.loc[test_collector.name, 'discovery_day'] = start_day + day
                                 false_positive += 1
                             else:
-                                test_collectors.loc[test_collector.id, 'color'] = 'green'
-                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
+                                test_collectors.loc[test_collector.name, 'color'] = 'green'
+                                test_collectors.loc[test_collector.name, 'discovery_day'] = start_day + day
 
                                 true_positive += 1
 
                                 days_error.append(test_collector['DiasAposInicioCiclo'] - base_collector['DiasAposInicioCiclo'])
 
-                            test_collectors.loc[test_collector.id, 'Detected'] = 1
+                            test_collectors.loc[test_collector.name, 'Detected'] = 1
                         
                         base_collectors.loc[current_collector_index, 'Detected'] = 1
 
@@ -282,15 +279,14 @@ def normal_testing_CGT(_map, base_collectors: pd.DataFrame, test_collectors: pd.
 
                         test_collectors.loc[collector.Index, 'Detected'] = 1
 
-                        base_collector = base_collectors.query('id == ' + str(collector.id))
-                        base_collector_index = base_collector.index[0]
-                        base_collector = base_collectors.loc[base_collector_index]
+                        base_collector = base_collectors.loc[collector.Index]
 
-                        if base_collector.id == collector.id:
+
+                        if base_collector.name == collector.Index:
                             pass
                         else:
                             print('Error')
-                            print(base_collector.id, collector.id)
+                            print(base_collector.name, collector.Index)
                             exit()
                         
                         if collector.Situacao == 'Com esporos': # True positive
@@ -298,7 +294,7 @@ def normal_testing_CGT(_map, base_collectors: pd.DataFrame, test_collectors: pd.
                             test_collectors.loc[collector.Index, 'color'] = 'green'
                             test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             true_positive += 1
-                            days_error.append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
+                            days_error.append(base_collectors.loc[collector.Index, 'DiasAposInicioCiclo'] - (start_day + day))
                         else:
                             test_collectors.loc[collector.Index, 'color'] = 'red'
                             test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
@@ -314,20 +310,16 @@ def normal_testing_CGT(_map, base_collectors: pd.DataFrame, test_collectors: pd.
                             start_day + day
                         )
 
-                        base_collectors.loc[base_collector_index, 'Detected'] = 1
+                        base_collectors.loc[collector.Index, 'Detected'] = 1
 
                         infection_circles.append(new_infection_circle)
-
-                        if base_collectors.loc[base_collector_index,'id'] != base_collector.id:
-                            print('Error')
-                            exit()
         
         for infection_circle in infection_circles:
                 
                 infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        if day + 1 in plot_days:
-            plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
+        # if day + 1 in plot_days:
+        #     plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
 
     # All the collectors that were not detected but had spores, change their color to yellow
     for collector in test_collectors.itertuples():
@@ -368,12 +360,12 @@ def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collect
             
         trained_collector = trained_collectors.geo_df.loc[first_appearances.index[k]]
 
-        test_collector = test_collectors.query('id == ' + str(trained_collector.id))
+        test_collector = test_collectors.loc[trained_collector.name]
 
-        test_collectors.loc[test_collector.index[0], 'Detected'] = 1
-        test_collectors.loc[test_collector.index[0], 'discovery_day'] = start_day
+        test_collectors.loc[test_collector.name, 'Detected'] = 1
+        test_collectors.loc[test_collector.name, 'discovery_day'] = start_day
 
-        test_collector = test_collectors.loc[test_collector.index[0]]
+        test_collector = test_collectors.loc[test_collector.name]
 
         if test_collector['DiasAposInicioCiclo'] == -1:
 
@@ -385,13 +377,13 @@ def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collect
 
             days_error.append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
 
-        trained_collectors.geo_df.loc[first_appearances.index[k], 'Detected'] = 1
-        trained_collectors.geo_df.loc[first_appearances.index[k], 'circle_created'] = 1
-        trained_collectors.geo_df.loc[first_appearances.index[k], 'color'] = 'green'
-        trained_collectors.geo_df.loc[first_appearances.index[k], 'discovery_day'] = start_day
-        trained_collectors.geo_df.loc[first_appearances.index[k], 'life_time'] = 1
+        trained_collectors.geo_df.loc[first_appearances.iloc[k].name, 'Detected'] = 1
+        trained_collectors.geo_df.loc[first_appearances.iloc[k].name, 'circle_created'] = 1
+        trained_collectors.geo_df.loc[first_appearances.iloc[k].name, 'color'] = 'green'
+        trained_collectors.geo_df.loc[first_appearances.iloc[k].name, 'discovery_day'] = start_day
+        trained_collectors.geo_df.loc[first_appearances.iloc[k].name, 'life_time'] = 1
 
-        current_day_growth_topologies[first_appearances.index[k]] = growth_topology
+        current_day_growth_topologies[first_appearances.iloc[k].name] = growth_topology
     
     count = len(first_appearances)
 
@@ -401,7 +393,7 @@ def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collect
 
             if count < len(positive_collectors):
 
-                current_collector_index = positive_collectors.index[count]
+                current_collector_index = positive_collectors.iloc[count].name
 
                 if trained_collectors.geo_df.loc[current_collector_index, 'circle_created'] == 0:
 
@@ -413,33 +405,32 @@ def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collect
                         
                         trained_collector = trained_collectors.geo_df.loc[current_collector_index]
 
-                        test_collector = test_collectors.loc[trained_collector.id]
+                        test_collector = test_collectors.loc[trained_collector.name]
 
                         if test_collector['Detected'] == 0:
 
                             if test_collector['DiasAposInicioCiclo'] == -1:
 
-                                test_collectors.loc[test_collector.id, 'color'] = 'red'
-                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
+                                test_collectors.loc[test_collector.name, 'color'] = 'red'
+                                test_collectors.loc[test_collector.name, 'discovery_day'] = start_day + day
                                 false_positive += 1
 
                             else:
 
-                                test_collectors.loc[test_collector.id, 'color'] = 'green'
-                                test_collectors.loc[test_collector.id, 'discovery_day'] = start_day + day
+                                test_collectors.loc[test_collector.name, 'color'] = 'green'
+                                test_collectors.loc[test_collector.name, 'discovery_day'] = start_day + day
 
                                 true_positive += 1
 
                                 days_error.append(test_collector['DiasAposInicioCiclo'] - trained_collector['MediaDiasAposInicioCiclo'])
 
-                            test_collectors.loc[test_collector.id, 'Detected'] = 1
+                            test_collectors.loc[test_collector.name, 'Detected'] = 1
                             
                         trained_collectors.geo_df.loc[current_collector_index, 'Detected'] = 1
                         trained_collectors.geo_df.loc[current_collector_index, 'circle_created'] = 1
                         trained_collectors.geo_df.loc[current_collector_index, 'color'] = 'green'
                         trained_collectors.geo_df.loc[current_collector_index, 'discovery_day'] = start_day + day
                         trained_collectors.geo_df.loc[current_collector_index, 'life_time'] = 1
-
 
                         if true_positive + false_positive != len(test_collectors.query('Detected == 1')):
                             print('Error')
@@ -491,15 +482,13 @@ def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collect
 
                         test_collectors.loc[collector.Index, 'Detected'] = 1
 
-                        trained_collector = trained_collectors.geo_df.query('id == ' + str(collector.id))
-                        trained_collector_index = trained_collector.index[0]
-                        trained_collector = trained_collectors.geo_df.loc[trained_collector_index]
+                        trained_collector = trained_collectors.geo_df.loc[collector.Index]
 
-                        if trained_collector.id == collector.id:
+                        if trained_collector.name == collector.Index:
                             pass
                         else:
                             print('Error')
-                            print(trained_collector.id, collector.id)
+                            print(trained_collector.name, collector.Index)
                             exit()
 
                         if collector.Situacao == 'Com esporos':
@@ -508,7 +497,7 @@ def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collect
                             test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
                             true_positive += 1
 
-                            days_error.append(test_collector['DiasAposInicioCiclo'] - (start_day + day))
+                            days_error.append(test_collectors.loc[collector.Index, 'DiasAposInicioCiclo'] - (start_day + day))
                         else:
                             test_collectors.loc[collector.Index, 'color'] = 'red'
                             test_collectors.loc[collector.Index, 'discovery_day'] = start_day + day
@@ -526,8 +515,8 @@ def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collect
 
             trained_collectors.geo_df.loc[key, 'life_time'] += 1
         
-        if day + 1 in plot_days:
-            plots.plot_def_topologies(_map, test_collectors, current_day_growth_topologies.values(), burrs, start_day, day)
+        # if day + 1 in plot_days:
+            # plots.plot_def_topologies(_map, test_collectors, current_day_growth_topologies.values(), burrs, start_day, day)
 
         # If it is the last day, assign a copy of burrs to last_result
         if day == TEST_PARAMS['number_of_days'] - 1:

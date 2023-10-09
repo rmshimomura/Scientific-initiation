@@ -222,7 +222,7 @@ def circular_growth_touch(_collectors: pd.DataFrame, number_of_starting_points: 
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 
-    return true_positive_total_error, infection_circles, 'Circular Growth touch'
+    return true_positive_total_error, 'Circular Growth touch'
 
 def circular_growth_no_touch(_collectors: pd.DataFrame, TEST_PARAMS: dict):
 
@@ -279,7 +279,7 @@ def circular_growth_no_touch(_collectors: pd.DataFrame, TEST_PARAMS: dict):
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
     
-    return true_positive_total_error, infection_circles, 'Circular Growth no touch'
+    return true_positive_total_error, 'Circular Growth no touch'
 
 def mix_growth(_collectors: pd.DataFrame, TEST_PARAMS: dict):
 
@@ -352,9 +352,9 @@ def mix_growth(_collectors: pd.DataFrame, TEST_PARAMS: dict):
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 
-    return true_positive_total_error, infection_circles, 'Mixed Growth'
+    return true_positive_total_error, 'Mixed Growth'
 
-def topology_growth_no_touch(_map, _collectors_instance: coletores.Coletores, TEST_PARAMS: dict):
+def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PARAMS: dict):
 
     days_column = 'DiasAposInicioCiclo' if 'DiasAposInicioCiclo' in _collectors_instance.geo_df.columns else 'MediaDiasAposInicioCiclo'
 
@@ -411,4 +411,4 @@ def topology_growth_no_touch(_map, _collectors_instance: coletores.Coletores, TE
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
 
-    return true_positive_total_error, current_day_growth_topologies, 'Topology Growth no touch'
+    return true_positive_total_error, 'Topology Growth no touch'

@@ -10,8 +10,6 @@ import shapely.geometry as sg
 import geopandas as gpd
 
 def clean_up(collectors_geo_data_frame: gpd.GeoDataFrame)-> gpd.GeoDataFrame: 
-    # Reset index
-    collectors_geo_data_frame.index = range(0, len(collectors_geo_data_frame)) 
 
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Longitude Decimal': 'LongitudeDecimal'})
     collectors_geo_data_frame = collectors_geo_data_frame.rename(columns={'Latitude Decimal': 'LatitudeDecimal'})

@@ -46,8 +46,8 @@ if __name__ == "__main__":
 
     count = 0
 
-    compSeg = 1.06
-    compLarg = 1.04
+    compSeg = 1.05
+    compLarg = 1.03
 
     print_progress_bar(count, 1, prefix='Progress:', length=50)
 
@@ -56,35 +56,35 @@ if __name__ == "__main__":
 
             # SEARCH FOR THE BEST PARAMETERS
 
-            # [base, number_of_days, None, '/Trained_Data/all_together/arithmetic_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
-            # [base, number_of_days, None, '/Trained_Data/all_together/geometric_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
-            # [base, number_of_days, None, '/Trained_Data/all_together/harmonic_mean_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, None, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\arithmetic_mean_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, None, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\geometric_mean_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, None, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\harmonic_mean_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
 
 
             # CGNT and MG TESTING
 
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
-            [base, number_of_days, '/Trained_Data/all_together/arithmetic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\arithmetic_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\arithmetic_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2122_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\arithmetic_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2223_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
 
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
-            [base, number_of_days, '/Trained_Data/all_together/geometric_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\geometric_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\geometric_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2122_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\geometric_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2223_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
 
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
-            [base, number_of_days, '/Trained_Data/all_together/harmonic_mean_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg]
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\harmonic_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\harmonic_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2122_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\harmonic_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2223_31_23.csv', operation_mode, growth_type, 1, radius[bases.index(base)], compSeg, compLarg]
 
             # CGT TESTING
 
-            # [base, number_of_days, '/Test_Data/coletoressafra2021_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
-            # [base, number_of_days, '/Test_Data/coletoressafra2021_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2122_31_23.csv', operation_mode, growth_type, 4, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2223_31_23.csv', operation_mode, growth_type, 4, radius[bases.index(base)], compSeg, compLarg],
 
-            # [base, number_of_days, '/Test_Data/coletoressafra2122_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
-            # [base, number_of_days, '/Test_Data/coletoressafra2122_31_23', '/Test_Data/coletoressafra2223_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2122_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', operation_mode, growth_type, 4, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2122_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2223_31_23.csv', operation_mode, growth_type, 4, radius[bases.index(base)], compSeg, compLarg],
 
-            # [base, number_of_days, '/Test_Data/coletoressafra2223_31_23', '/Test_Data/coletoressafra2021_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
-            # [base, number_of_days, '/Test_Data/coletoressafra2223_31_23', '/Test_Data/coletoressafra2122_31_23', operation_mode, growth_type, 4, radius[bases.index(base)]],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2223_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', operation_mode, growth_type, 4, radius[bases.index(base)], compSeg, compLarg],
+            # [base, number_of_days, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2223_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2122_31_23.csv', operation_mode, growth_type, 4, radius[bases.index(base)], compSeg, compLarg],
         ]
 
         if len(args_list) == 0:
