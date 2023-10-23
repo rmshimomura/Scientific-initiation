@@ -185,14 +185,33 @@ O formato utilizado no modelo TG é basicamente a união de um círculo de raio 
 |60km|5532.2990000000045|
 
 ## Exemplos de simulações (imagens ao final da simulação):
-<div style="display:flex;">
-    <img src="./Images_for_README/exemplo_circulos.png" width="100%" height="50%">
-    <img src="./Images_for_README/exemplo_buffer_evand.png" width="100%" height="50%">
+<div style="display:flex; flex-wrap: wrap;">
+
+<figure style="flex: 1; padding: 5px; max-width: 100%; text-align: center;">
+    <img src="./cgt.png" style="width: 100%; height: auto;" alt="CGT">
+    <figcaption>CGT</figcaption>
+</figure>
+
+<figure style="flex: 1; padding: 5px; max-width: 100%; text-align: center;">
+    <img src="./mg.png" style="width: 100%; height: auto;" alt="MG">
+    <figcaption>MG</figcaption>
+</figure>
+
+<figure style="flex: 1; padding: 5px; max-width: 100%; text-align: center;">
+    <img src="./cgnt.png" style="width: 100%; height: auto;" alt="CGNT">
+    <figcaption>CGNT</figcaption>
+</figure>
+
+<figure style="flex: 1; padding: 5px; max-width: 100%; text-align: center;">
+    <img src="./tg.png" style="width: 100%; height: auto;" alt="TG">
+    <figcaption>TG</figcaption>
+</figure>
+
 </div>
 
-A primeira imagem é com os círculos, e a segundo é com as geometrias aprendidas.
+
 
 
 ## Resultados obtidos:
 
-Para acessar os resultados, acesse o arquivo (Relatório_final_IC.pdf)[./Relatório_final_IC.pdf]
+Para acessar os resultados, acesse o arquivo [Relatório_final_IC.pdf](./Relatório_final_IC.pdf)
