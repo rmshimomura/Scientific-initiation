@@ -178,8 +178,8 @@ def learning_based_CGNT_MG(_map, trained_collectors: pd.DataFrame, test_collecto
 
             infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        # if day + 1 in plot_days:
-        #     plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
+        if day + 1 in plot_days:
+            plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
 
     # All the collectors that were not detected but had spores, change their color to yellow
     for collector in test_collectors.itertuples():
@@ -318,8 +318,8 @@ def normal_testing_CGT(_map, base_collectors: pd.DataFrame, test_collectors: pd.
                 
                 infection_circle.grow(TEST_PARAMS['growth_function_distance'], TEST_PARAMS['base'])
 
-        # if day + 1 in plot_days:
-        #     plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
+        if day + 1 in plot_days:
+            plots.plot_def_circles(_map, test_collectors, infection_circles, start_day, day)
 
     # All the collectors that were not detected but had spores, change their color to yellow
     for collector in test_collectors.itertuples():
@@ -515,8 +515,8 @@ def topology_test_TG(_map, trained_collectors: coletores.Coletores, test_collect
 
             trained_collectors.geo_df.loc[key, 'life_time'] += 1
         
-        # if day + 1 in plot_days:
-            # plots.plot_def_topologies(_map, test_collectors, current_day_growth_topologies.values(), burrs, start_day, day)
+        if day + 1 in plot_days:
+            plots.plot_def_topologies(_map, test_collectors, current_day_growth_topologies.values(), burrs, start_day, day)
 
         # If it is the last day, assign a copy of burrs to last_result
         if day == TEST_PARAMS['number_of_days'] - 1:

@@ -67,7 +67,7 @@ def plot_def_topologies(_map, _collectors, topologies, buffers, start_day, day):
     #     plt.plot(*buffer.exterior.xy, color='black', linewidth=0.6, alpha=1, linestyle='--')
 
     
-    # plt.title(f"Ferrugem asiática no Paraná - dia {day + 1}", fontsize=20)
+    plt.title(f"Ferrugem asiática no Paraná - dia {day + 1}", fontsize=20)
     plt.tight_layout()
 
     plt.savefig(f'./{day + 1}_final.png', bbox_inches='tight')
