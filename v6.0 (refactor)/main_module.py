@@ -11,7 +11,17 @@ import testing as t
 
 global metrics, _map, regions, regions_names
 
-_map = gpd.read_file(r'G:\My Drive\IC\Codes\Data\Maps\PR_Municipios_2021\PR_Municipios_2021.shp') 
+
+
+
+#OBSERVAÇÃO MARCOS, APÓS ALGUNS ANOS SEM RODAR O CODIGO ALGUMAS LIBS PASSARAM A SOLTAR MUITOS WARNINGS,...
+#ENTÃO OPTEI POR COLOCAR ESSE FILTRO PARA NÃO POLUIR TANTO O OUTPUT, MAS SE QUISEREM VER OS WARNINGS OU O,...
+#CODIGO PARAR DE FUNCIONAR, É SÓ REMOVER ESSA LINHA E VERIFICAR OS WARNINGS PARA ATTS. DE METODOS
+import warnings
+
+warnings.filterwarnings('ignore')
+
+_map = gpd.read_file(r'../Data/Maps/PR_Municipios_2021/PR_Municipios_2021.shp') 
 
 metrics = []
 
@@ -107,7 +117,7 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             test_collectors_instance.criaGrafo(test_collectors_geo_df, TEST_PARAMS['raio_de_possivel_contaminacao'])
             test_collectors_instance.geraTopologiasCrescimento(TEST_PARAMS['raio_de_abrangencia_imediata'], TEST_PARAMS['raio_de_possivel_contaminacao'], TEST_PARAMS['larg_seg'])
 
-            true_positive_penalty, method_used = gt.topology_growth_no_touch(test_collectors_instance, TEST_PARAMS)
+            true_positive_penalty, method_used = gt.topology_growth_no_touch(test_collectors_instance, TEST_PARAMS, _map)
 
         false_positive_penalty = utils.calculate_false_positives_penalty(test_collectors_geo_df, start_day + TEST_PARAMS['number_of_days'] - 1)
 
@@ -203,21 +213,21 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
             temp_metrics.append(proportion_seg)
             temp_metrics.append(proportion_larg)
 
-        # print(f"Train file used: {temp_metrics[1]}")
-        # print(f"Test file used: {temp_metrics[2]}")
-        # print(f"Base used: {temp_metrics[3]}")
-        # print(f"Radius used: {temp_metrics[4]}")
-        # print(f"Number of days used: {temp_metrics[5]}")
-        # print(f"True positive: {temp_metrics[6]}")
-        # print(f"False positive: {temp_metrics[7]}")
-        # print(f"Error mean: {temp_metrics[8]}")
-        # print(f"Error std: {temp_metrics[9]}")
-        # print(f"Error max: {temp_metrics[10]}")
-        # print(f"Error min: {temp_metrics[11]}")
-        # print()
+        print(f"Train file used: {temp_metrics[1]}")
+        print(f"Test file used: {temp_metrics[2]}")
+        print(f"Base used: {temp_metrics[3]}")
+        print(f"Radius used: {temp_metrics[4]}")
+        print(f"Number of days used: {temp_metrics[5]}")
+        print(f"True positive: {temp_metrics[6]}")
+        print(f"False positive: {temp_metrics[7]}")
+        print(f"Error mean: {temp_metrics[8]}")
+        print(f"Error std: {temp_metrics[9]}")
+        print(f"Error max: {temp_metrics[10]}")
+        print(f"Error min: {temp_metrics[11]}")
+        print()
         return temp_metrics
 
 if __name__ == '__main__':
-    main(30606342.505, 137, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\arithmetic_mean_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', 'test', 'TG', 1, 30, 1.06, 1.04)
-    # main(12110.717000000004, 137, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2122_31_23.csv', r'G:\My Drive\IC\Codes\Data\Gridded_Data\Test_Data\coletoressafra2021_31_23.csv', 'test', 'CGT', 4, 55, 1.06, 1.04)
-    # main(961554092.8640003, 137, None, r'G:\My Drive\IC\Codes\Data\Gridded_Data\Trained_Data\all_together\arithmetic_mean_31_23.csv', 'parameter_search', 'TG', 1, 25, 1.05, 1.04)
+    main(30606342.505, 137, r'../Data/Gridded_Data/Trained_Data/all_together/arithmetic_mean_31_23.csv', r'../Data/Gridded_Data/Test_Data/coletoressafra2021_31_23.csv', 'parameter_search', 'TG', 1, 30, 1.06, 1.04)
+    # main(12110.717000000004, 137, r'../Data/Gridded_Data/Test_Data/coletoressafra2122_31_23.csv', r'../Data/Gridded_Data/Test_Data/coletoressafra2021_31_23.csv', 'test', 'CGT', 4, 55, 1.06, 1.04)
+    # main(961554092.8640003, 137, None, r'../Data/Gridded_Data/Trained_Data/all_together/arithmetic_mean_31_23.csv', 'parameter_search', 'TG', 1, 25, 1.05, 1.04)

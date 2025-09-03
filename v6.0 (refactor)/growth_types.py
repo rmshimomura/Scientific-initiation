@@ -4,6 +4,7 @@ import math
 from shapely.geometry import Point
 from infection_circle import Infection_Circle
 import coletores, cria_buffers
+import matplotlib.pyplot as plt
 
 true_positive_total_error = 0
 true_positives = 0
@@ -354,7 +355,54 @@ def mix_growth(_collectors: pd.DataFrame, TEST_PARAMS: dict):
 
     return true_positive_total_error, 'Mixed Growth'
 
-def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PARAMS: dict):
+#plotting map function
+def plot_infection_map(_collectors_instance, burrs, parana, day):
+    fig, ax = plt.subplots(figsize=(8,8))
+
+    # mapa base
+    parana.plot(ax=ax, color="white", edgecolor="black")
+
+    # buffers (áreas de crescimento)
+    for burr in burrs:
+        gpd.GeoSeries([burr]).plot(ax=ax, color="blue", alpha=0.2, edgecolor="blue")
+
+    # pontos não detectados
+    not_detected = _collectors_instance.geo_df[_collectors_instance.geo_df["Detected"] == 0]
+    plt.scatter(
+        not_detected["LongitudeDecimal"], 
+        not_detected["LatitudeDecimal"],
+        color="gray", s=20, label="Not detected"
+    )
+
+    # verdadeiros positivos
+    true_pos = _collectors_instance.geo_df[
+        (_collectors_instance.geo_df["Detected"] == 1) & 
+        (_collectors_instance.geo_df["color"] == "green")
+    ]
+    plt.scatter(
+        true_pos["LongitudeDecimal"], 
+        true_pos["LatitudeDecimal"],
+        color="green", s=20, label="True Positives"
+    )
+
+    # falsos positivos
+    false_pos = _collectors_instance.geo_df[
+        (_collectors_instance.geo_df["Detected"] == 1) & 
+        (_collectors_instance.geo_df["color"] == "red")
+    ]
+    plt.scatter(
+        false_pos["LongitudeDecimal"], 
+        false_pos["LatitudeDecimal"],
+        color="red", s=20, label="False Positives"
+    )
+
+    ax.set_title(f"Infection spread - Day {day}")
+    ax.legend()
+    plt.savefig(f"../Results/Maps/map_day_{day}.png", dpi=150)
+    plt.close()
+
+
+def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PARAMS: dict, _map: gpd.GeoDataFrame):
 
     days_column = 'DiasAposInicioCiclo' if 'DiasAposInicioCiclo' in _collectors_instance.geo_df.columns else 'MediaDiasAposInicioCiclo'
 
@@ -379,6 +427,10 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
         activate_new_topologies(_collectors_instance, positive_collectors, start_day + day, count, days_column, growth_topology_dict, current_day_growth_topologies)
 
         burrs = create_topology_buffers(_collectors_instance, current_day_growth_topologies)
+        
+        # Chama plotagem a cada X dias
+        if day % 10 == 0:
+            plot_infection_map(_collectors_instance, burrs, _map, day)
 
         for burr in burrs:
 
