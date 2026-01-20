@@ -1,0 +1,6 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "discovery_day": 40, "Situacao": "Com esporos", "DiasAposInicioCiclo": 40 }, "geometry": { "type": "Point", "coordinates": [ -51.10907938, -23.33819607 ] } }
+]
+}

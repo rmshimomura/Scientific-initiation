@@ -1,0 +1,28 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "discovery_day": 46, "Situacao": "Com esporos", "DiasAposInicioCiclo": 46 }, "geometry": { "type": "Point", "coordinates": [ -54.301019331274162, -24.799353230304291 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 56, "Situacao": "Com esporos", "DiasAposInicioCiclo": 56 }, "geometry": { "type": "Point", "coordinates": [ -50.896283387532222, -23.155551422565164 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 56, "Situacao": "Com esporos", "DiasAposInicioCiclo": 56 }, "geometry": { "type": "Point", "coordinates": [ -53.024243352370938, -24.434063939695594 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 56, "Situacao": "Com esporos", "DiasAposInicioCiclo": 56 }, "geometry": { "type": "Point", "coordinates": [ -51.534671376983837, -23.155551422565164 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 61, "Situacao": "Com esporos", "DiasAposInicioCiclo": 61 }, "geometry": { "type": "Point", "coordinates": [ -54.301019331274162, -24.981997875608641 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 63, "Situacao": "Com esporos", "DiasAposInicioCiclo": 63 }, "geometry": { "type": "Point", "coordinates": [ -51.109079384016098, -23.155551422565164 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 63, "Situacao": "Com esporos", "DiasAposInicioCiclo": 63 }, "geometry": { "type": "Point", "coordinates": [ -51.109079384016098, -22.790262131956467 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 63, "Situacao": "Com esporos", "DiasAposInicioCiclo": 63 }, "geometry": { "type": "Point", "coordinates": [ -52.598651359403192, -24.068774649086897 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 63, "Situacao": "Com esporos", "DiasAposInicioCiclo": 63 }, "geometry": { "type": "Point", "coordinates": [ -51.109079384016098, -22.97290677726081 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 67, "Situacao": "Com esporos", "DiasAposInicioCiclo": 67 }, "geometry": { "type": "Point", "coordinates": [ -50.04509940159673, -25.164642520912995 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 75, "Situacao": "Com esporos", "DiasAposInicioCiclo": 75 }, "geometry": { "type": "Point", "coordinates": [ -52.598651359403192, -24.616708584999948 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 77, "Situacao": "Com esporos", "DiasAposInicioCiclo": 77 }, "geometry": { "type": "Point", "coordinates": [ -51.321875380499961, -22.790262131956467 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 77, "Situacao": "Com esporos", "DiasAposInicioCiclo": 77 }, "geometry": { "type": "Point", "coordinates": [ -51.109079384016098, -23.338196067869511 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 82, "Situacao": "Com esporos", "DiasAposInicioCiclo": 82 }, "geometry": { "type": "Point", "coordinates": [ -54.088223334790285, -24.799353230304291 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 85, "Situacao": "Com esporos", "DiasAposInicioCiclo": 85 }, "geometry": { "type": "Point", "coordinates": [ -53.875427338306416, -24.799353230304291 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 88, "Situacao": "Com esporos", "DiasAposInicioCiclo": 88 }, "geometry": { "type": "Point", "coordinates": [ -54.088223334790285, -24.434063939695594 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 89, "Situacao": "Com esporos", "DiasAposInicioCiclo": 89 }, "geometry": { "type": "Point", "coordinates": [ -52.811447355887061, -24.616708584999945 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 91, "Situacao": "Com esporos", "DiasAposInicioCiclo": 91 }, "geometry": { "type": "Point", "coordinates": [ -50.896283387532222, -25.347287166217331 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 91, "Situacao": "Com esporos", "DiasAposInicioCiclo": 91 }, "geometry": { "type": "Point", "coordinates": [ -53.875427338306423, -24.616708584999945 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 96, "Situacao": "Com esporos", "DiasAposInicioCiclo": 96 }, "geometry": { "type": "Point", "coordinates": [ -52.598651359403192, -26.260510392739079 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 103, "Situacao": "Com esporos", "DiasAposInicioCiclo": 103 }, "geometry": { "type": "Point", "coordinates": [ -51.534671376983837, -26.260510392739075 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 103, "Situacao": "Com esporos", "DiasAposInicioCiclo": 103 }, "geometry": { "type": "Point", "coordinates": [ -50.683487391048352, -25.712576456826035 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 103, "Situacao": "Com esporos", "DiasAposInicioCiclo": 103 }, "geometry": { "type": "Point", "coordinates": [ -52.385855362919322, -24.068774649086901 ] } }
+]
+}

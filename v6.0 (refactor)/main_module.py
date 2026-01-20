@@ -228,6 +228,6 @@ def main(base, number_of_days, train_file, test_file, operation_mode, growth_typ
         return temp_metrics
 
 if __name__ == '__main__':
-    main(30606342.505, 137, r'../Data/Gridded_Data/Trained_Data/all_together/arithmetic_mean_31_23.csv', r'../Data/Gridded_Data/Test_Data/coletoressafra2021_31_23.csv', 'parameter_search', 'TG', 1, 30, 1.06, 1.04)
+    main(30606342.505, 137, r'../Data/Gridded_Data/Trained_Data/all_together/arithmetic_mean_31_23.csv', r'../Data/Gridded_Data/Test_Data/coletoressafra2223_31_23.csv', 'parameter_search', 'TG', 1, 30, 1.06, 1.04)
     # main(12110.717000000004, 137, r'../Data/Gridded_Data/Test_Data/coletoressafra2122_31_23.csv', r'../Data/Gridded_Data/Test_Data/coletoressafra2021_31_23.csv', 'test', 'CGT', 4, 55, 1.06, 1.04)
     # main(961554092.8640003, 137, None, r'../Data/Gridded_Data/Trained_Data/all_together/arithmetic_mean_31_23.csv', 'parameter_search', 'TG', 1, 25, 1.05, 1.04)

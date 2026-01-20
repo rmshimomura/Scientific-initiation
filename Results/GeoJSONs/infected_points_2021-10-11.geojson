@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "discovery_day": 46, "Situacao": "Com esporos", "DiasAposInicioCiclo": 46 }, "geometry": { "type": "Point", "coordinates": [ -54.301019331274162, -24.799353230304291 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 56, "Situacao": "Com esporos", "DiasAposInicioCiclo": 56 }, "geometry": { "type": "Point", "coordinates": [ -50.896283387532222, -23.155551422565164 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 56, "Situacao": "Com esporos", "DiasAposInicioCiclo": 56 }, "geometry": { "type": "Point", "coordinates": [ -53.024243352370938, -24.434063939695594 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 56, "Situacao": "Com esporos", "DiasAposInicioCiclo": 56 }, "geometry": { "type": "Point", "coordinates": [ -51.534671376983837, -23.155551422565164 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 61, "Situacao": "Com esporos", "DiasAposInicioCiclo": 61 }, "geometry": { "type": "Point", "coordinates": [ -54.301019331274162, -24.981997875608641 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 63, "Situacao": "Com esporos", "DiasAposInicioCiclo": 63 }, "geometry": { "type": "Point", "coordinates": [ -51.109079384016098, -23.155551422565164 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 63, "Situacao": "Com esporos", "DiasAposInicioCiclo": 63 }, "geometry": { "type": "Point", "coordinates": [ -51.109079384016098, -22.790262131956467 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 63, "Situacao": "Com esporos", "DiasAposInicioCiclo": 63 }, "geometry": { "type": "Point", "coordinates": [ -52.598651359403192, -24.068774649086897 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 63, "Situacao": "Com esporos", "DiasAposInicioCiclo": 63 }, "geometry": { "type": "Point", "coordinates": [ -51.109079384016098, -22.97290677726081 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 67, "Situacao": "Com esporos", "DiasAposInicioCiclo": 67 }, "geometry": { "type": "Point", "coordinates": [ -50.04509940159673, -25.164642520912995 ] } },
+{ "type": "Feature", "properties": { "discovery_day": 75, "Situacao": "Com esporos", "DiasAposInicioCiclo": 75 }, "geometry": { "type": "Point", "coordinates": [ -52.598651359403192, -24.616708584999948 ] } }
+]
+}

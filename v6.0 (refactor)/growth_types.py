@@ -398,9 +398,95 @@ def plot_infection_map(_collectors_instance, burrs, parana, day):
 
     ax.set_title(f"Infection spread - Day {day}")
     ax.legend()
-    plt.savefig(f"../Results/Maps/map_day_{day}.png", dpi=150)
+    plt.savefig(f"./Maps/map_day_{day}.png", dpi=150)
     plt.close()
 
+import os
+
+# ==============================================================================
+# NOVA FUNÇÃO AUXILIAR: Salva os GeoJSONs
+# ==============================================================================
+
+
+def save_geojson_snapshot(collectors_gdf, burrs_series, day, output_dir="../Results/GeoJSONs"):
+    """
+    Salva o estado atual da simulação em arquivos GeoJSON.
+    Converte agressivamente tipos NumPy para Python nativo para evitar erros do Fiona.
+    """
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # --- Função interna Nuclear para limpar tipos ---
+    def sanitize_gdf_types(gdf):
+        gdf_clean = gdf.copy()
+        
+        for col in gdf_clean.columns:
+            if col == 'geometry':
+                continue
+            
+            # Estratégia 1: Se o dado tiver o método .item() (comum em numpy types), usa ele.
+            # Isso transforma numpy.int64 -> int (python) e numpy.float64 -> float (python)
+            try:
+                gdf_clean[col] = gdf_clean[col].apply(lambda x: x.item() if hasattr(x, 'item') else x)
+            except:
+                pass # Se falhar, segue a vida
+
+            # Estratégia 2: Tratamento específico para nulos e inteiros
+            # Se a coluna for numérica, garanta que NaN vire None (null no JSON)
+            if pd.api.types.is_numeric_dtype(gdf_clean[col]):
+                gdf_clean[col] = gdf_clean[col].where(pd.notnull(gdf_clean[col]), None)
+
+        return gdf_clean
+
+    # ---------------------------------------------------------
+    # 1. Salvar as Zonas de Infecção (Polígonos/Burrs)
+    # ---------------------------------------------------------
+    if not burrs_series.empty:
+        gdf_burrs = gpd.GeoDataFrame(geometry=burrs_series)
+        
+        # Forçamos int do python aqui na criação
+        gdf_burrs['simulation_day'] = int(day)
+        gdf_burrs['type'] = 'infection_zone'
+        
+        # Limpeza
+        gdf_burrs = sanitize_gdf_types(gdf_burrs)
+        
+        #coloca no nome do arquivo a data exata e informações relevantes, data calculada considerando ano e dias apos 1 de setembro que é o começo da simulação
+        ano = 2022
+        data = pd.to_datetime(f"{ano}-09-11") + pd.to_timedelta(day % 365, unit='D')
+        data_str = data.strftime("%Y-%m-%d")
+        filename_poly = os.path.join(output_dir, f"infection_zones_{data_str}.geojson")
+        try:
+            gdf_burrs.to_file(filename_poly, driver='GeoJSON')
+        except Exception as e:
+            print(f"Erro ao salvar GeoJSON de zonas no dia {day}: {e}")
+
+    # ---------------------------------------------------------
+    # 2. Salvar os Pontos Infectados (Coletores)
+    # ---------------------------------------------------------
+    # Filtra apenas detectados
+    infected_points = collectors_gdf[collectors_gdf['Detected'] == 1].copy()
+
+    if not infected_points.empty:
+        # Seleciona colunas cruciais
+        cols_target = ['geometry', 'discovery_day', 'Situacao', 'MediaDiasAposInicioCiclo', 'DiasAposInicioCiclo']
+        cols_existentes = [c for c in cols_target if c in infected_points.columns]
+        
+        gdf_points = infected_points[cols_existentes]
+        
+        # Limpeza agressiva
+        gdf_points = sanitize_gdf_types(gdf_points)
+        ano = 2022
+        data = pd.to_datetime(f"{ano}-09-11") + pd.to_timedelta(day % 365, unit='D')
+        data_str = data.strftime("%Y-%m-%d")
+        filename_points = os.path.join(output_dir, f"infected_points_{data_str}.geojson")
+        try:
+            gdf_points.to_file(filename_points, driver='GeoJSON')
+        except Exception as e:
+            print(f"Erro ao salvar GeoJSON de pontos no dia {day}: {e}")
+# ==============================================================================
+# SUA FUNÇÃO MODIFICADA (Topology Growth)
+# ==============================================================================
 
 def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PARAMS: dict, _map: gpd.GeoDataFrame):
 
@@ -421,6 +507,9 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
     start_first_apperances_topologies(first_appearances, _collectors_instance, start_day, growth_topology_dict, current_day_growth_topologies)
 
     count = len(first_appearances)
+    
+    # Define o intervalo de dias para salvar (ex: a cada 5 dias)
+    SNAPSHOT_INTERVAL = 5 
 
     for day in range(TEST_PARAMS['number_of_days']):
 
@@ -428,37 +517,38 @@ def topology_growth_no_touch(_collectors_instance: coletores.Coletores, TEST_PAR
 
         burrs = create_topology_buffers(_collectors_instance, current_day_growth_topologies)
         
-        # Chama plotagem a cada X dias
-        if day % 10 == 0:
+        # --- BLOCO NOVO DE EXPORTAÇÃO ---
+        if day % SNAPSHOT_INTERVAL == 0:
+            # Salva o PNG (Visualização rápida)
             plot_infection_map(_collectors_instance, burrs, _map, day)
+            
+            # Salva o GeoJSON (Dados para mapa interativo futuro)
+            save_geojson_snapshot(_collectors_instance.geo_df, burrs, day)
+        # --------------------------------
 
         for burr in burrs:
-
+            # Otimização sugerida (se quiser usar sjoin depois, podemos mudar aqui)
+            # Por enquanto, mantendo sua lógica original:
             for collector in _collectors_instance.geo_df.itertuples():
 
                 if collector.Detected == 0:
-
                     collector_point = Point(collector.LongitudeDecimal, collector.LatitudeDecimal)
 
                     if collector_point.within(burr):
 
                         _collectors_instance.geo_df.loc[collector.Index, 'Detected'] = 1
+                        # AQUI ESTÁ A INFORMAÇÃO QUE VOCÊ QUERIA (DATA DE CHEGADA):
                         _collectors_instance.geo_df.loc[collector.Index, 'discovery_day'] = start_day + day
 
                         if collector.Situacao == 'Com esporos':
-
                             _collectors_instance.geo_df.loc[collector.Index, 'color'] = 'green'
-
                         else:
-
                             _collectors_instance.geo_df.loc[collector.Index, 'color'] = 'red'
 
                         check_day(_collectors_instance.geo_df, collector, start_day + day)
 
         for index, growth_topology in current_day_growth_topologies.items():
-
             growth_topology.growTopology(TEST_PARAMS['proportionSeg'], TEST_PARAMS['proportionLarg'])
-
             _collectors_instance.geo_df.loc[index, 'life_time'] += 1
 
     true_positive_total_error = 0 if true_positives == 0 else math.sqrt(true_positive_total_error/true_positives)
